@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C15747C1ED8117900A78DE5 /* JKCalendarScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15747B1ED8117400A78DE5 /* JKCalendarScrollView.swift */; };
 		7C68BD491E7A4CEE002E6AC6 /* JKCalendarMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C68BD481E7A4CEE002E6AC6 /* JKCalendarMark.swift */; };
 		7C68BD4B1E7A7E14002E6AC6 /* JKCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C68BD4A1E7A7E14002E6AC6 /* JKCalendarView.swift */; };
 		7C72FF231E72930100D12F76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C72FF221E72930100D12F76 /* AppDelegate.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7C15747B1ED8117400A78DE5 /* JKCalendarScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCalendarScrollView.swift; sourceTree = "<group>"; };
 		7C68BD481E7A4CEE002E6AC6 /* JKCalendarMark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCalendarMark.swift; sourceTree = "<group>"; };
 		7C68BD4A1E7A7E14002E6AC6 /* JKCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCalendarView.swift; sourceTree = "<group>"; };
 		7C72FF1F1E72930100D12F76 /* JKCalendar-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JKCalendar-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +91,7 @@
 				7CE1A4811E7631F1004B9625 /* JKInfinitePageView.swift */,
 				7C72FF3A1E72938000D12F76 /* common.swift */,
 				7C72FF421E72A29000D12F76 /* icon.xcassets */,
+				7C15747B1ED8117400A78DE5 /* JKCalendarScrollView.swift */,
 			);
 			path = JKCalendar;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 				7C72FF231E72930100D12F76 /* AppDelegate.swift in Sources */,
 				7C72FF391E72936200D12F76 /* JKCalendar.swift in Sources */,
 				7CE1A4821E7631F1004B9625 /* JKInfinitePageView.swift in Sources */,
+				7C15747C1ED8117900A78DE5 /* JKCalendarScrollView.swift in Sources */,
 				7C68BD491E7A4CEE002E6AC6 /* JKCalendarMark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -296,6 +300,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = KE5A24937J;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "JKCalendar-Sample/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.joe.JKCalendar-Sample";
@@ -309,6 +317,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = KE5A24937J;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "JKCalendar-Sample/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.joe.JKCalendar-Sample";

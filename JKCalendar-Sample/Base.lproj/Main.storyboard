@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="JKCalendar_Sample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="ViewController" customModule="JKCalendar_Sample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -22,27 +22,110 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8kS-y2-A9y" customClass="JKCalendar" customModule="JKCalendar_Sample" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="312"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SuO-P7-mfX" customClass="JKCalendarScrollView" customModule="JKCalendar_Sample" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5KO-dQ-EhN">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="625"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="InR-57-zwI">
+                                                <rect key="frame" x="20" y="24" width="24" height="15"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="15" id="qQi-jA-Y52"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
+                                                <color key="textColor" red="0.68627450980392157" green="0.68627450980392157" blue="0.68627450980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JL2-xd-vI9">
+                                                <rect key="frame" x="20" y="41" width="24" height="15"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="15" id="kK7-5W-Gx2"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
+                                                <color key="textColor" red="0.68627450980392157" green="0.68627450980392157" blue="0.68627450980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Live in the present moment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arz-Zf-a0V">
+                                                <rect key="frame" x="20" y="64" width="202" height="25"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="25" id="Kc2-1F-sXt"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                <color key="textColor" red="0.23529411764705882" green="0.23529411764705882" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u0X-Jt-jbk">
+                                                <rect key="frame" x="20" y="105" width="335" height="500"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="500" id="Eje-cw-TCd"/>
+                                                </constraints>
+                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                <color key="textColor" red="0.47058823529411764" green="0.47058823529411764" blue="0.47058823529411764" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="13"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X66-tB-rp1">
+                                                <rect key="frame" x="52" y="29.5" width="4" height="4"/>
+                                                <color key="backgroundColor" red="0.15686274509803921" green="0.69803921568627447" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="4" id="RUe-Ss-Wba"/>
+                                                    <constraint firstAttribute="width" secondItem="X66-tB-rp1" secondAttribute="height" multiplier="1:1" id="ohe-YR-OWv"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="arz-Zf-a0V" firstAttribute="leading" secondItem="5KO-dQ-EhN" secondAttribute="leading" constant="20" id="4U3-Zf-jJY"/>
+                                            <constraint firstItem="u0X-Jt-jbk" firstAttribute="leading" secondItem="5KO-dQ-EhN" secondAttribute="leading" constant="20" id="DaK-Au-ds7"/>
+                                            <constraint firstItem="InR-57-zwI" firstAttribute="top" secondItem="5KO-dQ-EhN" secondAttribute="top" constant="24" id="IaH-QV-NCI"/>
+                                            <constraint firstAttribute="bottom" secondItem="u0X-Jt-jbk" secondAttribute="bottom" constant="20" id="W8L-c3-bYm"/>
+                                            <constraint firstItem="X66-tB-rp1" firstAttribute="leading" secondItem="InR-57-zwI" secondAttribute="trailing" constant="8" id="YB0-Ba-iHH"/>
+                                            <constraint firstAttribute="trailing" secondItem="u0X-Jt-jbk" secondAttribute="trailing" constant="20" id="bFT-B4-cKs"/>
+                                            <constraint firstItem="InR-57-zwI" firstAttribute="leading" secondItem="5KO-dQ-EhN" secondAttribute="leading" constant="20" id="ecc-a6-TkS"/>
+                                            <constraint firstItem="JL2-xd-vI9" firstAttribute="leading" secondItem="5KO-dQ-EhN" secondAttribute="leading" constant="20" id="hEU-0B-QgN"/>
+                                            <constraint firstItem="X66-tB-rp1" firstAttribute="centerY" secondItem="InR-57-zwI" secondAttribute="centerY" id="hvM-4h-aVp"/>
+                                            <constraint firstItem="arz-Zf-a0V" firstAttribute="top" secondItem="JL2-xd-vI9" secondAttribute="bottom" constant="8" id="jFx-Gi-gbI"/>
+                                            <constraint firstItem="u0X-Jt-jbk" firstAttribute="top" secondItem="arz-Zf-a0V" secondAttribute="bottom" constant="16" id="v41-cC-VHj"/>
+                                            <constraint firstItem="JL2-xd-vI9" firstAttribute="top" secondItem="InR-57-zwI" secondAttribute="bottom" constant="2" id="zQa-DB-PIy"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="8kS-y2-A9y" secondAttribute="height" multiplier="1.2:1" constant="1" id="cgb-NZ-u3R"/>
+                                    <constraint firstAttribute="trailing" secondItem="5KO-dQ-EhN" secondAttribute="trailing" id="H0K-em-SVQ"/>
+                                    <constraint firstItem="5KO-dQ-EhN" firstAttribute="height" secondItem="SuO-P7-mfX" secondAttribute="height" priority="750" id="R2h-rN-O6j"/>
+                                    <constraint firstItem="5KO-dQ-EhN" firstAttribute="leading" secondItem="SuO-P7-mfX" secondAttribute="leading" id="Vbq-uB-SB3"/>
+                                    <constraint firstAttribute="bottom" secondItem="5KO-dQ-EhN" secondAttribute="bottom" id="X8C-vW-Rly"/>
+                                    <constraint firstItem="5KO-dQ-EhN" firstAttribute="top" secondItem="SuO-P7-mfX" secondAttribute="top" id="bnD-wZ-ZlU"/>
+                                    <constraint firstItem="5KO-dQ-EhN" firstAttribute="width" secondItem="SuO-P7-mfX" secondAttribute="width" id="f0S-RG-Lrc"/>
                                 </constraints>
-                            </view>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="8kS-y2-A9y" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="NGx-ec-RLA"/>
-                            <constraint firstItem="8kS-y2-A9y" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="k04-Qk-1hF"/>
-                            <constraint firstAttribute="trailing" secondItem="8kS-y2-A9y" secondAttribute="trailing" id="wH8-KQ-hsL"/>
+                            <constraint firstItem="SuO-P7-mfX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="AcQ-tq-Wx6"/>
+                            <constraint firstAttribute="trailing" secondItem="SuO-P7-mfX" secondAttribute="trailing" id="Zz9-CM-ufA"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="SuO-P7-mfX" secondAttribute="bottom" id="bvy-E6-SKA"/>
+                            <constraint firstItem="SuO-P7-mfX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="nmh-lC-X79"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="calendar" destination="8kS-y2-A9y" id="kuP-rp-YJ8"/>
+                        <outlet property="calendarScrollView" destination="SuO-P7-mfX" id="i0K-Qr-vPB"/>
+                        <outlet property="dateLabel" destination="InR-57-zwI" id="Han-uP-zim"/>
+                        <outlet property="textview" destination="u0X-Jt-jbk" id="mbR-V8-Af8"/>
+                        <outlet property="timeLabel" destination="JL2-xd-vI9" id="U1c-xJ-IPu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="36" y="85.907046476761622"/>
         </scene>
     </scenes>
 </document>

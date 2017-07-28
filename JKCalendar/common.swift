@@ -89,6 +89,24 @@ class JKMonth: JKYear {
         return JKDay(year: date.year, month: date.month, day: date.day)!
     }
     
+    var daysCount: Int{
+        return lastDay.day
+    }
+    
+    var weeksCount: Int{
+        return Int(ceil(Double(daysCount + firstDay.weekday - 1) / 7))
+    }
+    
+    func weeks() -> [JKWeek]{
+        var weeks: [JKWeek] = []
+        var offsetDay = firstDay
+        while offsetDay == self {
+            weeks.append(offsetDay.week())
+            offsetDay = offsetDay.next(7)
+        }
+        return weeks
+    }
+    
     var name: String{
         switch month{
         case 1:
@@ -175,8 +193,12 @@ class JKDay: JKMonth {
                                                   day: day))!
     }
     
-    var week: Int{
+    var weekday: Int{
         return date.week
+    }
+    
+    func week() -> JKWeek{
+        return JKWeek(sunday: self.previous(weekday - 1))
     }
     
     func next(_ count: Int = 1) -> JKDay{
@@ -229,6 +251,48 @@ func < (lhs: JKDay, rhs: JKDay) -> Bool{
 func > (lhs: JKDay, rhs: JKDay) -> Bool{
     return lhs.year > rhs.year ||
         (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day > rhs.day)))
+}
+
+class JKWeek{
+    
+    let sunday: JKDay
+    
+    var monday: JKDay{
+        return sunday.next(1)
+    }
+    
+    var tuesday: JKDay{
+        return sunday.next(2)
+    }
+    
+    var wednesday: JKDay{
+        return sunday.next(3)
+    }
+    
+    var thursday: JKDay{
+        return sunday.next(4)
+    }
+    
+    var friday: JKDay{
+        return sunday.next(5)
+    }
+    
+    var staturday: JKDay{
+        return sunday.next(6)
+    }
+    
+    init(sunday: JKDay){
+        self.sunday = sunday
+    }
+    
+}
+
+func == (lhs: JKWeek, rhs: JKWeek) -> Bool{
+    return lhs.sunday == rhs.sunday
+}
+
+func != (lhs: JKWeek, rhs: JKWeek) -> Bool{
+    return lhs.sunday != rhs.sunday
 }
 
 extension Date{

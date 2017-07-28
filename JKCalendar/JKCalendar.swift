@@ -8,7 +8,12 @@
 
 import UIKit
 
-class JKCalendar: UIView {
+enum JKCalendarViewMode {
+    case week
+    case month
+}
+
+@IBDesignable class JKCalendar: UIView {
     
     open var textColor: UIColor = UIColor.black{
         didSet{
@@ -22,10 +27,26 @@ class JKCalendar: UIView {
         }
     }
     
+    open var mode: JKCalendarViewMode = .week
+    
     open var delegate: JKCalendarDelegate?
     open var dataSource: JKCalendarDataSource?
+    open var interactionObject: UIScrollView?{
+        didSet{
+            if let object = interactionObject{
+                object.addObserver(self, forKeyPath: "contentOffset", options: [.new, .old], context: nil)
+            }
+        }
+    }
     
-    fileprivate(set) var month = JKMonth(year: Date().year, month: Date().month)!
+    open override var backgroundColor: UIColor?{
+        didSet{
+            calendarPageView.currentView?.backgroundColor = backgroundColor
+        }
+    }
+    
+    fileprivate(set) var month: JKMonth = JKMonth(year: Date().year, month: Date().month)!
+    fileprivate(set) var week: JKWeek = JKDay(date: Date()).week()
 
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var calendarPageView: JKInfinitePageView!
@@ -78,6 +99,27 @@ class JKCalendar: UIView {
             calendarView.setNeedsDisplay()
         }
     }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let change = change{
+            if let keyPath = keyPath,
+                keyPath == "contentOffset",
+                let contentOffset = change[NSKeyValueChangeKey.newKey] as? CGPoint{
+                
+                if let calendarView = calendarPageView.currentView as? JKCalendarView{
+                    var value = frame.height + contentOffset.y
+                    if value > calendarPageView.frame.height{
+                        value = calendarPageView.frame.height
+                    }else if value < 0{
+                        value = 0
+                    }
+                    print(value)
+                    calendarView.foldValue = value
+                }
+            }
+        }
+    }
+    
     
     @IBAction func handlePreviousButtonClick(_ sender: Any) {
         calendarPageView.previousPage()

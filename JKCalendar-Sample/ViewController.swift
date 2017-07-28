@@ -26,18 +26,38 @@ class ViewController: UIViewController {
     
 //    var selectDays: [JKDay]?
     
-    @IBOutlet weak var calendar: JKCalendar!
+    @IBOutlet weak var calendarScrollView: JKCalendarScrollView!
+    
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var textview: UITextView!
+    @IBOutlet weak var timeLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        calendar.delegate = self
-        calendar.dataSource = self
+        calendarScrollView.calendar.delegate = self
+        calendarScrollView.calendar.dataSource = self
         
-        calendar.textColor = UIColor(red: 60/255, green: 60/255, blue: 60/255, alpha: 1)
-        calendar.backgroundColor = UIColor.white
+        calendarScrollView.calendar.textColor = UIColor(red: 60/255,
+                                                        green: 60/255,
+                                                        blue: 60/255,
+                                                        alpha: 1)
+        calendarScrollView.calendar.backgroundColor = UIColor.white
 //        calendar.isScrollEnabled = false
         
+        
+        let formatter = DateFormatter()
+        
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        dateLabel.text = formatter.string(from: selectDay.date)
+        
+        formatter.dateStyle = .none
+        formatter.timeStyle = .medium
+        timeLabel.text = formatter.string(from: selectDay.date)
+        
+        textview.textContainerInset = UIEdgeInsets.zero
+        textview.textContainer.lineFragmentPadding = 0
     }
 
     override func didReceiveMemoryWarning() {
