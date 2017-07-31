@@ -40,31 +40,53 @@ enum JKCalendarViewMode {
     }
     
     open override var backgroundColor: UIColor?{
-        didSet{
-            calendarPageView.currentView?.backgroundColor = backgroundColor
+        set{
+            super.backgroundColor = UIColor.clear
+            calendarPageView.backgroundColor = newValue
+            calendarPageView.currentView?.backgroundColor = newValue
+        }
+        get{
+            return calendarPageView.backgroundColor
         }
     }
     
-    fileprivate(set) var month: JKMonth = JKMonth(year: Date().year, month: Date().month)!
-    fileprivate(set) var week: JKWeek = JKDay(date: Date()).week()
-
+    open var foldWeekIndex: Int = 0
+    
+    fileprivate(set) var month: JKMonth = JKMonth(year: Date().year, month: Date().month)!{
+        didSet{
+            if foldWeekIndex >= month.weeksCount{
+                foldWeekIndex = month.weeksCount - 1
+            }
+        }
+    }
+    
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var calendarPageView: JKInfinitePageView!
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var pageViewHeightConstraint: NSLayoutConstraint!
+    
+    fileprivate var contentViewBottomConstraint: NSLayoutConstraint!
     
     override init(frame: CGRect){
         super.init(frame: frame)
         setupContentViewUI()
         setupCalendarView()
+        
+        pageViewHeightConstraint.constant = frame.height - 67
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupContentViewUI()
         setupCalendarView()
+    }
+    
+    override func layoutSubviews() {
+        pageViewHeightConstraint.constant = frame.height - 67
+        super.layoutSubviews()
     }
     
     func setupContentViewUI(){
@@ -74,10 +96,14 @@ enum JKCalendarViewMode {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
         
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[contentView]|", options: .directionLeadingToTrailing, metrics: nil, views: ["contentView": contentView])
+//        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[contentView]|", options: .directionLeadingToTrailing, metrics: nil, views: ["contentView": contentView])
+        let topConstraint = NSLayoutConstraint(item: contentView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
+        contentViewBottomConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1, constant: 0)
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[contentView]|", options: .directionLeadingToTrailing, metrics: nil, views: ["contentView": contentView])
-        addConstraints(verticalConstraints)
+//        addConstraints(verticalConstraints)
         addConstraints(horizontalConstraints)
+        addConstraint(topConstraint)
+        addConstraint(contentViewBottomConstraint)
     }
     
     func setupCalendarView(){
@@ -96,6 +122,7 @@ enum JKCalendarViewMode {
     
     public func reloadData() {
         if let calendarView = calendarPageView.currentView as? JKCalendarView{
+            calendarView.resetWeeksInfo()
             calendarView.setNeedsDisplay()
         }
     }
@@ -108,13 +135,16 @@ enum JKCalendarViewMode {
                 
                 if let calendarView = calendarPageView.currentView as? JKCalendarView{
                     var value = frame.height + contentOffset.y
-                    if value > calendarPageView.frame.height{
-                        value = calendarPageView.frame.height
+                    let weekCount = calendarView.month.weeksCount
+                    let maxValue = calendarPageView.frame.height * CGFloat(weekCount - 1) / CGFloat(weekCount)
+                    if value > maxValue {
+                        value = maxValue
                     }else if value < 0{
                         value = 0
                     }
-                    print(value)
                     calendarView.foldValue = value
+                    
+                    contentViewBottomConstraint.constant = value
                 }
             }
         }

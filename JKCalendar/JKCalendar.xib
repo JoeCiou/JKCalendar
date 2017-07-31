@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,6 +14,7 @@
                 <outlet property="calendarPageView" destination="iph-JC-1Jp" id="0mX-Mz-OFi"/>
                 <outlet property="monthLabel" destination="NQc-qj-Z1J" id="n1m-gJ-ZvV"/>
                 <outlet property="nextButton" destination="pkJ-0e-uWA" id="fmN-h6-v41"/>
+                <outlet property="pageViewHeightConstraint" destination="hRC-Ss-Kfu" id="tjU-6U-ZdA"/>
                 <outlet property="previousButton" destination="baS-W8-Fmd" id="ie2-fN-kyD"/>
                 <outlet property="topView" destination="jAf-DF-B0v" id="gpz-6u-xMX"/>
                 <outlet property="yearLabel" destination="NV5-qJ-yie" id="rLS-76-zRx"/>
@@ -137,8 +138,11 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iph-JC-1Jp" customClass="JKInfinitePageView" customModule="JKCalendar_Sample" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="57" width="320" height="240"/>
+                    <rect key="frame" x="0.0" y="62" width="320" height="230"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="230" id="hRC-Ss-Kfu"/>
+                    </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
@@ -153,7 +157,6 @@
                 <constraint firstItem="jAf-DF-B0v" firstAttribute="top" secondItem="lJW-U6-5T2" secondAttribute="top" id="B5e-yG-5PZ"/>
                 <constraint firstItem="iph-JC-1Jp" firstAttribute="leading" secondItem="lJW-U6-5T2" secondAttribute="leading" id="BaE-5R-4uZ"/>
                 <constraint firstItem="nlL-R2-QTi" firstAttribute="width" secondItem="aXn-iW-qc0" secondAttribute="width" id="DmR-0q-KEo"/>
-                <constraint firstAttribute="bottom" secondItem="iph-JC-1Jp" secondAttribute="bottom" id="FpG-es-BPB"/>
                 <constraint firstAttribute="trailing" secondItem="jAf-DF-B0v" secondAttribute="trailing" id="Hva-AX-TZR"/>
                 <constraint firstItem="nlL-R2-QTi" firstAttribute="centerY" secondItem="QdE-o9-LA2" secondAttribute="centerY" id="Mb6-GV-b9D"/>
                 <constraint firstItem="Ogy-Nj-Ulh" firstAttribute="width" secondItem="696-B5-t2J" secondAttribute="width" id="NDx-82-D8b"/>
@@ -165,7 +168,7 @@
                 <constraint firstItem="taN-PN-6bz" firstAttribute="leading" secondItem="696-B5-t2J" secondAttribute="trailing" id="eLa-A7-C4g"/>
                 <constraint firstAttribute="trailing" secondItem="aXn-iW-qc0" secondAttribute="trailing" constant="10" id="g4q-hJ-93w"/>
                 <constraint firstItem="taN-PN-6bz" firstAttribute="centerY" secondItem="696-B5-t2J" secondAttribute="centerY" id="hNL-S8-jTf"/>
-                <constraint firstItem="iph-JC-1Jp" firstAttribute="top" secondItem="Ogy-Nj-Ulh" secondAttribute="bottom" id="hT7-M7-RGw"/>
+                <constraint firstItem="iph-JC-1Jp" firstAttribute="top" secondItem="Ogy-Nj-Ulh" secondAttribute="bottom" constant="5" id="hT7-M7-RGw"/>
                 <constraint firstItem="aXn-iW-qc0" firstAttribute="leading" secondItem="nlL-R2-QTi" secondAttribute="trailing" id="iLR-83-9cc"/>
                 <constraint firstItem="696-B5-t2J" firstAttribute="width" secondItem="taN-PN-6bz" secondAttribute="width" id="m6F-YJ-ax0"/>
                 <constraint firstItem="G5q-9A-KB3" firstAttribute="centerY" secondItem="taN-PN-6bz" secondAttribute="centerY" id="mlZ-MD-89t"/>
@@ -177,6 +180,9 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="213" y="276.5"/>
         </view>
     </objects>

@@ -11,19 +11,21 @@ import UIKit
 class JKCalendarView: UIView{
     
     let calendar: JKCalendar
+    
     var month: JKMonth{
         didSet{
+            resetWeeksInfo()
             setNeedsDisplay()
         }
     }
     
     var foldValue: CGFloat = 0{
         didSet{
+            updateFoldValueWeeksInfo()
             setNeedsDisplay()
         }
     }
     
-//    fileprivate var infos: [JKDayInfo] = []
     fileprivate var weeksInfo: [JKWeekInfo] = []
     fileprivate var panBeganDay: JKDay?
     fileprivate var panChangedDay: JKDay?
@@ -45,34 +47,29 @@ class JKCalendarView: UIView{
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func draw(_ rect: CGRect) {
-//        infos = []
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        resetWeeksInfo()
+    }
+    
+    func resetWeeksInfo(){
         weeksInfo = []
-        let context = UIGraphicsGetCurrentContext()
         
         let firstDay = month.firstDay
         let weekday = firstDay.weekday - 1
         var offset = firstDay.previous(weekday)
         
         let calendarDaySize = CGSize(width: (bounds.width - 20) / 7,
-                                     height: (bounds.height - 10) / CGFloat(month.weeksCount))
-        let continuousMarks = calendar.dataSource?.calendar?(calendar, continuousMarksWith: month)
-        
-        var currentWeekIndex = 0
-        if let index = month.weeks().index(where: { (week) -> Bool in
-            return week == calendar.week
-        }){
-            currentWeekIndex = index
-        }
+                                     height: bounds.height / CGFloat(month.weeksCount))
         
         for weekIndex in 0 ..< month.weeksCount{
             var daysInfo: [JKDayInfo] = []
-            let offsetY = weekIndex <= currentWeekIndex ?
-                foldValue * CGFloat(currentWeekIndex) / CGFloat(month.weeksCount):
-                foldValue * CGFloat(month.weeksCount - 1) / CGFloat(month.weeksCount)
+            let offsetY = weekIndex <= calendar.foldWeekIndex ?
+                foldValue * CGFloat(calendar.foldWeekIndex) / CGFloat(month.weeksCount - 1):
+            foldValue
             for dayIndex in 0 ..< 7{
                 let dayRect = CGRect(x: 10 + CGFloat(dayIndex) * calendarDaySize.width,
-                                     y: 5 + CGFloat(weekIndex) * calendarDaySize.height - offsetY,
+                                     y: CGFloat(weekIndex) * calendarDaySize.height - offsetY,
                                      width: calendarDaySize.width,
                                      height: calendarDaySize.height)
                 var info = JKDayInfo(day: offset,
@@ -80,19 +77,7 @@ class JKCalendarView: UIView{
                 if let mark = calendar.dataSource?.calendar?(calendar, markWith: info.day){
                     info.mark = mark
                 }
-                if let continuousMarks = continuousMarks{
-                    for continuousMark in continuousMarks{
-                        if continuousMark.days.contains(offset){
-                            if info.continuousMarks == nil{
-                                info.continuousMarks = [continuousMark]
-                            }else{
-                                info.continuousMarks?.append(continuousMark)
-                            }
-                        }
-                    }
-                }
                 
-//                infos.append(info)
                 daysInfo.append(info)
                 
                 offset = offset.next()
@@ -100,349 +85,351 @@ class JKCalendarView: UIView{
             weeksInfo.append(JKWeekInfo(daysInfo: daysInfo))
         }
         
-        if let continuousMarks = continuousMarks{
+        if let continuousMarks = calendar.dataSource?.calendar?(calendar, continuousMarksWith: month){
             for continuousMark in continuousMarks{
-                var weekIndex = 0
                 
-                var markInfos: [JKContinuousMarkInfo] = []
-                
-//                for weekInfo in weeksInfo{
-//                    for info in weekInfo.daysInfo where continuousMark.days.contains(info.day){
-//                        
-//                        if markInfos.count <= weekIndex{
-//                            markInfos.append(JKContinuousMarkInfo())
-//                        }
-//                        var markInfo = markInfos[weekIndex]
-//                        
-//                        if info.day == continuousMark.start && info.day == continuousMark.end{
-//                            markInfo.only = true
-//                        }else if info.day == continuousMark.start{
-//                            markInfo.begin = true
-//                        }else if info.day == continuousMark.end{
-//                            markInfo.end = true
-//                        }
-//                        markInfo.locations.append(info.location)
-//                        
-//                        markInfos[weekIndex] = markInfo
-//                        
-//                        if info.day.weekday == 7{
-//                            weekIndex += 1
-//                        }
-//                    }
-//                }
-                
-                for weekInfo in weeksInfo{
-                    for info in weekInfo.daysInfo where continuousMark.days.contains(info.day){
+                for weekIndex in 0 ..< weeksInfo.count{
+                    let weekDays = weeksInfo[weekIndex].days
+                    if continuousMark.end < weekDays.first! || continuousMark.start > weekDays.last!{
+                        continue
+                    }else{
+                        let lowerBound = weekDays.contains(continuousMark.start) ? weekDays.index(of: continuousMark.start)!: 0
+                        let upperBound = weekDays.contains(continuousMark.end) ? weekDays.index(of: continuousMark.end)!: 6
+                        let range = Range<Int>(uncheckedBounds: (lowerBound, upperBound))
                         
-                        if markInfos.count <= weekIndex{
-                            markInfos.append(JKContinuousMarkInfo())
-                        }
-                        var markInfo = markInfos[weekIndex]
-                        
-                        if info.day == continuousMark.start && info.day == continuousMark.end{
-                            markInfo.only = true
-                        }else if info.day == continuousMark.start{
-                            markInfo.begin = true
-                        }else if info.day == continuousMark.end{
-                            markInfo.end = true
-                        }
-                        markInfo.locations.append(info.location)
-                        
-                        markInfos[weekIndex] = markInfo
-                        
-                        if info.day.weekday == 7{
-                            weekIndex += 1
-                        }
-                    }
-                }
-                
-                for info in markInfos{
-                    let path = UIBezierPath()
-                    let beginLocation = info.locations[0]
-                    let endLocation = info.locations.last!
-                    switch continuousMark.type{
-                        
-                    case .circle:
-                        let height = beginLocation.height * 5 / 6
-                        let radius = height / 2
-                        if info.only{
-                            let center = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                 y: beginLocation.origin.y + beginLocation.height / 2)
-                            path.addArc(withCenter: center,
-                                        radius: radius,
-                                        startAngle: 0,
-                                        endAngle: 2 * CGFloat.pi, clockwise: true)
-                        }else if info.begin && info.end{
-                            let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
-                                              y: beginLocation.origin.y + (beginLocation.height - height) / 2,
-                                              width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x - beginLocation.width / 2,
-                                              height: height)
-                            let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                     y: beginLocation.origin.y + beginLocation.height / 2)
-                            let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
-                                                      y: endLocation.origin.y + endLocation.height / 2)
-                            
-                            path.addArc(withCenter: leftCenter,
-                                        radius: radius,
-                                        startAngle: 90 * CGFloat.pi / 180,
-                                        endAngle: 270 * CGFloat.pi / 180,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
-                            path.addArc(withCenter: rightCenter,
-                                        radius: radius,
-                                        startAngle: 270 * CGFloat.pi / 180,
-                                        endAngle: 90 * CGFloat.pi / 180,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
-                            
-                        }else if info.begin{
-                            let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
-                                              y: beginLocation.origin.y + (beginLocation.height - height) / 2,
-                                              width: endLocation.origin.x + endLocation.width - beginLocation.origin.x - beginLocation.width / 2,
-                                              height: height)
-                            let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                     y: beginLocation.origin.y + beginLocation.height / 2)
-                            
-                            path.move(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
-                            path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
-                            path.addArc(withCenter: leftCenter,
-                                        radius: radius,
-                                        startAngle: 90 * CGFloat.pi / 180,
-                                        endAngle: 270 * CGFloat.pi / 180,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
-                            
-                        }else if info.end{
-                            let rect = CGRect(x: beginLocation.origin.x,
-                                              y: beginLocation.origin.y + (beginLocation.height - height) / 2,
-                                              width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x,
-                                              height: height)
-                            let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
-                                                      y: endLocation.origin.y + endLocation.height / 2)
-                            
-                            path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
-                            path.addArc(withCenter: rightCenter,
-                                        radius: radius,
-                                        startAngle: 270 * CGFloat.pi / 180,
-                                        endAngle: 90 * CGFloat.pi / 180,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
-                            
-                        }else{
-                            let rect = CGRect(x: beginLocation.origin.x,
-                                              y: beginLocation.origin.y + (beginLocation.height - height) / 2,
-                                              width: endLocation.origin.x + endLocation.width - beginLocation.origin.x,
-                                              height: height)
-                            
-                            path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
-                            path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
-                        }
-                        
-                        path.close()
-                        context?.addPath(path.cgPath)
-                        context?.setFillColor(continuousMark.color.cgColor)
-                        context?.fillPath()
-                        
-                    case .hollowCircle:
-                        let height = beginLocation.height * 5 / 6
-                        let radius = height / 2
-                        if info.only{
-                            let center = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                 y: beginLocation.origin.y + beginLocation.height / 2)
-                            path.addArc(withCenter: center,
-                                        radius: radius,
-                                        startAngle: 0,
-                                        endAngle: 2 * CGFloat.pi, clockwise: true)
-                        }else if info.begin && info.end{
-                            let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
-                                              y: beginLocation.origin.y + (beginLocation.height - height) / 2,
-                                              width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x - beginLocation.width / 2,
-                                              height: height)
-                            let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                     y: beginLocation.origin.y + beginLocation.height / 2)
-                            let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
-                                                      y: endLocation.origin.y + endLocation.height / 2)
-                            
-                            path.addArc(withCenter: leftCenter,
-                                        radius: radius,
-                                        startAngle: 90 * CGFloat.pi / 180,
-                                        endAngle: 270 * CGFloat.pi / 180,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
-                            path.addArc(withCenter: rightCenter,
-                                        radius: radius,
-                                        startAngle: 270 * CGFloat.pi / 180,
-                                        endAngle: 90 * CGFloat.pi / 180,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
-                            
-                        }else if info.begin{
-                            let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
-                                              y: beginLocation.origin.y + (beginLocation.height - height) / 2,
-                                              width: endLocation.origin.x + endLocation.width - beginLocation.origin.x - beginLocation.width / 2,
-                                              height: height)
-                            let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                     y: beginLocation.origin.y + beginLocation.height / 2)
-                            
-                            path.move(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
-                            path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
-                            path.addArc(withCenter: leftCenter,
-                                        radius: radius,
-                                        startAngle: 90 * CGFloat.pi / 180,
-                                        endAngle: 270 * CGFloat.pi / 180,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
-                            
-                        }else if info.end{
-                            let rect = CGRect(x: beginLocation.origin.x,
-                                              y: beginLocation.origin.y + (beginLocation.height - height) / 2,
-                                              width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x,
-                                              height: height)
-                            let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
-                                                      y: endLocation.origin.y + endLocation.height / 2)
-                            
-                            path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
-                            path.addArc(withCenter: rightCenter,
-                                        radius: radius,
-                                        startAngle: 270 * CGFloat.pi / 180,
-                                        endAngle: 90 * CGFloat.pi / 180,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
-                            
-                        }else{
-                            let rect = CGRect(x: beginLocation.origin.x,
-                                              y: beginLocation.origin.y + (beginLocation.height - height) / 2,
-                                              width: endLocation.origin.x + endLocation.width - beginLocation.origin.x,
-                                              height: height)
-                            
-                            path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
-                            path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
-                            path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
-                        }
-                        
-                        context?.addPath(path.cgPath)
-                        context?.setLineWidth(1)
-                        context?.setStrokeColor(continuousMark.color.cgColor)
-                        context?.strokePath()
-                        
-                    case .underline:
-                        let offsetY = beginLocation.origin.y + beginLocation.height - 2
-                        let lineWidth = beginLocation.height * 3 / 4
-                        if info.only{
-                            let beginX = beginLocation.origin.x + (beginLocation.width - lineWidth) / 2
-                            let endX = beginX + lineWidth
-                            path.move(to: CGPoint(x: beginX, y: offsetY))
-                            path.addLine(to: CGPoint(x: endX, y: offsetY))
-                            
-                        }else if info.begin && info.end{
-                            let beginX = beginLocation.origin.x + (beginLocation.width - lineWidth) / 2
-                            let endX = endLocation.origin.x + (endLocation.width - lineWidth) / 2 + lineWidth
-                            path.move(to: CGPoint(x: beginX, y: offsetY))
-                            path.addLine(to: CGPoint(x: endX, y: offsetY))
-                            
-                        }else if info.begin{
-                            let beginX = beginLocation.origin.x + (beginLocation.width - lineWidth) / 2
-                            let endX = endLocation.origin.x + endLocation.width
-                            path.move(to: CGPoint(x: beginX, y: offsetY))
-                            path.addLine(to: CGPoint(x: endX, y: offsetY))
-                            
-                        }else if info.end{
-                            let beginX = beginLocation.origin.x
-                            let endX = endLocation.origin.x + (endLocation.width - lineWidth) / 2 + lineWidth
-                            path.move(to: CGPoint(x: beginX, y: offsetY))
-                            path.addLine(to: CGPoint(x: endX, y: offsetY))
-                            
-                        }else{
-                            let beginX = beginLocation.origin.x
-                            let endX = endLocation.origin.x + endLocation.width
-                            path.move(to: CGPoint(x: beginX, y: offsetY))
-                            path.addLine(to: CGPoint(x: endX, y: offsetY))
-                            
-                        }
-                        
-                        context?.addPath(path.cgPath)
-                        context?.setLineWidth(2)
-                        context?.setStrokeColor(continuousMark.color.cgColor)
-                        context?.strokePath()
-                        
-                    case .dot:
-                        let offsetY = beginLocation.origin.y + beginLocation.height - 2
-                        let radius: CGFloat = 2
-                        if info.only{
-                            let center = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                 y: offsetY)
-                            path.addArc(withCenter: center,
-                                        radius: radius,
-                                        startAngle: CGFloat.pi,
-                                        endAngle: 3 * CGFloat.pi,
-                                        clockwise: true)
-                            
-                        }else if info.begin && info.end{
-                            let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                     y: offsetY)
-                            let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
-                                                      y: offsetY)
-                            
-                            path.addArc(withCenter: leftCenter,
-                                        radius: radius,
-                                        startAngle: CGFloat.pi,
-                                        endAngle: 3 * CGFloat.pi,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: rightCenter.x - 2, y: rightCenter.y))
-                            path.addArc(withCenter: rightCenter,
-                                        radius: radius,
-                                        startAngle: 0,
-                                        endAngle: 2 * CGFloat.pi,
-                                        clockwise: true)
-                            
-                        }else if info.begin{
-                            let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
-                                                     y: offsetY)
-                            
-                            path.addArc(withCenter: leftCenter,
-                                        radius: radius,
-                                        startAngle: CGFloat.pi,
-                                        endAngle: 3 * CGFloat.pi,
-                                        clockwise: true)
-                            path.addLine(to: CGPoint(x: endLocation.origin.x + endLocation.width, y: offsetY))
-                            
-                        }else if info.end{
-                            let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
-                                                      y: offsetY)
-                            
-                            path.move(to: CGPoint(x: beginLocation.origin.x, y: offsetY))
-                            path.addLine(to: CGPoint(x: rightCenter.x - 2, y: rightCenter.y))
-                            path.addArc(withCenter: rightCenter,
-                                        radius: radius,
-                                        startAngle: 0,
-                                        endAngle: 2 * CGFloat.pi,
-                                        clockwise: true)
-                        }else{
-                            path.move(to: CGPoint(x: beginLocation.origin.x, y: offsetY))
-                            path.addLine(to: CGPoint(x: endLocation.origin.x + endLocation.width, y: offsetY))
-                        }
-                        
-                        context?.addPath(path.cgPath)
-                        context?.setLineWidth(1)
-                        context?.setStrokeColor(continuousMark.color.cgColor)
-                        context?.strokePath()
-                        
-                        context?.addPath(path.cgPath)
-                        context?.setFillColor(continuousMark.color.cgColor)
-                        context?.fillPath()
+                        weeksInfo[weekIndex].continuousMarksInfo[continuousMark] = range
                     }
                 }
             }
+        }
+    }
+    
+    func updateFoldValueWeeksInfo(){
+        let calendarDaySize = CGSize(width: (bounds.width - 20) / 7,
+                                     height: bounds.height / CGFloat(month.weeksCount))
+        
+        for weekIndex in 0 ..< weeksInfo.count{
+            let offsetY = weekIndex <= calendar.foldWeekIndex ?
+                foldValue * CGFloat(calendar.foldWeekIndex) / CGFloat(month.weeksCount - 1): foldValue
             
+            for dayIndex in 0 ..< weeksInfo[weekIndex].daysInfo.count{
+                weeksInfo[weekIndex].daysInfo[dayIndex].location =
+                    CGRect(x: 10 + CGFloat(dayIndex) * calendarDaySize.width,
+                           y: CGFloat(weekIndex) * calendarDaySize.height - offsetY,
+                           width: calendarDaySize.width,
+                           height: calendarDaySize.height)
+            }
+        }
+    }
+    
+    override func draw(_ rect: CGRect) {
+        
+        if weeksInfo.count == 0{
+            return
         }
         
-        // Draw mark
-        for weekInfo in weeksInfo{
+        let context = UIGraphicsGetCurrentContext()
+        
+        let sortWeeksInfo = weeksInfo[calendar.foldWeekIndex + 1 ..< weeksInfo.count] + weeksInfo[0 ... calendar.foldWeekIndex]
+        
+        for weekInfo in sortWeeksInfo{
+            let firstDayInfo = weekInfo.daysInfo.first!
+            let lastDayInfo = weekInfo.daysInfo.last!
+            
+            // Draw background
+            context?.addRect(CGRect(x: firstDayInfo.location.origin.x,
+                                    y: firstDayInfo.location.origin.y,
+                                    width: lastDayInfo.location.origin.x + lastDayInfo.location.width - firstDayInfo.location.origin.x,
+                                    height: firstDayInfo.location.height))
+            context?.setFillColor(UIColor.white.cgColor)
+            context?.fillPath()
+            
+            // Draw continuous mark
+            for (mark, range) in weekInfo.continuousMarksInfo{
+                
+                let path = UIBezierPath()
+                let beginLocation = weekInfo.daysInfo[range.lowerBound].location
+                let endLocation = weekInfo.daysInfo[range.upperBound].location
+                
+                switch mark.type{
+                    
+                case .circle:
+                    let height = beginLocation.height * 5 / 6
+                    let radius = height / 2
+                    if mark.start == mark.end{
+                        let center = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                             y: beginLocation.origin.y + beginLocation.height / 2)
+                        path.addArc(withCenter: center,
+                                    radius: radius,
+                                    startAngle: 0,
+                                    endAngle: 2 * CGFloat.pi, clockwise: true)
+                    }else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
+                        let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
+                                          y: beginLocation.origin.y + (beginLocation.height - height) / 2,
+                                          width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x - beginLocation.width / 2,
+                                          height: height)
+                        let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                                 y: beginLocation.origin.y + beginLocation.height / 2)
+                        let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
+                                                  y: endLocation.origin.y + endLocation.height / 2)
+                        
+                        path.addArc(withCenter: leftCenter,
+                                    radius: radius,
+                                    startAngle: 90 * CGFloat.pi / 180,
+                                    endAngle: 270 * CGFloat.pi / 180,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
+                        path.addArc(withCenter: rightCenter,
+                                    radius: radius,
+                                    startAngle: 270 * CGFloat.pi / 180,
+                                    endAngle: 90 * CGFloat.pi / 180,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
+                        
+                    }else if mark.start > firstDayInfo.day{
+                        let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
+                                          y: beginLocation.origin.y + (beginLocation.height - height) / 2,
+                                          width: endLocation.origin.x + endLocation.width - beginLocation.origin.x - beginLocation.width / 2,
+                                          height: height)
+                        let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                                 y: beginLocation.origin.y + beginLocation.height / 2)
+                        
+                        path.move(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
+                        path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
+                        path.addArc(withCenter: leftCenter,
+                                    radius: radius,
+                                    startAngle: 90 * CGFloat.pi / 180,
+                                    endAngle: 270 * CGFloat.pi / 180,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
+                        
+                    }else if mark.end < lastDayInfo.day{
+                        let rect = CGRect(x: beginLocation.origin.x,
+                                          y: beginLocation.origin.y + (beginLocation.height - height) / 2,
+                                          width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x,
+                                          height: height)
+                        let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
+                                                  y: endLocation.origin.y + endLocation.height / 2)
+                        
+                        path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
+                        path.addArc(withCenter: rightCenter,
+                                    radius: radius,
+                                    startAngle: 270 * CGFloat.pi / 180,
+                                    endAngle: 90 * CGFloat.pi / 180,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
+                        
+                    }else{
+                        let rect = CGRect(x: beginLocation.origin.x,
+                                          y: beginLocation.origin.y + (beginLocation.height - height) / 2,
+                                          width: endLocation.origin.x + endLocation.width - beginLocation.origin.x,
+                                          height: height)
+                        
+                        path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
+                        path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
+                    }
+                    
+                    path.close()
+                    context?.addPath(path.cgPath)
+                    context?.setFillColor(mark.color.cgColor)
+                    context?.fillPath()
+                    
+                case .hollowCircle:
+                    let height = beginLocation.height * 5 / 6
+                    let radius = height / 2
+                    if mark.start == mark.end{
+                        let center = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                             y: beginLocation.origin.y + beginLocation.height / 2)
+                        path.addArc(withCenter: center,
+                                    radius: radius,
+                                    startAngle: 0,
+                                    endAngle: 2 * CGFloat.pi, clockwise: true)
+                    }else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
+                        let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
+                                          y: beginLocation.origin.y + (beginLocation.height - height) / 2,
+                                          width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x - beginLocation.width / 2,
+                                          height: height)
+                        let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                                 y: beginLocation.origin.y + beginLocation.height / 2)
+                        let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
+                                                  y: endLocation.origin.y + endLocation.height / 2)
+                        
+                        path.addArc(withCenter: leftCenter,
+                                    radius: radius,
+                                    startAngle: 90 * CGFloat.pi / 180,
+                                    endAngle: 270 * CGFloat.pi / 180,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
+                        path.addArc(withCenter: rightCenter,
+                                    radius: radius,
+                                    startAngle: 270 * CGFloat.pi / 180,
+                                    endAngle: 90 * CGFloat.pi / 180,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
+                        
+                    }else if mark.start > firstDayInfo.day{
+                        let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
+                                          y: beginLocation.origin.y + (beginLocation.height - height) / 2,
+                                          width: endLocation.origin.x + endLocation.width - beginLocation.origin.x - beginLocation.width / 2,
+                                          height: height)
+                        let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                                 y: beginLocation.origin.y + beginLocation.height / 2)
+                        
+                        path.move(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
+                        path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
+                        path.addArc(withCenter: leftCenter,
+                                    radius: radius,
+                                    startAngle: 90 * CGFloat.pi / 180,
+                                    endAngle: 270 * CGFloat.pi / 180,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
+                        
+                    }else if mark.end < lastDayInfo.day{
+                        let rect = CGRect(x: beginLocation.origin.x,
+                                          y: beginLocation.origin.y + (beginLocation.height - height) / 2,
+                                          width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x,
+                                          height: height)
+                        let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
+                                                  y: endLocation.origin.y + endLocation.height / 2)
+                        
+                        path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
+                        path.addArc(withCenter: rightCenter,
+                                    radius: radius,
+                                    startAngle: 270 * CGFloat.pi / 180,
+                                    endAngle: 90 * CGFloat.pi / 180,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
+                        
+                    }else{
+                        let rect = CGRect(x: beginLocation.origin.x,
+                                          y: beginLocation.origin.y + (beginLocation.height - height) / 2,
+                                          width: endLocation.origin.x + endLocation.width - beginLocation.origin.x,
+                                          height: height)
+                        
+                        path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
+                        path.move(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
+                        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
+                    }
+                    
+                    context?.addPath(path.cgPath)
+                    context?.setLineWidth(1)
+                    context?.setStrokeColor(mark.color.cgColor)
+                    context?.strokePath()
+                    
+                case .underline:
+                    let offsetY = beginLocation.origin.y + beginLocation.height - 2
+                    let lineWidth = beginLocation.height * 3 / 4
+                    if mark.start == mark.end{
+                        let beginX = beginLocation.origin.x + (beginLocation.width - lineWidth) / 2
+                        let endX = beginX + lineWidth
+                        path.move(to: CGPoint(x: beginX, y: offsetY))
+                        path.addLine(to: CGPoint(x: endX, y: offsetY))
+                        
+                    }else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
+                        let beginX = beginLocation.origin.x + (beginLocation.width - lineWidth) / 2
+                        let endX = endLocation.origin.x + (endLocation.width - lineWidth) / 2 + lineWidth
+                        path.move(to: CGPoint(x: beginX, y: offsetY))
+                        path.addLine(to: CGPoint(x: endX, y: offsetY))
+                        
+                    }else if mark.start > firstDayInfo.day{
+                        let beginX = beginLocation.origin.x + (beginLocation.width - lineWidth) / 2
+                        let endX = endLocation.origin.x + endLocation.width
+                        path.move(to: CGPoint(x: beginX, y: offsetY))
+                        path.addLine(to: CGPoint(x: endX, y: offsetY))
+                        
+                    }else if mark.end < lastDayInfo.day{
+                        let beginX = beginLocation.origin.x
+                        let endX = endLocation.origin.x + (endLocation.width - lineWidth) / 2 + lineWidth
+                        path.move(to: CGPoint(x: beginX, y: offsetY))
+                        path.addLine(to: CGPoint(x: endX, y: offsetY))
+                        
+                    }else{
+                        let beginX = beginLocation.origin.x
+                        let endX = endLocation.origin.x + endLocation.width
+                        path.move(to: CGPoint(x: beginX, y: offsetY))
+                        path.addLine(to: CGPoint(x: endX, y: offsetY))
+                        
+                    }
+                    
+                    context?.addPath(path.cgPath)
+                    context?.setLineWidth(2)
+                    context?.setStrokeColor(mark.color.cgColor)
+                    context?.strokePath()
+                    
+                case .dot:
+                    let offsetY = beginLocation.origin.y + beginLocation.height - 2
+                    let radius: CGFloat = 2
+                    if mark.start == mark.end{
+                        let center = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                             y: offsetY)
+                        path.addArc(withCenter: center,
+                                    radius: radius,
+                                    startAngle: CGFloat.pi,
+                                    endAngle: 3 * CGFloat.pi,
+                                    clockwise: true)
+                        
+                    }else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
+                        let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                                 y: offsetY)
+                        let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
+                                                  y: offsetY)
+                        
+                        path.addArc(withCenter: leftCenter,
+                                    radius: radius,
+                                    startAngle: CGFloat.pi,
+                                    endAngle: 3 * CGFloat.pi,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: rightCenter.x - 2, y: rightCenter.y))
+                        path.addArc(withCenter: rightCenter,
+                                    radius: radius,
+                                    startAngle: 0,
+                                    endAngle: 2 * CGFloat.pi,
+                                    clockwise: true)
+                        
+                    }else if mark.start > firstDayInfo.day{
+                        let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
+                                                 y: offsetY)
+                        
+                        path.addArc(withCenter: leftCenter,
+                                    radius: radius,
+                                    startAngle: CGFloat.pi,
+                                    endAngle: 3 * CGFloat.pi,
+                                    clockwise: true)
+                        path.addLine(to: CGPoint(x: endLocation.origin.x + endLocation.width, y: offsetY))
+                        
+                    }else if mark.end < lastDayInfo.day{
+                        let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
+                                                  y: offsetY)
+                        
+                        path.move(to: CGPoint(x: beginLocation.origin.x, y: offsetY))
+                        path.addLine(to: CGPoint(x: rightCenter.x - 2, y: rightCenter.y))
+                        path.addArc(withCenter: rightCenter,
+                                    radius: radius,
+                                    startAngle: 0,
+                                    endAngle: 2 * CGFloat.pi,
+                                    clockwise: true)
+                    }else{
+                        path.move(to: CGPoint(x: beginLocation.origin.x, y: offsetY))
+                        path.addLine(to: CGPoint(x: endLocation.origin.x + endLocation.width, y: offsetY))
+                    }
+                    
+                    context?.addPath(path.cgPath)
+                    context?.setLineWidth(1)
+                    context?.setStrokeColor(mark.color.cgColor)
+                    context?.strokePath()
+                    
+                    context?.addPath(path.cgPath)
+                    context?.setFillColor(mark.color.cgColor)
+                    context?.fillPath()
+                }
+            }
+            
+            // Draw mark
             for info in weekInfo.daysInfo{
                 if let mark = info.mark{
                     switch mark.type{
@@ -490,10 +477,8 @@ class JKCalendarView: UIView{
                     }
                 }
             }
-        }
-        
-        // Draw Text
-        for weekInfo in weeksInfo{
+            
+            // Draw Text
             for info in weekInfo.daysInfo{
                 let dayString = "\(info.day.day)" as NSString
                 let font = UIFont(name: "HelveticaNeue-Medium", size: 13)!
@@ -505,8 +490,11 @@ class JKCalendarView: UIView{
                 
                 if let mark = info.mark, mark.type == .circle{
                     unitStrAttrs[NSForegroundColorAttributeName] = calendar.backgroundColor
-                }else if let continuousMarks = info.continuousMarks,
-                    continuousMarks.contains(where: { return $0.type == .circle }){
+                }else if weekInfo.continuousMarksInfo.keys.filter({ (mark) -> Bool in
+                    return mark.type == .circle
+                }).contains(where: { (mark) -> Bool in
+                    return info.day >= mark.start && info.day <= mark.end
+                }){
                     unitStrAttrs[NSForegroundColorAttributeName] = calendar.backgroundColor
                 }else if info.day == month{
                     unitStrAttrs[NSForegroundColorAttributeName] = calendar.textColor
@@ -515,16 +503,15 @@ class JKCalendarView: UIView{
                 }
                 
                 let textSize = dayString.size(attributes: [NSFontAttributeName: font])
-                let dy = (calendarDaySize.height - textSize.height) / 2
+                let dy = (info.location.height - textSize.height) / 2
                 
                 let textRect = CGRect(x: info.location.origin.x,
                                       y: info.location.origin.y + dy,
-                                      width: calendarDaySize.width,
+                                      width: info.location.width,
                                       height: textSize.height)
                 dayString.draw(in: textRect, withAttributes: unitStrAttrs)
             }
         }
-    
     }
     
     fileprivate func dayInfo(tapPosition: CGPoint) -> JKDayInfo?{
@@ -573,8 +560,13 @@ class JKCalendarView: UIView{
     }
     
     struct JKWeekInfo {
-        let daysInfo: [JKDayInfo]
-        var continuousMarksInfo: [JKContinuousMarkInfo] = []
+        var days: [JKDay]{
+            return daysInfo.map({ (info) -> JKDay in
+                return info.day
+            })
+        }
+        var daysInfo: [JKDayInfo]
+        var continuousMarksInfo: [JKCalendarContinuousMark: Range<Int>] = [:]
         
         init(daysInfo: [JKDayInfo]){
             self.daysInfo = daysInfo
@@ -583,27 +575,16 @@ class JKCalendarView: UIView{
     
     struct JKDayInfo {
         let day: JKDay
-        let location: CGRect
+        var location: CGRect
         
         var mark: JKCalendarMark?
-        var continuousMarks: [JKCalendarContinuousMark]?
+//        var continuousMarks: [JKCalendarContinuousMark]?
         
         init(day: JKDay, location: CGRect){
             self.day = day
             self.location = location
         }
         
-    }
-    
-    struct JKContinuousMarkInfo {
-        var locations: [CGRect] = []
-        var only: Bool = false
-        var begin: Bool = false
-        var end: Bool = false
-        
-        init(){
-            
-        }
     }
     
     class JKCalendarWeekView: UIView{

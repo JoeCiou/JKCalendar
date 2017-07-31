@@ -44,8 +44,16 @@ func < (lhs: JKYear, rhs: JKYear) -> Bool{
     return lhs.year < rhs.year
 }
 
+func <= (lhs: JKYear, rhs: JKYear) -> Bool{
+    return lhs.year <= rhs.year
+}
+
 func > (lhs: JKYear, rhs: JKYear) -> Bool{
     return lhs.year > rhs.year
+}
+
+func >= (lhs: JKYear, rhs: JKYear) -> Bool{
+    return lhs.year >= rhs.year
 }
 
 class JKMonth: JKYear {
@@ -99,8 +107,9 @@ class JKMonth: JKYear {
     
     func weeks() -> [JKWeek]{
         var weeks: [JKWeek] = []
-        var offsetDay = firstDay
-        while offsetDay == self {
+        let weekday = firstDay.weekday - 1
+        var offsetDay = firstDay.previous(weekday)
+        while offsetDay <= self {
             weeks.append(offsetDay.week())
             offsetDay = offsetDay.next(7)
         }
@@ -159,9 +168,18 @@ func < (lhs: JKMonth, rhs: JKMonth) -> Bool{
     return lhs.year < rhs.year || (lhs.year == rhs.year && lhs.month < rhs.month)
 }
 
+func <= (lhs: JKMonth, rhs: JKMonth) -> Bool{
+    return lhs.year < rhs.year || (lhs.year == rhs.year && lhs.month <= rhs.month)
+}
+
 func > (lhs: JKMonth, rhs: JKMonth) -> Bool{
     return lhs.year > rhs.year || (lhs.year == rhs.year && lhs.month > rhs.month)
 }
+
+func >= (lhs: JKMonth, rhs: JKMonth) -> Bool{
+    return lhs.year > rhs.year || (lhs.year == rhs.year && lhs.month >= rhs.month)
+}
+
 
 class JKDay: JKMonth {
     let day: Int
@@ -248,9 +266,19 @@ func < (lhs: JKDay, rhs: JKDay) -> Bool{
         (lhs.year == rhs.year && (lhs.month < rhs.month || (lhs.month == rhs.month && lhs.day < rhs.day)))
 }
 
+func <= (lhs: JKDay, rhs: JKDay) -> Bool{
+    return lhs.year < rhs.year ||
+        (lhs.year == rhs.year && (lhs.month < rhs.month || (lhs.month == rhs.month && lhs.day <= rhs.day)))
+}
+
 func > (lhs: JKDay, rhs: JKDay) -> Bool{
     return lhs.year > rhs.year ||
         (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day > rhs.day)))
+}
+
+func >= (lhs: JKDay, rhs: JKDay) -> Bool{
+    return lhs.year > rhs.year ||
+        (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day >= rhs.day)))
 }
 
 class JKWeek{
@@ -283,6 +311,10 @@ class JKWeek{
     
     init(sunday: JKDay){
         self.sunday = sunday
+    }
+    
+    func contains(_ day: JKDay) -> Bool{
+        return day >= sunday && day <= staturday
     }
     
 }

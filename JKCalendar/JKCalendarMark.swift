@@ -15,7 +15,7 @@ enum JKCalendarMarkType{
     case dot
 }
 
-class JKCalendarMark: NSObject {
+class JKCalendarMarkObject: NSObject {
     
     let type: JKCalendarMarkType
     let color: UIColor
@@ -27,7 +27,18 @@ class JKCalendarMark: NSObject {
     }
 }
 
-class JKCalendarContinuousMark: JKCalendarMark{
+class JKCalendarMark: JKCalendarMarkObject {
+    
+    let day: JKDay
+    
+    init(type: JKCalendarMarkType, day: JKDay, color: UIColor){
+        self.day = day
+        super.init(type: type, color: color)
+    }
+    
+}
+
+class JKCalendarContinuousMark: JKCalendarMarkObject{
     let start: JKDay
     let end: JKDay
     let days: [JKDay]

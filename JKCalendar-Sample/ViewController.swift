@@ -45,6 +45,9 @@ class ViewController: UIViewController {
         calendarScrollView.calendar.backgroundColor = UIColor.white
 //        calendar.isScrollEnabled = false
         
+        calendarScrollView.calendar.foldWeekIndex = calendarScrollView.calendar.month.weeks().index(where: { (week) -> Bool in
+            return week.contains(selectDay)
+        })!
         
         let formatter = DateFormatter()
         
@@ -70,6 +73,9 @@ extension ViewController: JKCalendarDelegate{
     
     func calendar(_ calendar: JKCalendar, didTouch day: JKDay){
         selectDay = day
+        calendar.foldWeekIndex = calendar.month.weeks().index(where: { (week) -> Bool in
+            return week.contains(day)
+        })!
         calendar.reloadData()
     }
     /*
@@ -86,12 +92,15 @@ extension ViewController: JKCalendarDataSource{
         
         if day == selectDay{
             return JKCalendarMark(type: .circle,
+                                  day: day,
                                   color: markColor)
         }else if firstMarkDays.contains(day) {
             return JKCalendarMark(type: .underline,
+                                  day: day,
                                   color: markColor)
         }else if secondMarkDays.contains(day) {
             return JKCalendarMark(type: .dot,
+                                  day: day,
                                   color: markColor)
         }
         
