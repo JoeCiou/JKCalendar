@@ -429,7 +429,7 @@ class JKCalendarView: UIView{
                 }
             }
             
-            // Draw mark
+            // Draw mark and text
             for info in weekInfo.daysInfo{
                 if let mark = info.mark{
                     switch mark.type{
@@ -476,10 +476,7 @@ class JKCalendarView: UIView{
                         context?.fillPath()
                     }
                 }
-            }
-            
-            // Draw Text
-            for info in weekInfo.daysInfo{
+                
                 let dayString = "\(info.day.day)" as NSString
                 let font = UIFont(name: "HelveticaNeue-Medium", size: 13)!
                 

@@ -15,6 +15,8 @@ enum JKCalendarViewMode {
 
 @IBDesignable class JKCalendar: UIView {
     
+    static let calendar = Calendar(identifier: .gregorian)
+    
     open var textColor: UIColor = UIColor.black{
         didSet{
             reloadData()
@@ -96,14 +98,14 @@ enum JKCalendarViewMode {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
         
-//        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[contentView]|", options: .directionLeadingToTrailing, metrics: nil, views: ["contentView": contentView])
         let topConstraint = NSLayoutConstraint(item: contentView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
         contentViewBottomConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1, constant: 0)
+        
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[contentView]|", options: .directionLeadingToTrailing, metrics: nil, views: ["contentView": contentView])
-//        addConstraints(verticalConstraints)
-        addConstraints(horizontalConstraints)
+
         addConstraint(topConstraint)
         addConstraint(contentViewBottomConstraint)
+        addConstraints(horizontalConstraints)
     }
     
     func setupCalendarView(){
@@ -142,9 +144,11 @@ enum JKCalendarViewMode {
                     }else if value < 0{
                         value = 0
                     }
-                    calendarView.foldValue = value
                     
-                    contentViewBottomConstraint.constant = value
+                    if calendarView.foldValue != value{
+                        calendarView.foldValue = value
+                        contentViewBottomConstraint.constant = value
+                    }
                 }
             }
         }

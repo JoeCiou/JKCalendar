@@ -92,8 +92,7 @@ class JKMonth: JKYear {
     }
     
     var lastDay: JKDay{
-        let calendar = Calendar(identifier: .gregorian)
-        let date = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: firstDay.date)!
+        let date = JKCalendar.calendar.date(byAdding: DateComponents(month: 1, day: -1), to: firstDay.date)!
         return JKDay(year: date.year, month: date.month, day: date.day)!
     }
     
@@ -102,7 +101,7 @@ class JKMonth: JKYear {
     }
     
     var weeksCount: Int{
-        return Int(ceil(Double(daysCount + firstDay.weekday - 1) / 7))
+        return 5//Int(ceil(Double(daysCount + firstDay.weekday - 1) / 7))
     }
     
     func weeks() -> [JKWeek]{
@@ -185,8 +184,7 @@ class JKDay: JKMonth {
     let day: Int
     
     init?(year: Int, month: Int, day: Int){
-        let calendar = Calendar(identifier: .gregorian)
-        guard let _ = calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
+        guard let _ = JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
                                                          year: year,
                                                          month: month,
                                                          day: day)) else {
@@ -204,8 +202,7 @@ class JKDay: JKMonth {
     }
     
     var date: Date{
-        let calendar = Calendar(identifier: .gregorian)
-        return calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
+        return JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
                                                   year: year,
                                                   month: month,
                                                   day: day))!
@@ -220,15 +217,13 @@ class JKDay: JKMonth {
     }
     
     func next(_ count: Int = 1) -> JKDay{
-        let calendar = Calendar(identifier: .gregorian)
         let components = DateComponents(day: count)
-        return JKDay(date: calendar.date(byAdding: components, to: date)!)
+        return JKDay(date: JKCalendar.calendar.date(byAdding: components, to: date)!)
     }
     
     func previous(_ count: Int = 1) -> JKDay{
-        let calendar = Calendar(identifier: .gregorian)
         let components = DateComponents(day: -count)
-        return JKDay(date: calendar.date(byAdding: components, to: date)!)
+        return JKDay(date: JKCalendar.calendar.date(byAdding: components, to: date)!)
     }
     
     func days(until: JKDay) -> [JKDay] {
@@ -329,23 +324,19 @@ func != (lhs: JKWeek, rhs: JKWeek) -> Bool{
 
 extension Date{
     var day: Int{
-        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        return calendar.component(.day, from: self)
+        return JKCalendar.calendar.component(.day, from: self)
     }
     
     var week: Int{
-        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        return calendar.component(.weekday, from: self)
+        return JKCalendar.calendar.component(.weekday, from: self)
     }
     
     var month: Int{
-        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        return calendar.component(.month, from: self)
+        return JKCalendar.calendar.component(.month, from: self)
     }
     
     var year: Int{
-        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        return calendar.component(.year, from: self)
+        return JKCalendar.calendar.component(.year, from: self)
     }
 }
 
