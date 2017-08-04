@@ -46,10 +46,9 @@ class ViewController: UIViewController {
                                                         blue: 60/255,
                                                         alpha: 1)
         calendarScrollView.calendar.backgroundColor = UIColor.white
+
+        calendarScrollView.calendar.focusWeek = JKCalendar.calendar.component(.weekOfMonth, from: selectDay.date) - 1
         
-        calendarScrollView.calendar.foldWeekIndex = calendarScrollView.calendar.month.weeks().index(where: { (week) -> Bool in
-            return week.contains(selectDay)
-        })!
         
         let formatter = DateFormatter()
         
@@ -69,15 +68,14 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 }
 
 extension ViewController: JKCalendarDelegate{
     
     func calendar(_ calendar: JKCalendar, didTouch day: JKDay){
         selectDay = day
-        calendar.foldWeekIndex = calendar.month.weeks().index(where: { (week) -> Bool in
-            return week.contains(day)
-        })!
+        calendar.focusWeek = JKCalendar.calendar.component(.weekOfMonth, from: selectDay.date) - 1
         calendar.reloadData()
     }
     /*

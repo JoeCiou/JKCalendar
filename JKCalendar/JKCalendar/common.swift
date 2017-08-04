@@ -306,7 +306,6 @@ public class JKWeek{
     public func contains(_ day: JKDay) -> Bool{
         return day >= sunday && day <= staturday
     }
-    
 }
 
 public func == (lhs: JKWeek, rhs: JKWeek) -> Bool{
@@ -317,8 +316,8 @@ public func != (lhs: JKWeek, rhs: JKWeek) -> Bool{
     return lhs.sunday != rhs.sunday
 }
 
-public enum JKCalendarViewMode {
-    case week
+@objc public enum JKCalendarViewMode: Int {
+    case week = 0
     case month
 }
 

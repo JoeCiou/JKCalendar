@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable public class JKCalendar: UIView {
     
-    static let calendar = Calendar(identifier: .gregorian)
+    static public let calendar = Calendar(identifier: .gregorian)
     
     public var textColor: UIColor = UIColor.black{
         didSet{
@@ -52,10 +52,6 @@ import UIKit
     
     public fileprivate(set) var month: JKMonth = JKMonth(year: Date().year, month: Date().month)!{
         didSet{
-            if foldWeekIndex >= month.weeksCount{
-                foldWeekIndex = month.weeksCount - 1
-            }
-            
             let weekCount = month.weeksCount
             foldMaxValue = calendarPageView.frame.height * CGFloat(weekCount - 1) / CGFloat(weekCount)
         }
@@ -69,7 +65,20 @@ import UIKit
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var pageViewHeightConstraint: NSLayoutConstraint!
     
-    public var foldWeekIndex: Int = 0
+    public var focusWeek: Int{
+        set{
+            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+                calendarView.focusWeek = newValue
+            }
+        }
+        get{
+            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+                return calendarView.focusWeek
+            }else{
+                return 0
+            }
+        }
+    }
     
     var foldValue: CGFloat = 0{
         didSet{
@@ -77,6 +86,15 @@ import UIKit
                 calendarView.foldValue != foldValue{
                 calendarView.foldValue = foldValue
                 contentViewBottomConstraint.constant = foldValue
+                
+                previousButton.setTitleColor(previousButton.titleColor(for: .normal)!.withAlphaComponent(1 - foldValue / foldMaxValue), for: .normal)
+                nextButton.setTitleColor(nextButton.titleColor(for: .normal)!.withAlphaComponent(1 - foldValue / foldMaxValue), for: .normal)
+                
+                if foldValue == 0{
+                    delegate?.calendar?(self, didChanged: .month)
+                }else if foldValue == foldMaxValue{
+                    delegate?.calendar?(self, didChanged: .week)
+                }
             }
         }
     }
@@ -132,8 +150,14 @@ import UIKit
         
         monthLabel.text = month.name
         yearLabel.text = "\(month.year)"
-        previousButton.setTitle(month.previous.name, for: .normal)
-        nextButton.setTitle(month.next.name, for: .normal)
+        
+//        if mode == .month{
+            previousButton.setTitle(month.previous.name, for: .normal)
+            nextButton.setTitle(month.next.name, for: .normal)
+//        }else{
+//            previousButton.setTitle("", for: .normal)
+//            nextButton.setTitle("", for: .normal)
+//        }
     }
     
     public func reloadData() {
@@ -144,11 +168,19 @@ import UIKit
     }
     
     public func fold(){
-        
+        if let object = interactionObject{
+            object.setContentOffset(CGPoint(x: 0, y: foldMaxValue - bounds.height), animated: true)
+        }else{
+            
+        }
     }
     
     public func unfold(){
-        
+        if let object = interactionObject{
+            object.setContentOffset(CGPoint(x: 0, y: -bounds.height), animated: true)
+        }else{
+            
+        }
     }
     
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -184,28 +216,63 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     func infinitePageView(_ infinitePageView: JKInfinitePageView, viewBefore view: UIView) -> UIView {
         let view = view as! JKCalendarView
         
-        let calendarView = JKCalendarView(calendar: self, month: view.month.previous)
+        var calendarView: JKCalendarView!
+        if mode == .month{
+            calendarView = JKCalendarView(calendar: self, month: view.month.previous)
+            calendarView.focusWeek = focusWeek >= calendarView.month.weeksCount ? calendarView.month.weeksCount - 1: focusWeek
+        }else if focusWeek - 1 >= 0{
+            calendarView = JKCalendarView(calendar: self, month: view.month)
+            calendarView.focusWeek = focusWeek - 1
+        }else{
+            calendarView = JKCalendarView(calendar: self, month: view.month.previous)
+            calendarView.focusWeek = view.month.previous.weeksCount - 1
+        }
         calendarView.backgroundColor = backgroundColor
+        calendarView.foldValue = foldValue
         calendarView.panRecognizer.isEnabled = !isScrollEnabled
+        
         return calendarView
     }
     
     func infinitePageView(_ infinitePageView: JKInfinitePageView, viewAfter view: UIView) -> UIView {
         let view = view as! JKCalendarView
         
-        let calendarView = JKCalendarView(calendar: self, month: view.month.next)
+        var calendarView: JKCalendarView!
+        if mode == .month{
+            calendarView = JKCalendarView(calendar: self, month: view.month.next)
+            calendarView.focusWeek = focusWeek >= calendarView.month.weeksCount ? calendarView.month.weeksCount - 1: focusWeek
+        }else if focusWeek + 1 < view.month.weeksCount{
+            calendarView = JKCalendarView(calendar: self, month: view.month)
+            calendarView.focusWeek = focusWeek + 1
+        }else{
+            calendarView = JKCalendarView(calendar: self, month: view.month.next)
+            calendarView.focusWeek = 0
+        }
         calendarView.backgroundColor = backgroundColor
+        calendarView.foldValue = foldValue
         calendarView.panRecognizer.isEnabled = !isScrollEnabled
+        
         return calendarView
     }
     
     func infinitePageView(_ infinitePageView: JKInfinitePageView, didDisplay view: UIView){
-        previousButton.setTitle(month.previous.name, for: .normal)
-        nextButton.setTitle(month.next.name, for: .normal)
+//        if mode == .month{
+            previousButton.setTitle(month.previous.name, for: .normal)
+            nextButton.setTitle(month.next.name, for: .normal)
+//        }else{
+//            previousButton.setTitle("", for: .normal)
+//            nextButton.setTitle("", for: .normal)
+//        }
     }
     
     func infinitePageView(_ infinitePageView: JKInfinitePageView, afterWith view: UIView, progress: Double) {
         let calendarView = view as! JKCalendarView
+        let currentCalendarView = infinitePageView.currentView! as! JKCalendarView
+        
+        if mode == .week && calendarView.month == currentCalendarView.month{
+            return
+        }
+        
         let nextMonth = calendarView.month
         let acrossYear = nextMonth.previous.year != nextMonth.year
         let centerX = self.frame.width / 2
@@ -248,6 +315,12 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     
     func infinitePageView(_ infinitePageView: JKInfinitePageView, beforeWith view: UIView, progress: Double) {
         let calendarView = view as! JKCalendarView
+        let currentCalendarView = infinitePageView.currentView! as! JKCalendarView
+        
+        if mode == .week && calendarView.month == currentCalendarView.month{
+            return
+        }
+        
         let previousMonth = calendarView.month
         let acrossYear = previousMonth.next.year != previousMonth.year
         let centerX = self.frame.width / 2
@@ -295,6 +368,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     
     @objc optional func calendar(_ calendar: JKCalendar, didPan days: [JKDay])
     
+    @objc optional func calendar(_ calendar: JKCalendar, didChanged mode: JKCalendarViewMode)
 }
 
 @objc public protocol JKCalendarDataSource{

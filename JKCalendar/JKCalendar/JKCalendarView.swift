@@ -26,6 +26,13 @@ class JKCalendarView: UIView{
         }
     }
     
+    var focusWeek: Int = 0{
+        didSet{
+            updateFoldValueWeeksInfo()
+            setNeedsLayout()
+        }
+    }
+    
     fileprivate var weeksInfo: [JKWeekInfo] = []
     fileprivate var panBeganDay: JKDay?
     fileprivate var panChangedDay: JKDay?
@@ -64,8 +71,8 @@ class JKCalendarView: UIView{
         
         for weekIndex in 0 ..< month.weeksCount{
             var daysInfo: [JKDayInfo] = []
-            let offsetY = weekIndex <= calendar.foldWeekIndex ?
-                foldValue * CGFloat(calendar.foldWeekIndex) / CGFloat(month.weeksCount - 1):
+            let offsetY = weekIndex <= focusWeek ?
+                foldValue * CGFloat(focusWeek) / CGFloat(month.weeksCount - 1):
             foldValue
             for dayIndex in 0 ..< 7{
                 let dayRect = CGRect(x: 10 + CGFloat(dayIndex) * calendarDaySize.width,
@@ -109,8 +116,8 @@ class JKCalendarView: UIView{
                                      height: bounds.height / CGFloat(month.weeksCount))
         
         for weekIndex in 0 ..< weeksInfo.count{
-            let offsetY = weekIndex <= calendar.foldWeekIndex ?
-                foldValue * CGFloat(calendar.foldWeekIndex) / CGFloat(month.weeksCount - 1): foldValue
+            let offsetY = weekIndex <= focusWeek ?
+                foldValue * CGFloat(focusWeek) / CGFloat(month.weeksCount - 1): foldValue
             
             for dayIndex in 0 ..< weeksInfo[weekIndex].daysInfo.count{
                 weeksInfo[weekIndex].daysInfo[dayIndex].location =
@@ -130,7 +137,7 @@ class JKCalendarView: UIView{
         
         let context = UIGraphicsGetCurrentContext()
         
-        let sortWeeksInfo = weeksInfo[calendar.foldWeekIndex + 1 ..< weeksInfo.count] + weeksInfo[0 ... calendar.foldWeekIndex]
+        let sortWeeksInfo = weeksInfo[focusWeek + 1 ..< weeksInfo.count] + weeksInfo[0 ... focusWeek]
         
         for weekInfo in sortWeeksInfo{
             let firstDayInfo = weekInfo.daysInfo.first!

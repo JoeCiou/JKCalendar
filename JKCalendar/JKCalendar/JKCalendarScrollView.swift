@@ -44,7 +44,7 @@ public class JKCalendarScrollView: UIScrollView {
     override public func layoutSubviews() {
         super.layoutSubviews()
         let calendarSize = CGSize(width: frame.width,
-                                  height: frame.width / 1.2)
+                                  height: (frame.width / 1.2).rounded())
         calendar.frame = CGRect(x: 0,
                                 y: frame.origin.y,
                                 width: calendarSize.width,
