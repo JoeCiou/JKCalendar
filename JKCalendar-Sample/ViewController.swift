@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JKCalendar
 
 class ViewController: UIViewController {
 
@@ -35,6 +36,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        calendarScrollView.delegate = self
+        
         calendarScrollView.calendar.delegate = self
         calendarScrollView.calendar.dataSource = self
         
@@ -43,7 +46,6 @@ class ViewController: UIViewController {
                                                         blue: 60/255,
                                                         alpha: 1)
         calendarScrollView.calendar.backgroundColor = UIColor.white
-//        calendar.isScrollEnabled = false
         
         calendarScrollView.calendar.foldWeekIndex = calendarScrollView.calendar.month.weeks().index(where: { (week) -> Bool in
             return week.contains(selectDay)
@@ -122,6 +124,11 @@ extension ViewController: JKCalendarDataSource{
                                          color: markColor)]
     }
     
+}
+
+extension ViewController: UIScrollViewDelegate{
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    }
 }
 
 

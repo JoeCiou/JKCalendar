@@ -8,22 +8,17 @@
 
 import UIKit
 
-enum JKCalendarChangeDirection{
-    case previous
-    case next
-}
-
-class JKYear: NSObject {
-    let year: Int
+public class JKYear: NSObject {
+    public let year: Int
     
-    init?(year: Int){
+    public init?(year: Int){
         if year < 0{
             return nil
         }
         self.year = year
     }
     
-    override func isEqual(_ object: Any?) -> Bool {
+    override public func isEqual(_ object: Any?) -> Bool {
         if let object = object as? JKYear{
             return object == self
         }else{
@@ -32,34 +27,34 @@ class JKYear: NSObject {
     }
 }
 
-func == (lhs: JKYear, rhs: JKYear) -> Bool{
+public func == (lhs: JKYear, rhs: JKYear) -> Bool{
     return lhs.year == rhs.year
 }
 
-func != (lhs: JKYear, rhs: JKYear) -> Bool{
+public func != (lhs: JKYear, rhs: JKYear) -> Bool{
     return lhs.year != rhs.year
 }
 
-func < (lhs: JKYear, rhs: JKYear) -> Bool{
+public func < (lhs: JKYear, rhs: JKYear) -> Bool{
     return lhs.year < rhs.year
 }
 
-func <= (lhs: JKYear, rhs: JKYear) -> Bool{
+public func <= (lhs: JKYear, rhs: JKYear) -> Bool{
     return lhs.year <= rhs.year
 }
 
-func > (lhs: JKYear, rhs: JKYear) -> Bool{
+public func > (lhs: JKYear, rhs: JKYear) -> Bool{
     return lhs.year > rhs.year
 }
 
-func >= (lhs: JKYear, rhs: JKYear) -> Bool{
+public func >= (lhs: JKYear, rhs: JKYear) -> Bool{
     return lhs.year >= rhs.year
 }
 
-class JKMonth: JKYear {
-    let month: Int
+public class JKMonth: JKYear {
+    public let month: Int
     
-    init?(year: Int, month: Int){
+    public init?(year: Int, month: Int){
         if month < 0 || month > 12{
             return nil
         }
@@ -67,7 +62,7 @@ class JKMonth: JKYear {
         super.init(year: year)
     }
     
-    var next: JKMonth{
+    public var next: JKMonth{
         var year = self.year
         var month = self.month + 1
         if month > 12{
@@ -77,7 +72,7 @@ class JKMonth: JKYear {
         return JKMonth(year: year, month: month)!
     }
     
-    var previous: JKMonth{
+    public var previous: JKMonth{
         var year = self.year
         var month = self.month - 1
         if month < 1{
@@ -87,24 +82,24 @@ class JKMonth: JKYear {
         return JKMonth(year: year, month: month)!
     }
     
-    var firstDay: JKDay{
+    public var firstDay: JKDay{
         return JKDay(year: year, month: month, day: 1)!
     }
     
-    var lastDay: JKDay{
+    public var lastDay: JKDay{
         let date = JKCalendar.calendar.date(byAdding: DateComponents(month: 1, day: -1), to: firstDay.date)!
         return JKDay(year: date.year, month: date.month, day: date.day)!
     }
     
-    var daysCount: Int{
+    public var daysCount: Int{
         return lastDay.day
     }
     
-    var weeksCount: Int{
-        return 5//Int(ceil(Double(daysCount + firstDay.weekday - 1) / 7))
+    public var weeksCount: Int{
+        return Int(ceil(Double(daysCount + firstDay.weekday - 1) / 7))
     }
     
-    func weeks() -> [JKWeek]{
+    public func weeks() -> [JKWeek]{
         var weeks: [JKWeek] = []
         let weekday = firstDay.weekday - 1
         var offsetDay = firstDay.previous(weekday)
@@ -115,7 +110,7 @@ class JKMonth: JKYear {
         return weeks
     }
     
-    var name: String{
+    public var name: String{
         switch month{
         case 1:
             return "January"
@@ -146,7 +141,7 @@ class JKMonth: JKYear {
         }
     }
     
-    override func isEqual(_ object: Any?) -> Bool {
+    override public func isEqual(_ object: Any?) -> Bool {
         if let object = object as? JKMonth{
             return object == self
         }else{
@@ -155,35 +150,35 @@ class JKMonth: JKYear {
     }
 }
 
-func == (lhs: JKMonth, rhs: JKMonth) -> Bool{
+public func == (lhs: JKMonth, rhs: JKMonth) -> Bool{
     return lhs.year == rhs.year && lhs.month == rhs.month
 }
 
-func != (lhs: JKMonth, rhs: JKMonth) -> Bool{
+public func != (lhs: JKMonth, rhs: JKMonth) -> Bool{
     return lhs.year != rhs.year || lhs.month != rhs.month
 }
 
-func < (lhs: JKMonth, rhs: JKMonth) -> Bool{
+public func < (lhs: JKMonth, rhs: JKMonth) -> Bool{
     return lhs.year < rhs.year || (lhs.year == rhs.year && lhs.month < rhs.month)
 }
 
-func <= (lhs: JKMonth, rhs: JKMonth) -> Bool{
+public func <= (lhs: JKMonth, rhs: JKMonth) -> Bool{
     return lhs.year < rhs.year || (lhs.year == rhs.year && lhs.month <= rhs.month)
 }
 
-func > (lhs: JKMonth, rhs: JKMonth) -> Bool{
+public func > (lhs: JKMonth, rhs: JKMonth) -> Bool{
     return lhs.year > rhs.year || (lhs.year == rhs.year && lhs.month > rhs.month)
 }
 
-func >= (lhs: JKMonth, rhs: JKMonth) -> Bool{
+public func >= (lhs: JKMonth, rhs: JKMonth) -> Bool{
     return lhs.year > rhs.year || (lhs.year == rhs.year && lhs.month >= rhs.month)
 }
 
 
-class JKDay: JKMonth {
-    let day: Int
+public class JKDay: JKMonth {
+    public let day: Int
     
-    init?(year: Int, month: Int, day: Int){
+    public init?(year: Int, month: Int, day: Int){
         guard let _ = JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
                                                          year: year,
                                                          month: month,
@@ -194,39 +189,39 @@ class JKDay: JKMonth {
         super.init(year: year, month: month)
     }
     
-    convenience init(date: Date){
+    convenience public init(date: Date){
         let year = date.year
         let month = date.month
         let day = date.day
         self.init(year: year, month: month, day: day)!
     }
     
-    var date: Date{
+    public var date: Date{
         return JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
                                                   year: year,
                                                   month: month,
                                                   day: day))!
     }
     
-    var weekday: Int{
+    public var weekday: Int{
         return date.week
     }
     
-    func week() -> JKWeek{
+    public func week() -> JKWeek{
         return JKWeek(sunday: self.previous(weekday - 1))
     }
     
-    func next(_ count: Int = 1) -> JKDay{
+    public func next(_ count: Int = 1) -> JKDay{
         let components = DateComponents(day: count)
         return JKDay(date: JKCalendar.calendar.date(byAdding: components, to: date)!)
     }
     
-    func previous(_ count: Int = 1) -> JKDay{
+    public func previous(_ count: Int = 1) -> JKDay{
         let components = DateComponents(day: -count)
         return JKDay(date: JKCalendar.calendar.date(byAdding: components, to: date)!)
     }
     
-    func days(until: JKDay) -> [JKDay] {
+    public func days(until: JKDay) -> [JKDay] {
         let (start, end) = self < until ? (self, until): (until, self)
         
         var days: [JKDay] = [start]
@@ -239,7 +234,7 @@ class JKDay: JKMonth {
         return days
     }
     
-    override func isEqual(_ object: Any?) -> Bool {
+    override public func isEqual(_ object: Any?) -> Bool {
         if let object = object as? JKDay{
             return object == self
         }else{
@@ -248,94 +243,99 @@ class JKDay: JKMonth {
     }
 }
 
-func == (lhs: JKDay, rhs: JKDay) -> Bool{
+public func == (lhs: JKDay, rhs: JKDay) -> Bool{
     return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day
 }
 
-func != (lhs: JKDay, rhs: JKDay) -> Bool{
+public func != (lhs: JKDay, rhs: JKDay) -> Bool{
     return lhs.year != rhs.year || lhs.month != rhs.month || lhs.day != rhs.day
 }
 
-func < (lhs: JKDay, rhs: JKDay) -> Bool{
+public func < (lhs: JKDay, rhs: JKDay) -> Bool{
     return lhs.year < rhs.year ||
         (lhs.year == rhs.year && (lhs.month < rhs.month || (lhs.month == rhs.month && lhs.day < rhs.day)))
 }
 
-func <= (lhs: JKDay, rhs: JKDay) -> Bool{
+public func <= (lhs: JKDay, rhs: JKDay) -> Bool{
     return lhs.year < rhs.year ||
         (lhs.year == rhs.year && (lhs.month < rhs.month || (lhs.month == rhs.month && lhs.day <= rhs.day)))
 }
 
-func > (lhs: JKDay, rhs: JKDay) -> Bool{
+public func > (lhs: JKDay, rhs: JKDay) -> Bool{
     return lhs.year > rhs.year ||
         (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day > rhs.day)))
 }
 
-func >= (lhs: JKDay, rhs: JKDay) -> Bool{
+public func >= (lhs: JKDay, rhs: JKDay) -> Bool{
     return lhs.year > rhs.year ||
         (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day >= rhs.day)))
 }
 
-class JKWeek{
+public class JKWeek{
     
-    let sunday: JKDay
+    public let sunday: JKDay
     
-    var monday: JKDay{
+    public var monday: JKDay{
         return sunday.next(1)
     }
     
-    var tuesday: JKDay{
+    public var tuesday: JKDay{
         return sunday.next(2)
     }
     
-    var wednesday: JKDay{
+    public var wednesday: JKDay{
         return sunday.next(3)
     }
     
-    var thursday: JKDay{
+    public var thursday: JKDay{
         return sunday.next(4)
     }
     
-    var friday: JKDay{
+    public var friday: JKDay{
         return sunday.next(5)
     }
     
-    var staturday: JKDay{
+    public var staturday: JKDay{
         return sunday.next(6)
     }
     
-    init(sunday: JKDay){
+    public init(sunday: JKDay){
         self.sunday = sunday
     }
     
-    func contains(_ day: JKDay) -> Bool{
+    public func contains(_ day: JKDay) -> Bool{
         return day >= sunday && day <= staturday
     }
     
 }
 
-func == (lhs: JKWeek, rhs: JKWeek) -> Bool{
+public func == (lhs: JKWeek, rhs: JKWeek) -> Bool{
     return lhs.sunday == rhs.sunday
 }
 
-func != (lhs: JKWeek, rhs: JKWeek) -> Bool{
+public func != (lhs: JKWeek, rhs: JKWeek) -> Bool{
     return lhs.sunday != rhs.sunday
 }
 
-extension Date{
-    var day: Int{
+public enum JKCalendarViewMode {
+    case week
+    case month
+}
+
+public extension Date{
+    public var day: Int{
         return JKCalendar.calendar.component(.day, from: self)
     }
     
-    var week: Int{
+    public var week: Int{
         return JKCalendar.calendar.component(.weekday, from: self)
     }
     
-    var month: Int{
+    public var month: Int{
         return JKCalendar.calendar.component(.month, from: self)
     }
     
-    var year: Int{
+    public var year: Int{
         return JKCalendar.calendar.component(.year, from: self)
     }
 }

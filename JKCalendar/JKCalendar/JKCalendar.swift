@@ -8,32 +8,30 @@
 
 import UIKit
 
-enum JKCalendarViewMode {
-    case week
-    case month
-}
-
-@IBDesignable class JKCalendar: UIView {
+@IBDesignable public class JKCalendar: UIView {
     
     static let calendar = Calendar(identifier: .gregorian)
     
-    open var textColor: UIColor = UIColor.black{
+    public var textColor: UIColor = UIColor.black{
         didSet{
             reloadData()
         }
     }
     
-    open var isScrollEnabled: Bool = true{
+    public var isScrollEnabled: Bool = true{
         didSet{
             calendarPageView.isScrollEnabled = isScrollEnabled
         }
     }
     
-    open var mode: JKCalendarViewMode = .week
+    public var mode: JKCalendarViewMode{
+        return (foldValue / foldMaxValue) > 0.5 ? .week: .month
+    }
     
-    open var delegate: JKCalendarDelegate?
-    open var dataSource: JKCalendarDataSource?
-    open var interactionObject: UIScrollView?{
+    public var delegate: JKCalendarDelegate?
+    public var dataSource: JKCalendarDataSource?
+    
+    var interactionObject: UIScrollView?{
         didSet{
             if let object = interactionObject{
                 object.addObserver(self, forKeyPath: "contentOffset", options: [.new, .old], context: nil)
@@ -41,7 +39,7 @@ enum JKCalendarViewMode {
         }
     }
     
-    open override var backgroundColor: UIColor?{
+    public override var backgroundColor: UIColor?{
         set{
             super.backgroundColor = UIColor.clear
             calendarPageView.backgroundColor = newValue
@@ -52,13 +50,14 @@ enum JKCalendarViewMode {
         }
     }
     
-    open var foldWeekIndex: Int = 0
-    
-    fileprivate(set) var month: JKMonth = JKMonth(year: Date().year, month: Date().month)!{
+    public fileprivate(set) var month: JKMonth = JKMonth(year: Date().year, month: Date().month)!{
         didSet{
             if foldWeekIndex >= month.weeksCount{
                 foldWeekIndex = month.weeksCount - 1
             }
+            
+            let weekCount = month.weeksCount
+            foldMaxValue = calendarPageView.frame.height * CGFloat(weekCount - 1) / CGFloat(weekCount)
         }
     }
     
@@ -70,25 +69,40 @@ enum JKCalendarViewMode {
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var pageViewHeightConstraint: NSLayoutConstraint!
     
+    public var foldWeekIndex: Int = 0
+    
+    var foldValue: CGFloat = 0{
+        didSet{
+            if let calendarView = calendarPageView.currentView as? JKCalendarView,
+                calendarView.foldValue != foldValue{
+                calendarView.foldValue = foldValue
+                contentViewBottomConstraint.constant = foldValue
+            }
+        }
+    }
+    var foldMaxValue: CGFloat = 0
     fileprivate var contentViewBottomConstraint: NSLayoutConstraint!
     
-    override init(frame: CGRect){
+    public override init(frame: CGRect){
         super.init(frame: frame)
         setupContentViewUI()
         setupCalendarView()
         
-        pageViewHeightConstraint.constant = frame.height - 67
+        pageViewHeightConstraint.constant = frame.height - 67 > 0 ? frame.height - 67: 0
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupContentViewUI()
         setupCalendarView()
     }
     
-    override func layoutSubviews() {
-        pageViewHeightConstraint.constant = frame.height - 67
+    public override func layoutSubviews() {
+        pageViewHeightConstraint.constant = frame.height - 67 > 0 ? frame.height - 67: 0
         super.layoutSubviews()
+        
+        let weekCount = month.weeksCount
+        foldMaxValue = calendarPageView.frame.height * CGFloat(weekCount - 1) / CGFloat(weekCount)
     }
     
     func setupContentViewUI(){
@@ -129,31 +143,31 @@ enum JKCalendarViewMode {
         }
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    public func fold(){
+        
+    }
+    
+    public func unfold(){
+        
+    }
+    
+    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let change = change{
             if let keyPath = keyPath,
                 keyPath == "contentOffset",
                 let contentOffset = change[NSKeyValueChangeKey.newKey] as? CGPoint{
                 
-                if let calendarView = calendarPageView.currentView as? JKCalendarView{
-                    var value = frame.height + contentOffset.y
-                    let weekCount = calendarView.month.weeksCount
-                    let maxValue = calendarPageView.frame.height * CGFloat(weekCount - 1) / CGFloat(weekCount)
-                    if value > maxValue {
-                        value = maxValue
-                    }else if value < 0{
-                        value = 0
-                    }
-                    
-                    if calendarView.foldValue != value{
-                        calendarView.foldValue = value
-                        contentViewBottomConstraint.constant = value
-                    }
+                var value = frame.height + contentOffset.y
+                if value > foldMaxValue {
+                    value = foldMaxValue
+                }else if value < 0{
+                    value = 0
                 }
+                
+                foldValue = value
             }
         }
     }
-    
     
     @IBAction func handlePreviousButtonClick(_ sender: Any) {
         calendarPageView.previousPage()
@@ -275,7 +289,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     }
 }
 
-@objc protocol JKCalendarDelegate {
+@objc public protocol JKCalendarDelegate {
     
     @objc optional func calendar(_ calendar: JKCalendar, didTouch day: JKDay)
     
@@ -283,7 +297,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     
 }
 
-@objc protocol JKCalendarDataSource{
+@objc public protocol JKCalendarDataSource{
     
     @objc optional func calendar(_ calendar: JKCalendar, markWith day: JKDay) -> JKCalendarMark?
     

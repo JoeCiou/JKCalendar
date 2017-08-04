@@ -8,14 +8,14 @@
 
 import UIKit
 
-enum JKCalendarMarkType{
+public enum JKCalendarMarkType{
     case circle
     case hollowCircle
     case underline
     case dot
 }
 
-class JKCalendarMarkObject: NSObject {
+public class JKCalendarMarkObject: NSObject {
     
     let type: JKCalendarMarkType
     let color: UIColor
@@ -27,23 +27,23 @@ class JKCalendarMarkObject: NSObject {
     }
 }
 
-class JKCalendarMark: JKCalendarMarkObject {
+public class JKCalendarMark: JKCalendarMarkObject {
     
-    let day: JKDay
+    public let day: JKDay
     
-    init(type: JKCalendarMarkType, day: JKDay, color: UIColor){
+    public init(type: JKCalendarMarkType, day: JKDay, color: UIColor){
         self.day = day
         super.init(type: type, color: color)
     }
     
 }
 
-class JKCalendarContinuousMark: JKCalendarMarkObject{
-    let start: JKDay
-    let end: JKDay
-    let days: [JKDay]
+public class JKCalendarContinuousMark: JKCalendarMarkObject{
+    public let start: JKDay
+    public let end: JKDay
+    public let days: [JKDay]
     
-    init(type: JKCalendarMarkType, start: JKDay, end: JKDay, color: UIColor){
+    public init(type: JKCalendarMarkType, start: JKDay, end: JKDay, color: UIColor){
         self.start = start
         self.end = end
         self.days = start.days(until: end)
