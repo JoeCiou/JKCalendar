@@ -24,6 +24,7 @@ public class JKCalendarScrollView: UIScrollView {
     var _delegate: UIScrollViewDelegate?
     
     private var first = true
+    private var rotating = false
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,25 +40,48 @@ public class JKCalendarScrollView: UIScrollView {
         super.delegate = self
         calendar.backgroundColor = UIColor.white
         calendar.interactionObject = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        let calendarSize = CGSize(width: frame.width,
-                                  height: (frame.width / 1.2).rounded())
-        calendar.frame = CGRect(x: 0,
-                                y: frame.origin.y,
-                                width: calendarSize.width,
-                                height: calendarSize.height)
-        self.contentInset = UIEdgeInsets(top: calendarSize.height,
-                                         left: 0,
-                                         bottom: 0,
-                                         right: 0)
-        
-        if first{
-            superview?.insertSubview(calendar, aboveSubview: self)
-            self.contentOffset = CGPoint(x: 0, y: -calendarSize.height)
-            first = false
+        layoutSubviewsHandler()
+    }
+    
+    func layoutSubviewsHandler(){
+        if first || rotating{
+            var calendarSize: CGSize!
+            if frame.width > frame.height{
+                calendarSize = CGSize(width: frame.width,
+                                      height: (frame.width / 2).rounded())
+            }else{
+                calendarSize = CGSize(width: frame.width,
+                                      height: (frame.width / 1.2).rounded())
+            }
+            
+            calendar.frame = CGRect(x: 0,
+                                    y: frame.origin.y,
+                                    width: calendarSize.width,
+                                    height: calendarSize.height)
+            contentInset = UIEdgeInsets(top: calendarSize.height,
+                                        left: 0,
+                                        bottom: 0,
+                                        right: 0)
+            contentOffset = CGPoint(x: 0, y: -calendarSize.height)
+            rotating = false
+            
+            if first{
+                superview?.insertSubview(calendar, aboveSubview: self)
+                first = false
+            }
+        }
+    }
+    
+    func rotated(){
+        if !first{
+            rotating = true
+            layoutSubviewsHandler()
         }
     }
 }

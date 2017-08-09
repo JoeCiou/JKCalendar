@@ -369,7 +369,7 @@ class JKCalendarView: UIView{
                     context?.strokePath()
                     
                 case .dot:
-                    let offsetY = beginLocation.origin.y + beginLocation.height - 2
+                    let offsetY = beginLocation.origin.y + beginLocation.height - 3
                     let radius: CGFloat = 2
                     if mark.start == mark.end{
                         let center = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
@@ -582,7 +582,6 @@ class JKCalendarView: UIView{
         var location: CGRect
         
         var mark: JKCalendarMark?
-//        var continuousMarks: [JKCalendarContinuousMark]?
         
         init(day: JKDay, location: CGRect){
             self.day = day
@@ -590,9 +589,4 @@ class JKCalendarView: UIView{
         }
         
     }
-    
-    class JKCalendarWeekView: UIView{
-        
-    }
-    
 }

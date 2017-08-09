@@ -53,7 +53,7 @@ import UIKit
     public fileprivate(set) var month: JKMonth = JKMonth(year: Date().year, month: Date().month)!{
         didSet{
             let weekCount = month.weeksCount
-            foldMaxValue = calendarPageView.frame.height * CGFloat(weekCount - 1) / CGFloat(weekCount)
+            foldMaxValue = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
         }
     }
     
@@ -120,7 +120,11 @@ import UIKit
         super.layoutSubviews()
         
         let weekCount = month.weeksCount
-        foldMaxValue = calendarPageView.frame.height * CGFloat(weekCount - 1) / CGFloat(weekCount)
+        foldMaxValue = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
+        
+        if let view = calendarPageView.currentView as? JKCalendarView{
+            view.setNeedsDisplay()
+        }
     }
     
     func setupContentViewUI(){
@@ -151,13 +155,8 @@ import UIKit
         monthLabel.text = month.name
         yearLabel.text = "\(month.year)"
         
-//        if mode == .month{
-            previousButton.setTitle(month.previous.name, for: .normal)
-            nextButton.setTitle(month.next.name, for: .normal)
-//        }else{
-//            previousButton.setTitle("", for: .normal)
-//            nextButton.setTitle("", for: .normal)
-//        }
+        previousButton.setTitle(month.previous.name, for: .normal)
+        nextButton.setTitle(month.next.name, for: .normal)
     }
     
     public func reloadData() {
@@ -199,6 +198,12 @@ import UIKit
                 foldValue = value
             }
         }
+    }
+    
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let result = super.hitTest(point, with: event)
+        if result == self { return nil }
+        return result
     }
     
     @IBAction func handlePreviousButtonClick(_ sender: Any) {
@@ -256,13 +261,8 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     }
     
     func infinitePageView(_ infinitePageView: JKInfinitePageView, didDisplay view: UIView){
-//        if mode == .month{
-            previousButton.setTitle(month.previous.name, for: .normal)
-            nextButton.setTitle(month.next.name, for: .normal)
-//        }else{
-//            previousButton.setTitle("", for: .normal)
-//            nextButton.setTitle("", for: .normal)
-//        }
+        previousButton.setTitle(month.previous.name, for: .normal)
+        nextButton.setTitle(month.next.name, for: .normal)
     }
     
     func infinitePageView(_ infinitePageView: JKInfinitePageView, afterWith view: UIView, progress: Double) {

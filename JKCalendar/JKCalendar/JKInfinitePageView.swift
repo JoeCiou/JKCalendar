@@ -24,8 +24,19 @@ class JKInfinitePageCell: UICollectionViewCell {
                 for subview in subviews{
                     subview.removeFromSuperview()
                 }
-                view.frame = bounds
+                view.translatesAutoresizingMaskIntoConstraints = false
                 addSubview(view)
+                
+                let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|",
+                                                                  options: .directionLeadingToTrailing,
+                                                                  metrics: nil,
+                                                                  views: ["view": view])
+                let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|",
+                                                                  options: .directionLeadingToTrailing,
+                                                                  metrics: nil,
+                                                                  views: ["view": view])
+                addConstraints(hConstraints)
+                addConstraints(vConstraints)
             }
         }
     }
@@ -73,6 +84,7 @@ class JKInfinitePageView: UIView {
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         addSubview(collectionView)
         
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isPagingEnabled = true
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -80,12 +92,33 @@ class JKInfinitePageView: UIView {
         collectionView.dataSource = self
         
         collectionView.register(JKInfinitePageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
+        let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[collectionView]|",
+                                                          options: .directionLeadingToTrailing,
+                                                          metrics: nil,
+                                                          views: ["collectionView": collectionView])
+        let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|",
+                                                          options: .directionLeadingToTrailing,
+                                                          metrics: nil,
+                                                          views: ["collectionView": collectionView])
+        addConstraints(hConstraints)
+        addConstraints(vConstraints)
+    
     }
     
     override open func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.frame = bounds
+        
+        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+        flowLayout.itemSize = bounds.size
+        flowLayout.invalidateLayout()
+        
+        layoutIfNeeded()
         collectionView.setContentOffset(CGPoint(x: CGFloat(currentIndexPath.item) * bounds.width, y: 0), animated: false)
+        
+        flowLayout.invalidateLayout()
     }
     
     public func setView(_ view: UIView){
@@ -94,20 +127,20 @@ class JKInfinitePageView: UIView {
     }
     
     public func nextPage(){
-        let index = willDisplayIndexPath.item + 1
+        let index = currentIndexPath.item + 1
         collectionView.setContentOffset(CGPoint(x: CGFloat(index) * bounds.width, y: 0), animated: true)
     }
     
     public func previousPage(){
-        let index = willDisplayIndexPath.item - 1
+        let index = currentIndexPath.item - 1
         collectionView.setContentOffset(CGPoint(x: CGFloat(index) * bounds.width, y: 0), animated: true)
     }
 }
 
 extension JKInfinitePageView: UICollectionViewDelegateFlowLayout{
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return bounds.size
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return bounds.size
+//    }
 }
 
 extension JKInfinitePageView: UICollectionViewDelegate {
@@ -128,15 +161,17 @@ extension JKInfinitePageView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if willDisplayIndexPath.item > indexPath.item{ // 往右翻
             currentIndexPath = willDisplayIndexPath
-            currentView = (collectionView.cellForItem(at: currentIndexPath) as! JKInfinitePageCell).pageView
+            currentView = (collectionView.cellForItem(at: currentIndexPath) as? JKInfinitePageCell)?.pageView
         }else if willDisplayIndexPath.item < indexPath.item{ // 往左翻
             currentIndexPath = willDisplayIndexPath
-            currentView = (collectionView.cellForItem(at: currentIndexPath) as! JKInfinitePageCell).pageView
+            currentView = (collectionView.cellForItem(at: currentIndexPath) as? JKInfinitePageCell)?.pageView
         }else{ // 沒翻
             willDisplayIndexPath = currentIndexPath
         }
         
-        dataSource?.infinitePageView(self, didDisplay: currentView!)
+        if let view = currentView{
+            dataSource?.infinitePageView(self, didDisplay: view)
+        }
     }
  
 }
@@ -160,11 +195,11 @@ extension JKInfinitePageView: UICollectionViewDataSource {
 extension JKInfinitePageView: UIScrollViewDelegate{
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if willDisplayIndexPath != nil{
-            if let view = (collectionView.cellForItem(at: willDisplayIndexPath!) as! JKInfinitePageCell).pageView{
+            if let view = (collectionView.cellForItem(at: willDisplayIndexPath!) as? JKInfinitePageCell)?.pageView{
                 if willDisplayIndexPath.item > currentIndexPath.item{
                     let progress = Double((scrollView.contentOffset.x - CGFloat(currentIndexPath.item) * bounds.width) / bounds.width)
                     dataSource?.infinitePageView(self, afterWith: view, progress: progress > 1 ? 1: progress)
-                }else{
+                }else if willDisplayIndexPath.item < currentIndexPath.item{
                     let progress = Double((CGFloat(currentIndexPath.item) * bounds.width - scrollView.contentOffset.x) / bounds.width)
                     dataSource?.infinitePageView(self, beforeWith: view, progress: progress > 1 ? 1: progress)
                 }
@@ -173,7 +208,7 @@ extension JKInfinitePageView: UIScrollViewDelegate{
     }
 }
 
-protocol JKInfinitePageViewDataSource {
+protocol JKInfinitePageViewDataSource: UIPageViewControllerDelegate {
     
     func infinitePageView(_ infinitePageView: JKInfinitePageView, viewBefore view: UIView) -> UIView
     
