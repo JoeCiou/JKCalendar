@@ -1,31 +1,45 @@
 //
-//  ViewController.swift
-//  JKCalendar-Sample
+//  ScrollViewController.swift
 //
-//  Created by Joe on 2017/3/10.
-//  Copyright © 2017年 Joe. All rights reserved.
+//  Copyright © 2017 Joe Ciou. All rights reserved.
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 import UIKit
 import JKCalendar
 
-class ViewController: UIViewController {
+class ScrollViewController: UIViewController {
 
     var selectDay: JKDay = JKDay(date: Date())
     
     var markColor = UIColor(red: 40/255, green: 178/255, blue: 253/255, alpha: 1)
     
-    var firstMarkDays: [JKDay] = [JKDay(year: 2017, month: 3, day: 24)!,
-                                  JKDay(year: 2017, month: 4, day: 5)!,
-                                  JKDay(year: 2017, month: 3, day: 11)!]
+    var firstMarkDays: [JKDay] = [JKDay(year: 2017, month: 9, day: 24)!,
+                                  JKDay(year: 2017, month: 10, day: 5)!,
+                                  JKDay(year: 2017, month: 9, day: 11)!]
     
-    var secondMarkDays: [JKDay] = [JKDay(year: 2017, month: 3, day: 18)!,
-                                   JKDay(year: 2017, month: 4, day: 3)!,
-                                   JKDay(year: 2017, month: 3, day: 16)!]
-    var continuousMarkStartDay: JKDay = JKDay(year: 2017, month: 4, day: 13)!
-    var continuousMarkEndDay: JKDay = JKDay(year: 2017, month: 4, day: 14)!
-    
-//    var selectDays: [JKDay]?
+    var secondMarkDays: [JKDay] = [JKDay(year: 2017, month: 9, day: 18)!,
+                                   JKDay(year: 2017, month: 10, day: 3)!,
+                                   JKDay(year: 2017, month: 9, day: 16)!]
+    var continuousMarkStartDay: JKDay = JKDay(year: 2017, month: 10, day: 13)!
+    var continuousMarkEndDay: JKDay = JKDay(year: 2017, month: 10, day: 14)!
     
     @IBOutlet weak var calendarScrollView: JKCalendarScrollView!
     
@@ -35,8 +49,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        calendarScrollView.delegate = self
         
         calendarScrollView.calendar.delegate = self
         calendarScrollView.calendar.dataSource = self
@@ -69,24 +81,22 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func handleBackButtonClick(_ sender: Any) {
+        let _ = navigationController?.popViewController(animated: true)
+    }
+    
 }
 
-extension ViewController: JKCalendarDelegate{
+extension ScrollViewController: JKCalendarDelegate{
     
     func calendar(_ calendar: JKCalendar, didTouch day: JKDay){
         selectDay = day
-        calendar.focusWeek = JKCalendar.calendar.component(.weekOfMonth, from: selectDay.date) - 1
+        calendar.focusWeek = day < calendar.month ? 0: day > calendar.month ? calendar.month.weeksCount: day.weekday
         calendar.reloadData()
     }
-    /*
-    func calendar(_ calendar: JKCalendar, didPan days: [JKDay]) {
-        selectDays = days
-        calendar.reloadData()
-    }
-    */
 }
 
-extension ViewController: JKCalendarDataSource{
+extension ScrollViewController: JKCalendarDataSource{
     
     func calendar(_ calendar: JKCalendar, markWith day: JKDay) -> JKCalendarMark? {
         
@@ -108,14 +118,6 @@ extension ViewController: JKCalendarDataSource{
     }
     
     func calendar(_ calendar: JKCalendar, continuousMarksWith month: JKMonth) -> [JKCalendarContinuousMark]?{
-        /*
-        if let days = selectDays,
-            let start = days.first,
-            let end = days.last{
-            return [JKCalendarContinuousMark(type: .circle, start: start, end: end, color: markColor)]
-        }
-        */
-        
         return [JKCalendarContinuousMark(type: .dot,
                                          start: continuousMarkStartDay,
                                          end: continuousMarkEndDay,
@@ -123,10 +125,4 @@ extension ViewController: JKCalendarDataSource{
     }
     
 }
-
-extension ViewController: UIScrollViewDelegate{
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    }
-}
-
 

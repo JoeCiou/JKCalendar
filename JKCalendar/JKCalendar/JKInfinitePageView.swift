@@ -1,9 +1,25 @@
 //
 //  JKInfinitePageView.swift
-//  JKInfinitePageView-Sample
 //
-//  Created by Joe on 2017/3/13.
-//  Copyright © 2017年 Joe. All rights reserved.
+//  Copyright © 2017 Joe Ciou. All rights reserved.
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 import UIKit
@@ -46,7 +62,8 @@ class JKInfinitePageCell: UICollectionViewCell {
 class JKInfinitePageView: UIView {
     
     var currentView: UIView?
-    var dataSource: JKInfinitePageViewDataSource?
+    weak var delegate: JKInfinitePageViewDelegate?
+    weak var dataSource: JKInfinitePageViewDataSource?
 
     fileprivate var collectionView: UICollectionView!
     fileprivate var currentIndexPath: IndexPath = IndexPath(item: Int(Int16.max/2), section: 0)
@@ -137,20 +154,14 @@ class JKInfinitePageView: UIView {
     }
 }
 
-extension JKInfinitePageView: UICollectionViewDelegateFlowLayout{
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return bounds.size
-//    }
-}
-
 extension JKInfinitePageView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let view = currentView{
             let cell = cell as! JKInfinitePageCell
             if indexPath.item > currentIndexPath.item{
-                cell.pageView = dataSource?.infinitePageView(self, viewAfter: view)
+                cell.pageView = dataSource?.infinitePageView?(self, viewAfter: view)
             }else if indexPath.item < self.currentIndexPath.item{
-                cell.pageView = dataSource?.infinitePageView(self, viewBefore: view)
+                cell.pageView = dataSource?.infinitePageView?(self, viewBefore: view)
             }else{
                 cell.pageView = view
             }
@@ -170,7 +181,7 @@ extension JKInfinitePageView: UICollectionViewDelegate {
         }
         
         if let view = currentView{
-            dataSource?.infinitePageView(self, didDisplay: view)
+            delegate?.infinitePageView?(self, didDisplay: view)
         }
     }
  
@@ -198,26 +209,30 @@ extension JKInfinitePageView: UIScrollViewDelegate{
             if let view = (collectionView.cellForItem(at: willDisplayIndexPath!) as? JKInfinitePageCell)?.pageView{
                 if willDisplayIndexPath.item > currentIndexPath.item{
                     let progress = Double((scrollView.contentOffset.x - CGFloat(currentIndexPath.item) * bounds.width) / bounds.width)
-                    dataSource?.infinitePageView(self, afterWith: view, progress: progress > 1 ? 1: progress)
+                    delegate?.infinitePageView?(self, afterWith: view, progress: progress > 1 ? 1: progress)
                 }else if willDisplayIndexPath.item < currentIndexPath.item{
                     let progress = Double((CGFloat(currentIndexPath.item) * bounds.width - scrollView.contentOffset.x) / bounds.width)
-                    dataSource?.infinitePageView(self, beforeWith: view, progress: progress > 1 ? 1: progress)
+                    delegate?.infinitePageView?(self, beforeWith: view, progress: progress > 1 ? 1: progress)
                 }
             }
         }
     }
 }
 
-protocol JKInfinitePageViewDataSource: UIPageViewControllerDelegate {
+@objc protocol JKInfinitePageViewDelegate {
     
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, viewBefore view: UIView) -> UIView
+    @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, didDisplay view: UIView)
     
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, viewAfter view: UIView) -> UIView
+    @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, beforeWith view: UIView, progress: Double)
     
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, didDisplay view: UIView)
-    
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, beforeWith view: UIView, progress: Double)
-    
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, afterWith view: UIView, progress: Double)
-    
+    @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, afterWith view: UIView, progress: Double)
 }
+
+@objc protocol JKInfinitePageViewDataSource {
+    
+    @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, viewBefore view: UIView) -> UIView
+    
+    @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, viewAfter view: UIView) -> UIView
+}
+
+
