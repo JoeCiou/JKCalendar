@@ -5,6 +5,11 @@
 - Xcode 8+
 
 ## Installation
+#### CocoaPods
+To install add the following line to your `Podfile`:
+```ruby
+pod 'JKCalendar'
+```
 
 ## Usage
 
@@ -21,7 +26,50 @@ _**Note:** Set Module to `JKCalendar`._
 
 - By code, using initializer.
 ```swift
-JKCalendar(frame: frame)
+let calendar = JKCalendar(frame: frame)
+```
+
+### Mark
+```swift
+public enum JKCalendarMarkType{
+    case circle
+    case hollowCircle
+    case underline
+    case dot
+}
+```
+For single mark:
+
+For continuous mark:
+
+
+#### Examples
+Firstley, Setup data source:
+```swift
+calendar.dataSource = self
+```
+For single mark:
+```swift
+func calendar(_ calendar: JKCalendar, marksWith month: JKMonth) -> [JKCalendarMark]? {
+    let today = JKDay(date: Date())
+    if today == month{
+        return [JKCalendarMark(type: .underline, day: today, color: UIColor.red)]
+    }else{
+        return nil
+    }
+}
+```
+For continuous mark:
+```swift
+func calendar(_ calendar: JKCalendar, continuousMarksWith month: JKMonth) -> [JKCalendarContinuousMark]?{
+    let markStartDay = JKDay(year: 2017, month: 9, day: 3)!
+    let markEndDay = JKDay(year: 2017, month: 9, day: 12)!
+    if markStartDay == month || markEndDay == month{
+        return [JKCalendarContinuousMark(type: .circle, start: markStartDay, end: markEndDay, color: UIColor.red)]
+    }else{
+        return nil
+    }
+}
 ```
 
 ## License
