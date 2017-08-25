@@ -85,6 +85,8 @@ class JKCalendarView: UIView{
         let calendarDaySize = CGSize(width: (bounds.width - 20) / 7,
                                      height: bounds.height / CGFloat(month.weeksCount))
         
+        let marks = calendar.dataSource?.calendar?(calendar, marksWith: month)
+        
         for weekIndex in 0 ..< month.weeksCount{
             var daysInfo: [JKDayInfo] = []
             let offsetY = weekIndex <= focusWeek ?
@@ -97,9 +99,10 @@ class JKCalendarView: UIView{
                                      height: calendarDaySize.height)
                 var info = JKDayInfo(day: offset,
                                      location: dayRect)
-                if let mark = calendar.dataSource?.calendar?(calendar, markWith: info.day){
-                    info.mark = mark
-                }
+                
+                info.mark = marks?.first(where: { (mark) -> Bool in
+                    mark.day == info.day
+                })
                 
                 daysInfo.append(info)
                 

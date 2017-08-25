@@ -433,7 +433,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
 
 @objc public protocol JKCalendarDataSource{
     
-    @objc optional func calendar(_ calendar: JKCalendar, markWith day: JKDay) -> JKCalendarMark?
+    @objc optional func calendar(_ calendar: JKCalendar, marksWith month: JKMonth) -> [JKCalendarMark]?
     
     @objc optional func calendar(_ calendar: JKCalendar, continuousMarksWith month: JKMonth) -> [JKCalendarContinuousMark]?
 }

@@ -31,13 +31,6 @@ class ScrollViewController: UIViewController {
     
     var markColor = UIColor(red: 40/255, green: 178/255, blue: 253/255, alpha: 1)
     
-    var firstMarkDays: [JKDay] = [JKDay(year: 2017, month: 9, day: 24)!,
-                                  JKDay(year: 2017, month: 10, day: 5)!,
-                                  JKDay(year: 2017, month: 9, day: 11)!]
-    
-    var secondMarkDays: [JKDay] = [JKDay(year: 2017, month: 9, day: 18)!,
-                                   JKDay(year: 2017, month: 10, day: 3)!,
-                                   JKDay(year: 2017, month: 9, day: 16)!]
     var continuousMarkStartDay: JKDay = JKDay(year: 2017, month: 10, day: 13)!
     var continuousMarkEndDay: JKDay = JKDay(year: 2017, month: 10, day: 14)!
     
@@ -91,30 +84,35 @@ extension ScrollViewController: JKCalendarDelegate{
     
     func calendar(_ calendar: JKCalendar, didTouch day: JKDay){
         selectDay = day
-        calendar.focusWeek = day < calendar.month ? 0: day > calendar.month ? calendar.month.weeksCount: day.weekday
+        calendar.focusWeek = day < calendar.month ? 0: day > calendar.month ? calendar.month.weeksCount - 1: day.weekOfMonth - 1
         calendar.reloadData()
     }
 }
 
 extension ScrollViewController: JKCalendarDataSource{
     
-    func calendar(_ calendar: JKCalendar, markWith day: JKDay) -> JKCalendarMark? {
+    func calendar(_ calendar: JKCalendar, marksWith month: JKMonth) -> [JKCalendarMark]? {
         
-        if day == selectDay{
-            return JKCalendarMark(type: .circle,
-                                  day: day,
-                                  color: markColor)
-        }else if firstMarkDays.contains(day) {
-            return JKCalendarMark(type: .underline,
-                                  day: day,
-                                  color: markColor)
-        }else if secondMarkDays.contains(day) {
-            return JKCalendarMark(type: .dot,
-                                  day: day,
-                                  color: markColor)
+        let markMonth = JKMonth(year: 2017, month: 9)!
+        
+        guard month == markMonth else{
+            return nil
         }
         
-        return nil
+        let firstMarkDay: JKDay = JKDay(year: month.year, month: month.month, day: 8)!
+        let secondMarkDay: JKDay = JKDay(year: month.year, month: month.month, day: 19)!
+        
+        var marks: [JKCalendarMark] = []
+        marks.append(JKCalendarMark(type: .circle,
+                                    day: selectDay,
+                                    color: markColor))
+        marks.append(JKCalendarMark(type: .underline,
+                                    day: firstMarkDay,
+                                    color: markColor))
+        marks.append(JKCalendarMark(type: .dot,
+                                    day: secondMarkDay,
+                                    color: markColor))
+        return marks
     }
     
     func calendar(_ calendar: JKCalendar, continuousMarksWith month: JKMonth) -> [JKCalendarContinuousMark]?{

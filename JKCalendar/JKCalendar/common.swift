@@ -224,6 +224,14 @@ public class JKDay: JKMonth {
         return date.week
     }
     
+    public var weekOfMonth: Int{
+        return date.weekOfMonth
+    }
+    
+    public var weekOfYear: Int{
+        return date.weekOfYear
+    }
+    
     public func week() -> JKWeek{
         return JKWeek(sunday: self.previous(weekday - 1))
     }
@@ -353,6 +361,14 @@ public extension Date{
     
     public var year: Int{
         return JKCalendar.calendar.component(.year, from: self)
+    }
+    
+    public var weekOfMonth: Int{
+        return JKCalendar.calendar.component(.weekOfMonth, from: self)
+    }
+    
+    public var weekOfYear: Int{
+        return JKCalendar.calendar.component(.weekOfYear, from: self)
     }
 }
 
