@@ -39,9 +39,9 @@ public enum JKCalendarMarkType{
 }
 ```
 For single mark:
-
+<img src="https://cdn.rawgit.com/Joe22499/JKCalendar/3de876ad/Resources/mark_type_single.png">
 For continuous mark:
-
+<img src="https://cdn.rawgit.com/Joe22499/JKCalendar/3de876ad/Resources/mark_type_continuous.png">
 
 #### Examples
 Firstley, Setup data source:
