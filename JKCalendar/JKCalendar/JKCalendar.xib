@@ -16,6 +16,7 @@
                 <outlet property="nextButton" destination="pkJ-0e-uWA" id="fmN-h6-v41"/>
                 <outlet property="pageViewHeightConstraint" destination="hRC-Ss-Kfu" id="tjU-6U-ZdA"/>
                 <outlet property="previousButton" destination="baS-W8-Fmd" id="ie2-fN-kyD"/>
+                <outlet property="topBackGroundView" destination="cdx-v0-0vc" id="34b-g2-62o"/>
                 <outlet property="topView" destination="jAf-DF-B0v" id="gpz-6u-xMX"/>
                 <outlet property="yearLabel" destination="NV5-qJ-yie" id="rLS-76-zRx"/>
             </connections>
@@ -25,6 +26,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="297"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cdx-v0-0vc">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ogy-Nj-Ulh">
                     <rect key="frame" x="10" y="45" width="43" height="12"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
@@ -165,6 +170,7 @@
                 <constraint firstItem="Ogy-Nj-Ulh" firstAttribute="top" secondItem="jAf-DF-B0v" secondAttribute="bottom" id="OyL-nX-WqW"/>
                 <constraint firstItem="696-B5-t2J" firstAttribute="leading" secondItem="Ogy-Nj-Ulh" secondAttribute="trailing" id="TWp-Ec-9h5"/>
                 <constraint firstItem="aXn-iW-qc0" firstAttribute="centerY" secondItem="nlL-R2-QTi" secondAttribute="centerY" id="cih-G4-Pev"/>
+                <constraint firstItem="cdx-v0-0vc" firstAttribute="leading" secondItem="lJW-U6-5T2" secondAttribute="leading" id="e6H-uG-uWj"/>
                 <constraint firstItem="taN-PN-6bz" firstAttribute="leading" secondItem="696-B5-t2J" secondAttribute="trailing" id="eLa-A7-C4g"/>
                 <constraint firstAttribute="trailing" secondItem="aXn-iW-qc0" secondAttribute="trailing" constant="10" id="g4q-hJ-93w"/>
                 <constraint firstItem="taN-PN-6bz" firstAttribute="centerY" secondItem="696-B5-t2J" secondAttribute="centerY" id="hNL-S8-jTf"/>
@@ -172,10 +178,13 @@
                 <constraint firstItem="aXn-iW-qc0" firstAttribute="leading" secondItem="nlL-R2-QTi" secondAttribute="trailing" id="iLR-83-9cc"/>
                 <constraint firstItem="696-B5-t2J" firstAttribute="width" secondItem="taN-PN-6bz" secondAttribute="width" id="m6F-YJ-ax0"/>
                 <constraint firstItem="G5q-9A-KB3" firstAttribute="centerY" secondItem="taN-PN-6bz" secondAttribute="centerY" id="mlZ-MD-89t"/>
+                <constraint firstAttribute="trailing" secondItem="cdx-v0-0vc" secondAttribute="trailing" id="mvG-wk-GmA"/>
                 <constraint firstItem="G5q-9A-KB3" firstAttribute="width" secondItem="QdE-o9-LA2" secondAttribute="width" id="naB-6L-OzZ"/>
                 <constraint firstItem="nlL-R2-QTi" firstAttribute="leading" secondItem="QdE-o9-LA2" secondAttribute="trailing" id="pG0-uP-1cy"/>
+                <constraint firstItem="cdx-v0-0vc" firstAttribute="top" secondItem="lJW-U6-5T2" secondAttribute="top" id="rzF-YH-shk"/>
                 <constraint firstItem="QdE-o9-LA2" firstAttribute="leading" secondItem="G5q-9A-KB3" secondAttribute="trailing" id="tgH-QF-Yvr"/>
                 <constraint firstItem="jAf-DF-B0v" firstAttribute="leading" secondItem="lJW-U6-5T2" secondAttribute="leading" id="vqn-W0-Wxq"/>
+                <constraint firstItem="iph-JC-1Jp" firstAttribute="top" secondItem="cdx-v0-0vc" secondAttribute="bottom" id="wL5-fS-aEB"/>
                 <constraint firstItem="taN-PN-6bz" firstAttribute="width" secondItem="G5q-9A-KB3" secondAttribute="width" id="xAH-GF-Mjs"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

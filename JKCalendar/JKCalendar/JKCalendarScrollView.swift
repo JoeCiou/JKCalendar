@@ -54,7 +54,6 @@ public class JKCalendarScrollView: UIScrollView {
     
     func setup() {
         super.delegate = self
-        calendar.backgroundColor = UIColor.white
         calendar.interactionObject = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)

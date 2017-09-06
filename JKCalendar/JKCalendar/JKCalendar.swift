@@ -80,6 +80,7 @@ import UIKit
      */
     public override var backgroundColor: UIColor? {
         set {
+            topBackGroundView?.backgroundColor = newValue
             calendarPageView?.backgroundColor = newValue
             calendarPageView?.currentView?.backgroundColor = newValue
         }
@@ -109,15 +110,15 @@ import UIKit
         The property is the display week index of the calendar view in the folded state.
      */
     public var focusWeek: Int{
-        set{
+        set {
             if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 calendarView.focusWeek = newValue
             }
         }
-        get{
+        get {
             if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 return calendarView.focusWeek
-            }else{
+            } else {
                 return 0
             }
         }
@@ -156,6 +157,7 @@ import UIKit
     weak var interactionObject: UIScrollView?
     
     @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var topBackGroundView: UIView!
     @IBOutlet weak var calendarPageView: JKInfinitePageView!
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
@@ -195,6 +197,7 @@ import UIKit
 
         let contentView = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.backgroundColor = backgroundColor
         addSubview(contentView)
         
         let topConstraint = NSLayoutConstraint(item: contentView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
@@ -407,16 +410,17 @@ extension JKCalendar: JKInfinitePageViewDataSource{
         let view = view as! JKCalendarView
         
         var calendarView: JKCalendarView!
-        if mode == .month{
+        if mode == .month {
             calendarView = JKCalendarView(calendar: self, month: view.month.next)
             calendarView.focusWeek = focusWeek >= calendarView.month.weeksCount ? calendarView.month.weeksCount - 1: focusWeek
-        }else if focusWeek + 1 < view.month.weeksCount{
+        } else if focusWeek + 1 < view.month.weeksCount{
             calendarView = JKCalendarView(calendar: self, month: view.month)
             calendarView.focusWeek = focusWeek + 1
-        }else{
+        } else {
             calendarView = JKCalendarView(calendar: self, month: view.month.next)
             calendarView.focusWeek = 0
         }
+
         calendarView.backgroundColor = backgroundColor
         calendarView.foldValue = foldValue
         calendarView.panRecognizer.isEnabled = !isScrollEnabled
