@@ -44,6 +44,8 @@ import UIKit
      The data source must adopt the JKCalendarDataSource protocol. The calendar view maintains a weak reference to the data source object.
      */
     public weak var dataSource: JKCalendarDataSource?
+
+    public var showNextAndPreviousMonthName: Bool = true
     
     /**
         The color of the day text. Default value for this property is a black color.
@@ -123,15 +125,10 @@ import UIKit
     }
     
     var _month: JKMonth = JKMonth()! {
-        didSet{
+        didSet {
             let weekCount = month.weeksCount
             foldMaxValue = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
-            
-            monthLabel.text = month.name
-            yearLabel.text = "\(month.year)"
-            
-            previousButton.setTitle(month.previous.name, for: .normal)
-            nextButton.setTitle(month.next.name, for: .normal)
+            setupLabels()
         }
     }
     
@@ -219,11 +216,15 @@ import UIKit
         calendarView.panRecognizer.isEnabled = !isScrollEnabled
         calendarPageView.setView(calendarView)
         
+        setupLabels()
+    }
+
+    func setupLabels() {
         monthLabel.text = month.name
         yearLabel.text = "\(month.year)"
-        
-        previousButton.setTitle(month.previous.name, for: .normal)
-        nextButton.setTitle(month.next.name, for: .normal)
+
+        previousButton.setTitle(showNextAndPreviousMonthName ? month.previous.name : nil, for: .normal)
+        nextButton.setTitle(showNextAndPreviousMonthName ? month.next.name : nil, for: .normal)
     }
     
     /**
