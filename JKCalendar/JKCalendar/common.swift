@@ -71,9 +71,7 @@ public class JKMonth: JKYear {
     public let month: Int
     
     public init?(year: Int = Date().year, month: Int = Date().month) {
-        if month < 0 || month > 12{
-            return nil
-        }
+        if month < 0 || month > 12 {  return nil  }
         self.month = month
         super.init(year: year)
     }
@@ -127,34 +125,14 @@ public class JKMonth: JKYear {
     }
     
     public var name: String {
-        switch month{
-        case 1:
-            return "January"
-        case 2:
-            return "February"
-        case 3:
-            return "March"
-        case 4:
-            return "April"
-        case 5:
-            return "May"
-        case 6:
-            return "June"
-        case 7:
-            return "July"
-        case 8:
-            return "August"
-        case 9:
-            return "September"
-        case 10:
-            return "October"
-        case 11:
-            return "November"
-        case 12:
-            return "December"
-        default:
-            fatalError()
+        guard let date = JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0), year: year, month: month, day: 1)) else {
+            return ""
         }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM"
+
+        return dateFormatter.string(from: date)
     }
     
     override public func isEqual(_ object: Any?) -> Bool {
