@@ -165,7 +165,7 @@ import UIKit
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var pageViewHeightConstraint: NSLayoutConstraint!
     
-    public override init(frame: CGRect){
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupContentViewUI()
         setupCalendarView()
@@ -191,7 +191,7 @@ import UIKit
         }
     }
     
-    func setupContentViewUI(){
+    func setupContentViewUI() {
         let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: "JKCalendar", bundle: bundle)
         let contentView = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
@@ -208,7 +208,7 @@ import UIKit
         addConstraints(horizontalConstraints)
     }
     
-    func setupCalendarView(){
+    func setupCalendarView() {
         calendarPageView.delegate = self
         calendarPageView.dataSource = self
         
@@ -237,7 +237,7 @@ import UIKit
     /**
         Folded up the calendar view.
      */
-    public func fold(){
+    public func fold() {
         if let object = interactionObject{
             object.setContentOffset(CGPoint(x: 0, y: foldMaxValue - bounds.height), animated: true)
         }else{
@@ -248,7 +248,7 @@ import UIKit
     /**
         Unfolded up the calendar view.
      */
-    public func unfold(){
+    public func unfold() {
         if let object = interactionObject{
             object.setContentOffset(CGPoint(x: 0, y: -bounds.height), animated: true)
         }else{
@@ -259,14 +259,14 @@ import UIKit
     /**
         Move the calendar view month to the next month
      */
-    public func nextMonth(){
+    public func nextMonth() {
         calendarPageView.nextPage()
     }
     
     /**
         Move the calendar view month to the previous month
      */
-    public func previousMonth(){
+    public func previousMonth() {
         calendarPageView.previousPage()
     }
     
@@ -285,7 +285,7 @@ import UIKit
     }
 }
 
-extension JKCalendar: JKInfinitePageViewDelegate{
+extension JKCalendar: JKInfinitePageViewDelegate {
     func infinitePageView(_ infinitePageView: JKInfinitePageView, afterWith view: UIView, progress: Double) {
         let calendarView = view as! JKCalendarView
         let currentCalendarView = infinitePageView.currentView! as! JKCalendarView

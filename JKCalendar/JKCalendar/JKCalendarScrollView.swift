@@ -52,7 +52,7 @@ public class JKCalendarScrollView: UIScrollView {
         setup()
     }
     
-    func setup(){
+    func setup() {
         super.delegate = self
         calendar.backgroundColor = UIColor.white
         calendar.interactionObject = self
@@ -65,7 +65,7 @@ public class JKCalendarScrollView: UIScrollView {
         layoutSubviewsHandler()
     }
     
-    func layoutSubviewsHandler(){
+    func layoutSubviewsHandler() {
         if first || rotating{
             var calendarSize: CGSize!
             if frame.width > frame.height{
@@ -94,7 +94,8 @@ public class JKCalendarScrollView: UIScrollView {
         }
     }
     
-    func rotated(){
+    @objc
+    func rotated() {
         if !first{
             rotating = true
             layoutSubviewsHandler()
@@ -102,7 +103,7 @@ public class JKCalendarScrollView: UIScrollView {
     }
 }
 
-extension JKCalendarScrollView: UIScrollViewDelegate{
+extension JKCalendarScrollView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         var value = calendar.frame.height + contentOffset.y
@@ -129,7 +130,7 @@ extension JKCalendarScrollView: UIScrollViewDelegate{
         
         let value = (targetContentOffset.pointee.y + calendar.bounds.height) / calendar.foldMaxValue
         
-        if value < 1{
+        if value < 1 {
             targetContentOffset.pointee.y = (value > 0.5 ? calendar.foldMaxValue: 0) - calendar.bounds.height
         }
         

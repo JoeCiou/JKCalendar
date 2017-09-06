@@ -25,7 +25,6 @@
 import UIKit
 
 class JKCalendarView: UIView{
-    
     let calendar: JKCalendar
     
     var month: JKMonth{
@@ -56,13 +55,13 @@ class JKCalendarView: UIView{
     var tapRecognizer: UITapGestureRecognizer!
     var panRecognizer: UIPanGestureRecognizer!
     
-    init(calendar: JKCalendar, month: JKMonth){
+    init(calendar: JKCalendar, month: JKMonth) {
         self.calendar = calendar
         self.month = month
         super.init(frame: CGRect.zero)
         
-        tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
+        tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         gestureRecognizers = [tapRecognizer, panRecognizer]
     }
     
@@ -75,7 +74,7 @@ class JKCalendarView: UIView{
         resetWeeksInfo()
     }
     
-    func resetWeeksInfo(){
+    func resetWeeksInfo() {
         weeksInfo = []
         
         let firstDay = month.firstDay
@@ -111,7 +110,7 @@ class JKCalendarView: UIView{
             weeksInfo.append(JKWeekInfo(daysInfo: daysInfo))
         }
         
-        if let continuousMarks = calendar.dataSource?.calendar?(calendar, continuousMarksWith: month){
+        if let continuousMarks = calendar.dataSource?.calendar?(calendar, continuousMarksWith: month) {
             for continuousMark in continuousMarks{
                 
                 for weekIndex in 0 ..< weeksInfo.count{
@@ -130,7 +129,7 @@ class JKCalendarView: UIView{
         }
     }
     
-    func updateFoldValueWeeksInfo(){
+    func updateFoldValueWeeksInfo() {
         let calendarDaySize = CGSize(width: (bounds.width - 20) / 7,
                                      height: bounds.height / CGFloat(month.weeksCount))
         
@@ -508,24 +507,24 @@ class JKCalendarView: UIView{
                 
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .center
-                var unitStrAttrs = [NSFontAttributeName: font,
-                                    NSParagraphStyleAttributeName: paragraphStyle]
+                var unitStrAttrs = [NSAttributedStringKey.font: font,
+                                    NSAttributedStringKey.paragraphStyle: paragraphStyle]
                 
                 if let mark = info.mark, mark.type == .circle{
-                    unitStrAttrs[NSForegroundColorAttributeName] = calendar.backgroundColor
+                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.backgroundColor
                 }else if weekInfo.continuousMarksInfo.keys.filter({ (mark) -> Bool in
                     return mark.type == .circle
                 }).contains(where: { (mark) -> Bool in
                     return info.day >= mark.start && info.day <= mark.end
-                }){
-                    unitStrAttrs[NSForegroundColorAttributeName] = calendar.backgroundColor
+                }) {
+                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.backgroundColor
                 }else if info.day == month{
-                    unitStrAttrs[NSForegroundColorAttributeName] = calendar.textColor
+                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.textColor
                 }else{
-                    unitStrAttrs[NSForegroundColorAttributeName] = calendar.textColor.withAlphaComponent(0.3)
+                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.textColor.withAlphaComponent(0.3)
                 }
                 
-                let textSize = dayString.size(attributes: [NSFontAttributeName: font])
+                let textSize = dayString.size(withAttributes: [NSAttributedStringKey.font: font])
                 let dy = (info.location.height - textSize.height) / 2
                 
                 let textRect = CGRect(x: info.location.origin.x,
@@ -551,17 +550,19 @@ class JKCalendarView: UIView{
         
         return nil
     }
-    
-    func handleTap(_ recognizer: UITapGestureRecognizer){
+
+    @objc
+    func handleTap(_ recognizer: UITapGestureRecognizer) {
         let position = recognizer.location(in: self)
-        if let info = dayInfo(tapPosition: position){
+        if let info = dayInfo(tapPosition: position) {
             calendar.delegate?.calendar?(calendar, didTouch: info.day)
         }
     }
-    
-    func handlePan(_ recognizer: UIPanGestureRecognizer){
+
+    @objc
+    func handlePan(_ recognizer: UIPanGestureRecognizer) {
         let position = recognizer.location(in: self)
-        if let info = dayInfo(tapPosition: position){
+        if let info = dayInfo(tapPosition: position) {
             switch recognizer.state {
             case .began:
                 calendar.delegate?.calendar?(calendar, didPan: [info.day])
@@ -591,7 +592,7 @@ class JKCalendarView: UIView{
         var daysInfo: [JKDayInfo]
         var continuousMarksInfo: [JKCalendarContinuousMark: Range<Int>] = [:]
         
-        init(daysInfo: [JKDayInfo]){
+        init(daysInfo: [JKDayInfo]) {
             self.daysInfo = daysInfo
         }
     }
@@ -602,7 +603,7 @@ class JKCalendarView: UIView{
         
         var mark: JKCalendarMark?
         
-        init(day: JKDay, location: CGRect){
+        init(day: JKDay, location: CGRect) {
             self.day = day
             self.location = location
         }
