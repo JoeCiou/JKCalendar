@@ -76,13 +76,14 @@ import UIKit
     /**
         The calendar view is background color. The default value is nil, which results in a transparent background color.
      */
-    public override var backgroundColor: UIColor?{
-        set{
+    public override var backgroundColor: UIColor? {
+        set {
             super.backgroundColor = UIColor.clear
             calendarPageView?.backgroundColor = newValue
             calendarPageView?.currentView?.backgroundColor = newValue
         }
-        get{
+
+        get {
             return calendarPageView?.backgroundColor
         }
     }
@@ -90,14 +91,15 @@ import UIKit
     /**
         The month object of the calendar view. The default is the current month.
      */
-    public var month: JKMonth{
-        set{
-            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+    public var month: JKMonth {
+        set {
+            if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 calendarView.month = newValue
             }
             _month = newValue
         }
-        get{
+
+        get {
             return _month
         }
     }
@@ -107,12 +109,12 @@ import UIKit
      */
     public var focusWeek: Int{
         set{
-            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+            if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 calendarView.focusWeek = newValue
             }
         }
         get{
-            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+            if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 return calendarView.focusWeek
             }else{
                 return 0
@@ -120,7 +122,7 @@ import UIKit
         }
     }
     
-    var _month: JKMonth = JKMonth(year: Date().year, month: Date().month)!{
+    var _month: JKMonth = JKMonth()! {
         didSet{
             let weekCount = month.weeksCount
             foldMaxValue = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
@@ -133,7 +135,7 @@ import UIKit
         }
     }
     
-    var foldValue: CGFloat = 0{
+    var foldValue: CGFloat = 0 {
         didSet{
             if let calendarView = calendarPageView.currentView as? JKCalendarView,
                 calendarView.foldValue != foldValue{

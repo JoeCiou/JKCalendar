@@ -70,7 +70,7 @@ public func >= (lhs: JKYear, rhs: JKYear) -> Bool {
 public class JKMonth: JKYear {
     public let month: Int
     
-    public init?(year: Int, month: Int) {
+    public init?(year: Int = Date().year, month: Int = Date().month) {
         if month < 0 || month > 12{
             return nil
         }
