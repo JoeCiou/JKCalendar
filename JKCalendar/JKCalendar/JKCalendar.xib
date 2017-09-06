@@ -148,7 +148,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="696-B5-t2J" firstAttribute="centerY" secondItem="Ogy-Nj-Ulh" secondAttribute="centerY" id="1Q1-RL-UQ3"/>
                 <constraint firstItem="G5q-9A-KB3" firstAttribute="leading" secondItem="taN-PN-6bz" secondAttribute="trailing" id="2n1-Wq-5Bi"/>

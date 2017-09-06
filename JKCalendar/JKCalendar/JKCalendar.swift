@@ -80,7 +80,6 @@ import UIKit
      */
     public override var backgroundColor: UIColor? {
         set {
-            super.backgroundColor = UIColor.clear
             calendarPageView?.backgroundColor = newValue
             calendarPageView?.currentView?.backgroundColor = newValue
         }
@@ -185,7 +184,7 @@ import UIKit
         let weekCount = month.weeksCount
         foldMaxValue = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
         
-        if let view = calendarPageView.currentView as? JKCalendarView{
+        if let view = calendarPageView.currentView as? JKCalendarView {
             view.setNeedsDisplay()
         }
     }
@@ -193,6 +192,7 @@ import UIKit
     func setupContentViewUI() {
         let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: "JKCalendar", bundle: bundle)
+
         let contentView = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
