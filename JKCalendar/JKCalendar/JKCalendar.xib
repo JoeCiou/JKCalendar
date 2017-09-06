@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JKCalendar" customModule="JKCalendar_Sample" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JKCalendar" customModule="JKCalendar" customModuleProvider="target">
             <connections>
                 <outlet property="calendarPageView" destination="iph-JC-1Jp" id="0mX-Mz-OFi"/>
                 <outlet property="monthLabel" destination="NQc-qj-Z1J" id="n1m-gJ-ZvV"/>
@@ -124,7 +124,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="8WU-ez-EgZ"/>
                         <constraint firstItem="baS-W8-Fmd" firstAttribute="leading" secondItem="jAf-DF-B0v" secondAttribute="leading" id="90H-Ak-TUQ"/>
@@ -137,7 +137,7 @@
                         <constraint firstItem="pkJ-0e-uWA" firstAttribute="centerY" secondItem="NQc-qj-Z1J" secondAttribute="centerY" constant="2" id="uNU-Hj-OH6"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iph-JC-1Jp" customClass="JKInfinitePageView" customModule="JKCalendar_Sample" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iph-JC-1Jp" customClass="JKInfinitePageView" customModule="JKCalendar" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="62" width="320" height="230"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -148,7 +148,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="696-B5-t2J" firstAttribute="centerY" secondItem="Ogy-Nj-Ulh" secondAttribute="centerY" id="1Q1-RL-UQ3"/>
                 <constraint firstItem="G5q-9A-KB3" firstAttribute="leading" secondItem="taN-PN-6bz" secondAttribute="trailing" id="2n1-Wq-5Bi"/>
