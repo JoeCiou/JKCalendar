@@ -62,7 +62,7 @@ import UIKit
     public var isScrollEnabled: Bool = true{
         didSet{
             calendarPageView.isScrollEnabled = isScrollEnabled
-            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+            if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 calendarView.panRecognizer.isEnabled = !isScrollEnabled
             }
         }

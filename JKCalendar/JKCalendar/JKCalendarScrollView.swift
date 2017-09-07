@@ -28,11 +28,12 @@ public class JKCalendarScrollView: UIScrollView {
 
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
     
-    override public var delegate: UIScrollViewDelegate?{
-        set{
+    override public var delegate: UIScrollViewDelegate? {
+        set {
             _delegate = newValue
         }
-        get{
+
+        get {
             return _delegate
         }
     }
@@ -56,7 +57,7 @@ public class JKCalendarScrollView: UIScrollView {
         super.delegate = self
         calendar.interactionObject = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: .UIDeviceOrientationDidChange, object: nil)
     }
     
     override public func layoutSubviews() {
@@ -67,10 +68,10 @@ public class JKCalendarScrollView: UIScrollView {
     func layoutSubviewsHandler() {
         if first || rotating{
             var calendarSize: CGSize!
-            if frame.width > frame.height{
+            if frame.width > frame.height {
                 calendarSize = CGSize(width: frame.width,
                                       height: (frame.width / 2).rounded())
-            }else{
+            } else {
                 calendarSize = CGSize(width: frame.width,
                                       height: (frame.width / 1.2).rounded())
             }
@@ -79,10 +80,12 @@ public class JKCalendarScrollView: UIScrollView {
                                     y: frame.origin.y,
                                     width: calendarSize.width,
                                     height: calendarSize.height)
+
             contentInset = UIEdgeInsets(top: calendarSize.height,
                                         left: 0,
                                         bottom: 0,
                                         right: 0)
+
             contentOffset = CGPoint(x: 0, y: -calendarSize.height)
             rotating = false
             
@@ -104,14 +107,18 @@ public class JKCalendarScrollView: UIScrollView {
 
 extension JKCalendarScrollView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+
+        if contentOffset.y >= -116.0 { // TODO: Get -116 programmatically
+            contentOffset.y = -116.0
+        }
+
         var value = calendar.frame.height + contentOffset.y
         if value > calendar.foldMaxValue {
             value = calendar.foldMaxValue
-        }else if value < 0{
+        } else if value < 0 {
             value = 0
         }
-        
+
         calendar.foldValue = value
         
         _delegate?.scrollViewDidScroll?(scrollView)
