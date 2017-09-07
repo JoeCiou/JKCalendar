@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5CA257B41F610FE100F3E286 /* JKCalendar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5CA257B61F610FE100F3E286 /* JKCalendar.xib */; };
 		7C51410D1F34203600263E8A /* JKCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C51410B1F34203600263E8A /* JKCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7C5141191F3420A800263E8A /* JKCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5141131F3420A800263E8A /* JKCalendar.swift */; };
-		7C51411A1F3420A800263E8A /* JKCalendar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C5141141F3420A800263E8A /* JKCalendar.xib */; };
 		7C51411B1F3420A800263E8A /* JKCalendarMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5141151F3420A800263E8A /* JKCalendarMark.swift */; };
 		7C51411C1F3420A800263E8A /* JKCalendarScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5141161F3420A800263E8A /* JKCalendarScrollView.swift */; };
 		7C51411D1F3420A800263E8A /* JKCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5141171F3420A800263E8A /* JKCalendarView.swift */; };
@@ -19,11 +19,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5CA257B51F610FE100F3E286 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/JKCalendar.xib; sourceTree = "<group>"; };
+		5CA257B71F610FE900F3E286 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/JKCalendar.xib; sourceTree = "<group>"; };
 		7C5141081F34203600263E8A /* JKCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JKCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C51410B1F34203600263E8A /* JKCalendar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKCalendar.h; sourceTree = "<group>"; };
 		7C51410C1F34203600263E8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C5141131F3420A800263E8A /* JKCalendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCalendar.swift; sourceTree = "<group>"; };
-		7C5141141F3420A800263E8A /* JKCalendar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKCalendar.xib; sourceTree = "<group>"; };
 		7C5141151F3420A800263E8A /* JKCalendarMark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCalendarMark.swift; sourceTree = "<group>"; };
 		7C5141161F3420A800263E8A /* JKCalendarScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCalendarScrollView.swift; sourceTree = "<group>"; };
 		7C5141171F3420A800263E8A /* JKCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCalendarView.swift; sourceTree = "<group>"; };
@@ -64,7 +65,7 @@
 			children = (
 				7C51410B1F34203600263E8A /* JKCalendar.h */,
 				7C5141131F3420A800263E8A /* JKCalendar.swift */,
-				7C5141141F3420A800263E8A /* JKCalendar.xib */,
+				5CA257B61F610FE100F3E286 /* JKCalendar.xib */,
 				7C5141171F3420A800263E8A /* JKCalendarView.swift */,
 				7C5141151F3420A800263E8A /* JKCalendarMark.swift */,
 				7C5141161F3420A800263E8A /* JKCalendarScrollView.swift */,
@@ -131,6 +132,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				de,
 			);
 			mainGroup = 7C5140FE1F34203600263E8A;
 			productRefGroup = 7C5141091F34203600263E8A /* Products */;
@@ -148,7 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C5141221F3420B000263E8A /* icon.xcassets in Resources */,
-				7C51411A1F3420A800263E8A /* JKCalendar.xib in Resources */,
+				5CA257B41F610FE100F3E286 /* JKCalendar.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,11 +172,24 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		5CA257B61F610FE100F3E286 /* JKCalendar.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5CA257B51F610FE100F3E286 /* en */,
+				5CA257B71F610FE900F3E286 /* de */,
+			);
+			name = JKCalendar.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		7C51410E1F34203600263E8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -235,6 +250,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
