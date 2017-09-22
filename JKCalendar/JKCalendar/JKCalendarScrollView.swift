@@ -25,7 +25,6 @@
 import UIKit
 
 public class JKCalendarScrollView: UIScrollView {
-
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
     
     override public var delegate: UIScrollViewDelegate? {
@@ -40,6 +39,7 @@ public class JKCalendarScrollView: UIScrollView {
     
     var _delegate: UIScrollViewDelegate?
     
+    public var startsCollapsed: Bool = false
     private var first = true
     private var rotating = false
     
@@ -72,8 +72,7 @@ public class JKCalendarScrollView: UIScrollView {
                 calendarSize = CGSize(width: frame.width,
                                       height: (frame.width / 2).rounded())
             } else {
-                calendarSize = CGSize(width: frame.width,
-                                      height: (frame.width / 1.2).rounded())
+                calendarSize = CGSize(width: frame.width, height: (frame.width / 1.2).rounded())
             }
             
             calendar.frame = CGRect(x: 0,
@@ -89,7 +88,8 @@ public class JKCalendarScrollView: UIScrollView {
             contentOffset = CGPoint(x: 0, y: -calendarSize.height)
             rotating = false
             
-            if first{
+            if first {
+                setContentOffset(CGPoint(x: 0, y: startsCollapsed ? -122.6 : -calendarSize.height), animated: true)
                 superview?.insertSubview(calendar, aboveSubview: self)
                 first = false
             }
@@ -98,7 +98,7 @@ public class JKCalendarScrollView: UIScrollView {
     
     @objc
     func rotated() {
-        if !first{
+        if !first {
             rotating = true
             layoutSubviewsHandler()
         }
@@ -107,9 +107,8 @@ public class JKCalendarScrollView: UIScrollView {
 
 extension JKCalendarScrollView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
-        if contentOffset.y >= -124.0 { // TODO: Get this value programmatically
-            contentOffset.y = -124.0
+        if contentOffset.y >= -122.6 { // TODO: Get this value programmatically
+            contentOffset.y = -122.6
         }
 
         var value = calendar.frame.height + contentOffset.y
@@ -137,7 +136,7 @@ extension JKCalendarScrollView: UIScrollViewDelegate {
         let value = (targetContentOffset.pointee.y + calendar.bounds.height) / calendar.foldMaxValue
         
         if value < 1 {
-            targetContentOffset.pointee.y = (value > 0.5 ? calendar.foldMaxValue: 0) - calendar.bounds.height
+            targetContentOffset.pointee.y = (value > 0.5 ? calendar.foldMaxValue : 0) - calendar.bounds.height
         }
         
         _delegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)

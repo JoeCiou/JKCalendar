@@ -43,6 +43,7 @@ class ScrollViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        calendarScrollView.startsCollapsed = true
         calendarScrollView.calendar.delegate = self
         calendarScrollView.calendar.dataSource = self
         
