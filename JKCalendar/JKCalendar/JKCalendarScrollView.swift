@@ -108,8 +108,8 @@ public class JKCalendarScrollView: UIScrollView {
 extension JKCalendarScrollView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
-        if contentOffset.y >= -118.0 { // TODO: Get this value programmatically
-            contentOffset.y = -118.0
+        if contentOffset.y >= -124.0 { // TODO: Get this value programmatically
+            contentOffset.y = -124.0
         }
 
         var value = calendar.frame.height + contentOffset.y
