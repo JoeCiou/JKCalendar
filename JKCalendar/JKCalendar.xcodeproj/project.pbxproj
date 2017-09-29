@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C19EDCB1F60E9470042573C /* JKCalendarTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C19EDCA1F60E9470042573C /* JKCalendarTableView.swift */; };
 		7C51410D1F34203600263E8A /* JKCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C51410B1F34203600263E8A /* JKCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7C5141191F3420A800263E8A /* JKCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5141131F3420A800263E8A /* JKCalendar.swift */; };
 		7C51411A1F3420A800263E8A /* JKCalendar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C5141141F3420A800263E8A /* JKCalendar.xib */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7C19EDCA1F60E9470042573C /* JKCalendarTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCalendarTableView.swift; sourceTree = "<group>"; };
 		7C5141081F34203600263E8A /* JKCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JKCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C51410B1F34203600263E8A /* JKCalendar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKCalendar.h; sourceTree = "<group>"; };
 		7C51410C1F34203600263E8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				7C5141171F3420A800263E8A /* JKCalendarView.swift */,
 				7C5141151F3420A800263E8A /* JKCalendarMark.swift */,
 				7C5141161F3420A800263E8A /* JKCalendarScrollView.swift */,
+				7C19EDCA1F60E9470042573C /* JKCalendarTableView.swift */,
 				7C5141181F3420A800263E8A /* JKInfinitePageView.swift */,
 				7C51411F1F3420B000263E8A /* common.swift */,
 				7C5141201F3420B000263E8A /* icon.xcassets */,
@@ -163,6 +166,7 @@
 				7C51411E1F3420A800263E8A /* JKInfinitePageView.swift in Sources */,
 				7C5141211F3420B000263E8A /* common.swift in Sources */,
 				7C51411D1F3420A800263E8A /* JKCalendarView.swift in Sources */,
+				7C19EDCB1F60E9470042573C /* JKCalendarTableView.swift in Sources */,
 				7C51411C1F3420A800263E8A /* JKCalendarScrollView.swift in Sources */,
 				7C51411B1F3420A800263E8A /* JKCalendarMark.swift in Sources */,
 			);

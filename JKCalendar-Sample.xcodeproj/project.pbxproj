@@ -15,6 +15,7 @@
 		7C72FF2A1E72930100D12F76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C72FF291E72930100D12F76 /* Assets.xcassets */; };
 		7C72FF2D1E72930100D12F76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C72FF2B1E72930100D12F76 /* LaunchScreen.storyboard */; };
 		7C7300761F4C0803002D9861 /* SelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7300751F4C0803002D9861 /* SelectorViewController.swift */; };
+		7CA7DDDD1F6102030061011A /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA7DDDC1F6102030061011A /* TableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		7C72FF2C1E72930100D12F76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7C72FF2E1E72930200D12F76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C7300751F4C0803002D9861 /* SelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectorViewController.swift; sourceTree = "<group>"; };
+		7CA7DDDC1F6102030061011A /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				7C72FF221E72930100D12F76 /* AppDelegate.swift */,
 				7C7300751F4C0803002D9861 /* SelectorViewController.swift */,
 				7C72FF241E72930100D12F76 /* ScrollViewController.swift */,
+				7CA7DDDC1F6102030061011A /* TableViewController.swift */,
 				7C72FF261E72930100D12F76 /* Main.storyboard */,
 				7C72FF291E72930100D12F76 /* Assets.xcassets */,
 				7C72FF2B1E72930100D12F76 /* LaunchScreen.storyboard */,
@@ -205,6 +208,7 @@
 				7C72FF251E72930100D12F76 /* ScrollViewController.swift in Sources */,
 				7C7300761F4C0803002D9861 /* SelectorViewController.swift in Sources */,
 				7C72FF231E72930100D12F76 /* AppDelegate.swift in Sources */,
+				7CA7DDDD1F6102030061011A /* TableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

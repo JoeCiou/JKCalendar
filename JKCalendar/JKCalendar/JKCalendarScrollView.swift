@@ -24,11 +24,11 @@
 
 import UIKit
 
-public class JKCalendarScrollView: UIScrollView {
+open class JKCalendarScrollView: UIScrollView {
 
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
     
-    override public var delegate: UIScrollViewDelegate?{
+    override open var delegate: UIScrollViewDelegate?{
         set{
             _delegate = newValue
         }
@@ -60,7 +60,7 @@ public class JKCalendarScrollView: UIScrollView {
         NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
-    override public func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         layoutSubviewsHandler()
     }
