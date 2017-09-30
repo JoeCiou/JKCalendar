@@ -26,10 +26,8 @@ import UIKit
 
 private let reuseIdentifier = "InfinitePageCell"
 
-public enum JKInfinitePageViewScrollDirection: Int{
-    
+public enum JKInfinitePageViewScrollDirection: Int {
     case vertical
-    
     case horizontal
 }
 
@@ -92,7 +90,7 @@ class JKInfinitePageView: UIView {
         setup()
     }
     
-    private func setup(){
+    private func setup() {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
@@ -138,17 +136,17 @@ class JKInfinitePageView: UIView {
         flowLayout.invalidateLayout()
     }
     
-    public func setView(_ view: UIView){
+    public func setView(_ view: UIView) {
         currentView = view
         collectionView.reloadData()
     }
     
-    public func nextPage(){
+    public func nextPage() {
         let index = currentIndexPath.item + 1
         collectionView.setContentOffset(CGPoint(x: CGFloat(index) * bounds.width, y: 0), animated: true)
     }
     
-    public func previousPage(){
+    public func previousPage() {
         let index = currentIndexPath.item - 1
         collectionView.setContentOffset(CGPoint(x: CGFloat(index) * bounds.width, y: 0), animated: true)
     }
@@ -203,7 +201,7 @@ extension JKInfinitePageView: UICollectionViewDataSource {
 
 }
 
-extension JKInfinitePageView: UIScrollViewDelegate{
+extension JKInfinitePageView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if willDisplayIndexPath != nil{
             if let view = (collectionView.cellForItem(at: willDisplayIndexPath!) as? JKInfinitePageCell)?.pageView{
@@ -220,7 +218,6 @@ extension JKInfinitePageView: UIScrollViewDelegate{
 }
 
 @objc protocol JKInfinitePageViewDelegate {
-    
     @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, didDisplay view: UIView)
     
     @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, beforeWith view: UIView, progress: Double)
@@ -229,7 +226,6 @@ extension JKInfinitePageView: UIScrollViewDelegate{
 }
 
 @objc protocol JKInfinitePageViewDataSource {
-    
     @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, viewBefore view: UIView) -> UIView
     
     @objc optional func infinitePageView(_ infinitePageView: JKInfinitePageView, viewAfter view: UIView) -> UIView

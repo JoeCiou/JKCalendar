@@ -51,13 +51,14 @@ class SelectorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         calendar.delegate = self
         calendar.dataSource = self
         
         calendar.textColor = UIColor(white: 0.25, alpha: 1)
         calendar.backgroundColor = UIColor.white
         
+        calendar.showNearbyMonthName = false
         calendar.isScrollEnabled = false
     }
 
@@ -65,7 +66,6 @@ class SelectorViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     @IBAction func handleBackButtonClick(_ sender: Any) {
         let _ = navigationController?.popViewController(animated: true)
@@ -84,7 +84,6 @@ extension SelectorViewController: JKCalendarDelegate{
         selectDays = days
         calendar.reloadData()
     }
-    
 }
 
 extension SelectorViewController: JKCalendarDataSource{

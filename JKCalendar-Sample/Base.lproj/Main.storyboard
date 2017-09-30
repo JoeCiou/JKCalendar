@@ -127,7 +127,7 @@
                             <constraint firstItem="7vJ-ti-jEV" firstAttribute="top" secondItem="5dG-Hl-l28" secondAttribute="bottom" constant="16" id="Grx-m2-n6c"/>
                             <constraint firstAttribute="trailing" secondItem="5dG-Hl-l28" secondAttribute="trailing" constant="32" id="Hgd-VR-7PL"/>
                             <constraint firstItem="5dG-Hl-l28" firstAttribute="leading" secondItem="Bvx-Tr-IEM" secondAttribute="leading" constant="32" id="Ocj-hr-oNj"/>
-                            <constraint firstItem="7vJ-ti-jEV" firstAttribute="leading" secondItem="Bvx-Tr-IEM" secondAttribute="leading" constant="32" id="Tcy-Bw-xOj"/>
+                            <constraint firstItem="7vJ-ti-jEV" firstAttribute="leading" secondItem="Bvx-Tr-IEM" secondAttribute="leading" constant="32" id="g7X-Ou-KOG"/>
                             <constraint firstItem="JY9-QU-yYZ" firstAttribute="leading" secondItem="Bvx-Tr-IEM" secondAttribute="leading" constant="32" id="gSj-My-6Qz"/>
                             <constraint firstItem="JY9-QU-yYZ" firstAttribute="top" secondItem="7vJ-ti-jEV" secondAttribute="bottom" constant="16" id="mnq-Re-cFO"/>
                             <constraint firstAttribute="trailing" secondItem="7vJ-ti-jEV" secondAttribute="trailing" constant="32" id="pRC-Dn-Vir"/>
@@ -213,11 +213,13 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="arz-Zf-a0V" secondAttribute="trailing" constant="20" symbolic="YES" id="2HF-Wc-aVI"/>
                                             <constraint firstItem="arz-Zf-a0V" firstAttribute="leading" secondItem="5KO-dQ-EhN" secondAttribute="leading" constant="20" id="4U3-Zf-jJY"/>
                                             <constraint firstItem="u0X-Jt-jbk" firstAttribute="leading" secondItem="5KO-dQ-EhN" secondAttribute="leading" constant="20" id="DaK-Au-ds7"/>
                                             <constraint firstItem="InR-57-zwI" firstAttribute="top" secondItem="5KO-dQ-EhN" secondAttribute="top" constant="24" id="IaH-QV-NCI"/>
                                             <constraint firstAttribute="bottom" secondItem="u0X-Jt-jbk" secondAttribute="bottom" constant="20" id="W8L-c3-bYm"/>
                                             <constraint firstItem="X66-tB-rp1" firstAttribute="leading" secondItem="InR-57-zwI" secondAttribute="trailing" constant="8" id="YB0-Ba-iHH"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JL2-xd-vI9" secondAttribute="trailing" constant="20" symbolic="YES" id="b6y-sU-WoO"/>
                                             <constraint firstAttribute="trailing" secondItem="u0X-Jt-jbk" secondAttribute="trailing" constant="20" id="bFT-B4-cKs"/>
                                             <constraint firstItem="InR-57-zwI" firstAttribute="leading" secondItem="5KO-dQ-EhN" secondAttribute="leading" constant="20" id="ecc-a6-TkS"/>
                                             <constraint firstItem="JL2-xd-vI9" firstAttribute="leading" secondItem="5KO-dQ-EhN" secondAttribute="leading" constant="20" id="hEU-0B-QgN"/>
@@ -254,10 +256,17 @@
                                 <action selector="handleBackButtonClick:" destination="BYZ-38-t0r" id="6q1-gv-sib"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="ic_down" id="C0g-UY-1Kr">
+                            <color key="tintColor" red="0.1450980392" green="0.69803921570000005" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="handleStatusButtonClick:" destination="BYZ-38-t0r" id="1mc-S6-vCz"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="calendarScrollView" destination="SuO-P7-mfX" id="i0K-Qr-vPB"/>
                         <outlet property="dateLabel" destination="InR-57-zwI" id="Han-uP-zim"/>
+                        <outlet property="statusButtonItem" destination="C0g-UY-1Kr" id="Dmd-i5-OmY"/>
                         <outlet property="textview" destination="u0X-Jt-jbk" id="mbR-V8-Af8"/>
                         <outlet property="timeLabel" destination="JL2-xd-vI9" id="U1c-xJ-IPu"/>
                     </connections>
@@ -294,7 +303,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="QmP-9u-vmh"/>
-                                                        <constraint firstAttribute="width" constant="50" id="t6D-kx-0pM"/>
+                                                        <constraint firstAttribute="width" constant="50" id="vrV-3n-6Wp"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -365,6 +374,7 @@
     </scenes>
     <resources>
         <image name="ic_back" width="37" height="34"/>
+        <image name="ic_down" width="34" height="37"/>
         <image name="logo" width="56" height="48"/>
     </resources>
 </document>

@@ -78,6 +78,7 @@ open class JKCalendarTableView: UITableView {
         }
     }
     
+    @objc
     func rotated(){
         if !first{
             rotating = true
@@ -92,13 +93,13 @@ extension JKCalendarTableView: UITableViewDelegate{
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         var value = calendar.frame.height + contentOffset.y
-        if value > calendar.foldMaxValue {
-            value = calendar.foldMaxValue
+        if value > calendar.collapsedMaximum {
+            value = calendar.collapsedMaximum
         }else if value < 0{
             value = 0
         }
         
-        calendar.foldValue = value
+        calendar.collapsedValue = value
         
         _delegate?.scrollViewDidScroll?(scrollView)
     }
@@ -113,10 +114,10 @@ extension JKCalendarTableView: UITableViewDelegate{
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        let value = (targetContentOffset.pointee.y + calendar.bounds.height) / calendar.foldMaxValue
+        let value = (targetContentOffset.pointee.y + calendar.bounds.height) / calendar.collapsedMaximum
         
         if value < 1{
-            targetContentOffset.pointee.y = (value > 0.5 ? calendar.foldMaxValue: 0) - calendar.bounds.height
+            targetContentOffset.pointee.y = (value > 0.5 ? calendar.collapsedMaximum: 0) - calendar.bounds.height
         }
         
         _delegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)

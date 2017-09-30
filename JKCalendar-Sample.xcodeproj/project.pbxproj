@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7C5141441F3424EC00263E8A /* JKCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5141431F34210C00263E8A /* JKCalendar.framework */; };
-		7C5141451F3424EC00263E8A /* JKCalendar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5141431F34210C00263E8A /* JKCalendar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7C72FF231E72930100D12F76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C72FF221E72930100D12F76 /* AppDelegate.swift */; };
 		7C72FF251E72930100D12F76 /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C72FF241E72930100D12F76 /* ScrollViewController.swift */; };
 		7C72FF281E72930100D12F76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C72FF261E72930100D12F76 /* Main.storyboard */; };
@@ -16,19 +14,21 @@
 		7C72FF2D1E72930100D12F76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C72FF2B1E72930100D12F76 /* LaunchScreen.storyboard */; };
 		7C7300761F4C0803002D9861 /* SelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7300751F4C0803002D9861 /* SelectorViewController.swift */; };
 		7CA7DDDD1F6102030061011A /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA7DDDC1F6102030061011A /* TableViewController.swift */; };
+		7CB8057F1F7E579E003D4857 /* JKCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CB8057E1F7E509A003D4857 /* JKCalendar.framework */; };
+		7CB805801F7E579F003D4857 /* JKCalendar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7CB8057E1F7E509A003D4857 /* JKCalendar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		7C5141421F34210C00263E8A /* PBXContainerItemProxy */ = {
+		7CB8057D1F7E509A003D4857 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7C51413E1F34210C00263E8A /* JKCalendar.xcodeproj */;
+			containerPortal = 7CB805791F7E5099003D4857 /* JKCalendar.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 7C5141081F34203600263E8A;
 			remoteInfo = JKCalendar;
 		};
-		7C5141461F3424EC00263E8A /* PBXContainerItemProxy */ = {
+		7CB805811F7E579F003D4857 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7C51413E1F34210C00263E8A /* JKCalendar.xcodeproj */;
+			containerPortal = 7CB805791F7E5099003D4857 /* JKCalendar.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 7C5141071F34203600263E8A;
 			remoteInfo = JKCalendar;
@@ -42,7 +42,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7C5141451F3424EC00263E8A /* JKCalendar.framework in Embed Frameworks */,
+				7CB805801F7E579F003D4857 /* JKCalendar.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,7 +50,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7C51413E1F34210C00263E8A /* JKCalendar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JKCalendar.xcodeproj; path = JKCalendar/JKCalendar.xcodeproj; sourceTree = "<group>"; };
 		7C72FF1F1E72930100D12F76 /* JKCalendar-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JKCalendar-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C72FF221E72930100D12F76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7C72FF241E72930100D12F76 /* ScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +59,7 @@
 		7C72FF2E1E72930200D12F76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C7300751F4C0803002D9861 /* SelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectorViewController.swift; sourceTree = "<group>"; };
 		7CA7DDDC1F6102030061011A /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		7CB805791F7E5099003D4857 /* JKCalendar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JKCalendar.xcodeproj; path = JKCalendar/JKCalendar.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,27 +67,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C5141441F3424EC00263E8A /* JKCalendar.framework in Frameworks */,
+				7CB8057F1F7E579E003D4857 /* JKCalendar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7C51413F1F34210C00263E8A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				7C5141431F34210C00263E8A /* JKCalendar.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		7C72FF161E72930100D12F76 = {
 			isa = PBXGroup;
 			children = (
 				7C72FF211E72930100D12F76 /* JKCalendar-Sample */,
 				7C72FF201E72930100D12F76 /* Products */,
-				7C51413E1F34210C00263E8A /* JKCalendar.xcodeproj */,
+				7CB805791F7E5099003D4857 /* JKCalendar.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -114,6 +106,14 @@
 			path = "JKCalendar-Sample";
 			sourceTree = "<group>";
 		};
+		7CB8057A1F7E5099003D4857 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7CB8057E1F7E509A003D4857 /* JKCalendar.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -129,7 +129,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				7C5141471F3424EC00263E8A /* PBXTargetDependency */,
+				7CB805821F7E579F003D4857 /* PBXTargetDependency */,
 			);
 			name = "JKCalendar-Sample";
 			productName = "JKCalendar-Sample";
@@ -166,8 +166,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 7C51413F1F34210C00263E8A /* Products */;
-					ProjectRef = 7C51413E1F34210C00263E8A /* JKCalendar.xcodeproj */;
+					ProductGroup = 7CB8057A1F7E5099003D4857 /* Products */;
+					ProjectRef = 7CB805791F7E5099003D4857 /* JKCalendar.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -178,11 +178,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		7C5141431F34210C00263E8A /* JKCalendar.framework */ = {
+		7CB8057E1F7E509A003D4857 /* JKCalendar.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = JKCalendar.framework;
-			remoteRef = 7C5141421F34210C00263E8A /* PBXContainerItemProxy */;
+			remoteRef = 7CB8057D1F7E509A003D4857 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -215,10 +215,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		7C5141471F3424EC00263E8A /* PBXTargetDependency */ = {
+		7CB805821F7E579F003D4857 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JKCalendar;
-			targetProxy = 7C5141461F3424EC00263E8A /* PBXContainerItemProxy */;
+			targetProxy = 7CB805811F7E579F003D4857 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -24,21 +24,22 @@
 
 import UIKit
 
-open class JKCalendarScrollView: UIScrollView {
-
+public class JKCalendarScrollView: UIScrollView {
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
     
-    override open var delegate: UIScrollViewDelegate?{
-        set{
+    override public var delegate: UIScrollViewDelegate? {
+        set {
             _delegate = newValue
         }
-        get{
+
+        get {
             return _delegate
         }
     }
     
     var _delegate: UIScrollViewDelegate?
     
+    public var startsCollapsed: Bool = false
     private var first = true
     private var rotating = false
     
@@ -52,12 +53,11 @@ open class JKCalendarScrollView: UIScrollView {
         setup()
     }
     
-    func setup(){
+    func setup() {
         super.delegate = self
-        calendar.backgroundColor = UIColor.white
         calendar.interactionObject = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: .UIDeviceOrientationDidChange, object: nil)
     }
     
     override open func layoutSubviews() {
@@ -65,54 +65,56 @@ open class JKCalendarScrollView: UIScrollView {
         layoutSubviewsHandler()
     }
     
-    func layoutSubviewsHandler(){
+    func layoutSubviewsHandler() {
         if first || rotating{
             var calendarSize: CGSize!
-            if frame.width > frame.height{
+            if frame.width > frame.height {
                 calendarSize = CGSize(width: frame.width,
                                       height: (frame.width / 2).rounded())
-            }else{
-                calendarSize = CGSize(width: frame.width,
-                                      height: (frame.width / 1.2).rounded())
+            } else {
+                calendarSize = CGSize(width: frame.width, height: (frame.width / 1.2).rounded())
             }
             
             calendar.frame = CGRect(x: 0,
                                     y: frame.origin.y,
                                     width: calendarSize.width,
                                     height: calendarSize.height)
+
             contentInset = UIEdgeInsets(top: calendarSize.height,
                                         left: 0,
                                         bottom: 0,
                                         right: 0)
+
             contentOffset = CGPoint(x: 0, y: -calendarSize.height)
             rotating = false
             
-            if first{
+            if first {
                 superview?.insertSubview(calendar, aboveSubview: self)
                 first = false
             }
         }
     }
     
-    func rotated(){
-        if !first{
+    @objc
+    func rotated() {
+        if !first {
             rotating = true
             layoutSubviewsHandler()
         }
     }
 }
 
-extension JKCalendarScrollView: UIScrollViewDelegate{
+extension JKCalendarScrollView: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+
         var value = calendar.frame.height + contentOffset.y
-        if value > calendar.foldMaxValue {
-            value = calendar.foldMaxValue
-        }else if value < 0{
+        if value > calendar.collapsedMaximum {
+            value = calendar.collapsedMaximum
+        } else if value < 0 {
             value = 0
         }
-        
-        calendar.foldValue = value
+
+        calendar.collapsedValue = value
         
         _delegate?.scrollViewDidScroll?(scrollView)
     }
@@ -127,10 +129,10 @@ extension JKCalendarScrollView: UIScrollViewDelegate{
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        let value = (targetContentOffset.pointee.y + calendar.bounds.height) / calendar.foldMaxValue
+        let value = (targetContentOffset.pointee.y + calendar.bounds.height) / calendar.collapsedMaximum
         
-        if value < 1{
-            targetContentOffset.pointee.y = (value > 0.5 ? calendar.foldMaxValue: 0) - calendar.bounds.height
+        if value < 1 {
+            targetContentOffset.pointee.y = (value > 0.5 ? calendar.collapsedMaximum : 0) - calendar.bounds.height
         }
         
         _delegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)

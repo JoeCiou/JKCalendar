@@ -44,12 +44,12 @@ import UIKit
      The data source must adopt the JKCalendarDataSource protocol. The calendar view maintains a weak reference to the data source object.
      */
     public weak var dataSource: JKCalendarDataSource?
-    
+
     /**
         The color of the day text. Default value for this property is a black color.
      */
-    public var textColor: UIColor = UIColor.black{
-        didSet{
+    public var textColor: UIColor = UIColor.black {
+        didSet {
             reloadData()
         }
     }
@@ -57,32 +57,49 @@ import UIKit
     /**
         A Boolean value that determines whether scrolling is enabled. The default is true.
      */
-    public var isScrollEnabled: Bool = true{
-        didSet{
+    public var isScrollEnabled: Bool = true {
+        didSet {
             calendarPageView.isScrollEnabled = isScrollEnabled
-            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+            if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 calendarView.panRecognizer.isEnabled = !isScrollEnabled
             }
         }
     }
     
     /**
-        The mode of the calendar view.
+        The status of the calendar view.
      */
-    public var mode: JKCalendarViewMode{
-        return (foldValue / foldMaxValue) > 0.5 ? .week: .month
+    public var status: JKCalendarViewStatus {
+        if collapsedValue == collapsedMaximum {
+            return .collapse
+        } else if collapsedValue == 0 {
+            return .expand
+        } else {
+            return .between
+        }
     }
+    
+    /**
+         A Boolean value that determines whether status is collapsed when initial. The default is false.
+     */
+    public var startsCollapsed: Bool = false
+    
+    /**
+         A Boolean value that determines whether nearby month name is displayed. The default is true.
+     */
+    public var showNearbyMonthName: Bool = true
     
     /**
         The calendar view is background color. The default value is nil, which results in a transparent background color.
      */
-    public override var backgroundColor: UIColor?{
-        set{
-            super.backgroundColor = UIColor.clear
+    public override var backgroundColor: UIColor? {
+        set {
+            topBackGroundView?.backgroundColor = newValue
             calendarPageView?.backgroundColor = newValue
             calendarPageView?.currentView?.backgroundColor = newValue
         }
-        get{
+
+        get {
             return calendarPageView?.backgroundColor
         }
     }
@@ -90,14 +107,15 @@ import UIKit
     /**
         The month object of the calendar view. The default is the current month.
      */
-    public var month: JKMonth{
-        set{
-            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+    public var month: JKMonth {
+        set {
+            if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 calendarView.month = newValue
             }
             _month = newValue
         }
-        get{
+
+        get {
             return _month
         }
     }
@@ -106,58 +124,57 @@ import UIKit
         The property is the display week index of the calendar view in the folded state.
      */
     public var focusWeek: Int{
-        set{
-            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+        set {
+            if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 calendarView.focusWeek = newValue
             }
         }
-        get{
-            if let calendarView = calendarPageView.currentView as? JKCalendarView{
+        get {
+            if let calendarView = calendarPageView.currentView as? JKCalendarView {
                 return calendarView.focusWeek
-            }else{
+            } else {
                 return 0
             }
         }
     }
     
-    var _month: JKMonth = JKMonth(year: Date().year, month: Date().month)!{
-        didSet{
+    var _month: JKMonth = JKMonth()! {
+        didSet {
             let weekCount = month.weeksCount
-            foldMaxValue = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
-            
-            monthLabel.text = month.name
-            yearLabel.text = "\(month.year)"
-            
-            previousButton.setTitle(month.previous.name, for: .normal)
-            nextButton.setTitle(month.next.name, for: .normal)
+            collapsedMaximum = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
+            setupLabels()
         }
     }
     
-    var foldValue: CGFloat = 0{
+    var collapsedValue: CGFloat = 0 {
         didSet{
             if let calendarView = calendarPageView.currentView as? JKCalendarView,
-                calendarView.foldValue != foldValue{
-                calendarView.foldValue = foldValue
-                contentViewBottomConstraint.constant = foldValue
+                calendarView.collapsedValue != collapsedValue{
+                calendarView.collapsedValue = collapsedValue
+                contentViewBottomConstraint.constant = collapsedValue
                 
-                previousButton.setTitleColor(previousButton.titleColor(for: .normal)!.withAlphaComponent(1 - foldValue / foldMaxValue), for: .normal)
-                nextButton.setTitleColor(nextButton.titleColor(for: .normal)!.withAlphaComponent(1 - foldValue / foldMaxValue), for: .normal)
+                previousButton.setTitleColor(previousButton.titleColor(for: .normal)!.withAlphaComponent(1 - collapsedValue / collapsedMaximum), for: .normal)
+                nextButton.setTitleColor(nextButton.titleColor(for: .normal)!.withAlphaComponent(1 - collapsedValue / collapsedMaximum), for: .normal)
                 
-                if foldValue == 0{
-                    delegate?.calendar?(self, didChanged: .month)
-                }else if foldValue == foldMaxValue{
-                    delegate?.calendar?(self, didChanged: .week)
+                if collapsedValue == 0 && oldValue != collapsedValue{
+                    delegate?.calendar?(self, didChanged: .expand)
+                }else if collapsedValue == collapsedMaximum && oldValue != collapsedValue{
+                    delegate?.calendar?(self, didChanged: .collapse)
+                }else if (collapsedValue != 0 && oldValue == 0) || (collapsedValue != collapsedMaximum && oldValue == collapsedMaximum){
+                    delegate?.calendar?(self, didChanged: .between)
                 }
             }
         }
     }
-    var foldMaxValue: CGFloat = 0
+    var collapsedMaximum: CGFloat = 0
     
     fileprivate var contentViewBottomConstraint: NSLayoutConstraint!
+    private var first = true
     
     weak var interactionObject: UIScrollView?
     
     @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var topBackGroundView: UIView!
     @IBOutlet weak var calendarPageView: JKInfinitePageView!
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
@@ -165,12 +182,10 @@ import UIKit
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var pageViewHeightConstraint: NSLayoutConstraint!
     
-    public override init(frame: CGRect){
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupContentViewUI()
         setupCalendarView()
-        
-        pageViewHeightConstraint.constant = frame.height - 67 > 0 ? frame.height - 67: 0
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -180,22 +195,47 @@ import UIKit
     }
     
     public override func layoutSubviews() {
-        pageViewHeightConstraint.constant = frame.height - 67 > 0 ? frame.height - 67: 0
         super.layoutSubviews()
         
-        let weekCount = month.weeksCount
-        foldMaxValue = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
+        let pageViewHeight = frame.height - calendarPageView.frame.origin.y - 5
+        pageViewHeightConstraint.constant = pageViewHeight > 0 ? pageViewHeight: 0
         
-        if let view = calendarPageView.currentView as? JKCalendarView{
+        let weekCount = month.weeksCount
+        let maximum = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
+        if first {
+            collapsedMaximum = maximum
+            if startsCollapsed{
+                if let object = interactionObject{
+                    object.setContentOffset(CGPoint(x: 0, y: collapsedMaximum - bounds.height), animated: false)
+                }else{
+                    collapsedValue = maximum
+                }
+            }
+            first = false
+        }else{
+            // handle changed of collapsed maximum
+            if maximum != collapsedMaximum && collapsedValue == collapsedMaximum{
+                if let object = interactionObject{
+                    object.setContentOffset(CGPoint(x: 0, y: collapsedMaximum - bounds.height), animated: false)
+                }else{
+                    collapsedValue = maximum
+                }
+            }
+            collapsedMaximum = maximum
+        }
+        
+        if let view = calendarPageView.currentView as? JKCalendarView {
             view.setNeedsDisplay()
         }
     }
     
-    func setupContentViewUI(){
+    func setupContentViewUI() {
         let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: "JKCalendar", bundle: bundle)
+
         let contentView = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.backgroundColor = backgroundColor
         addSubview(contentView)
         
         let topConstraint = NSLayoutConstraint(item: contentView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
@@ -208,7 +248,7 @@ import UIKit
         addConstraints(horizontalConstraints)
     }
     
-    func setupCalendarView(){
+    func setupCalendarView() {
         calendarPageView.delegate = self
         calendarPageView.dataSource = self
         
@@ -217,11 +257,15 @@ import UIKit
         calendarView.panRecognizer.isEnabled = !isScrollEnabled
         calendarPageView.setView(calendarView)
         
+        setupLabels()
+    }
+
+    func setupLabels() {
         monthLabel.text = month.name
         yearLabel.text = "\(month.year)"
-        
-        previousButton.setTitle(month.previous.name, for: .normal)
-        nextButton.setTitle(month.next.name, for: .normal)
+
+        previousButton.setTitle(showNearbyMonthName ? month.previous.name : nil, for: .normal)
+        nextButton.setTitle(showNearbyMonthName ? month.next.name : nil, for: .normal)
     }
     
     /**
@@ -235,38 +279,83 @@ import UIKit
     }
     
     /**
-        Folded up the calendar view.
+         Collapsed up the calendar view.
+     
+         - Parameters:
+         - animated: True to animate the transition at a constant velocity to the collapsed status, false to make the transition immediate.
      */
-    public func fold(){
+    public func collapse(animated: Bool) {
         if let object = interactionObject{
-            object.setContentOffset(CGPoint(x: 0, y: foldMaxValue - bounds.height), animated: true)
+            object.setContentOffset(CGPoint(x: 0, y: collapsedMaximum - bounds.height), animated: animated)
         }else{
-            
+            if animated{
+                continuouslyChangeCollapsedValue(destination: collapsedMaximum, duration: 0.2)
+            } else {
+                collapsedValue = collapsedMaximum
+            }
         }
     }
     
     /**
-        Unfolded up the calendar view.
+         expanded up the calendar view.
+     
+         - Parameters:
+         - animated: True to animate the transition at a constant velocity to the expanded status, false to make the transition immediate.
      */
-    public func unfold(){
+    public func expand(animated: Bool) {
         if let object = interactionObject{
-            object.setContentOffset(CGPoint(x: 0, y: -bounds.height), animated: true)
+            object.setContentOffset(CGPoint(x: 0, y: -bounds.height), animated: animated)
         }else{
+            if animated {
+                continuouslyChangeCollapsedValue(destination: 0, duration: 0.2)
+            } else {
+                collapsedValue = 0
+            }
+        }
+    }
+    
+    func continuouslyChangeCollapsedValue(destination: CGFloat, duration: Double){
+        let timer = Timer(timeInterval: 0.02,
+                          target: self,
+                          selector: #selector(handleStatusChangeTimer(_:)),
+                          userInfo: ["source": collapsedValue,
+                                     "destination": destination,
+                                     "duration": duration,
+                                     "startDate": Date()],
+                          repeats: true)
+        RunLoop.current.add(timer, forMode: .commonModes)
+    }
+    
+    @objc
+    func handleStatusChangeTimer(_ timer: Timer){
+        if let userInfo = timer.userInfo as? [String: Any],
+            let source = userInfo["source"] as? CGFloat,
+            let destination = userInfo["destination"] as? CGFloat,
+            let duration = userInfo["duration"] as? Double,
+            let startDate = userInfo["startDate"] as? Date {
             
+            let elapsing = Date().timeIntervalSince1970 - startDate.timeIntervalSince1970
+            collapsedValue = source + (destination - source) * CGFloat(elapsing >= duration ? 1: elapsing / duration)
+            
+            if collapsedValue == destination{
+                timer.invalidate()
+            }
+        } else {
+            timer.invalidate()
         }
     }
     
     /**
         Move the calendar view month to the next month
      */
-    public func nextMonth(){
+    public func nextMonth() {
         calendarPageView.nextPage()
     }
     
     /**
         Move the calendar view month to the previous month
      */
-    public func previousMonth(){
+    public func previousMonth() {
         calendarPageView.previousPage()
     }
     
@@ -285,12 +374,12 @@ import UIKit
     }
 }
 
-extension JKCalendar: JKInfinitePageViewDelegate{
+extension JKCalendar: JKInfinitePageViewDelegate {
     func infinitePageView(_ infinitePageView: JKInfinitePageView, afterWith view: UIView, progress: Double) {
         let calendarView = view as! JKCalendarView
         let currentCalendarView = infinitePageView.currentView! as! JKCalendarView
         
-        if mode == .week && calendarView.month == currentCalendarView.month{
+        if status == .collapse && calendarView.month == currentCalendarView.month{
             return
         }
         
@@ -335,7 +424,7 @@ extension JKCalendar: JKInfinitePageViewDelegate{
         let calendarView = view as! JKCalendarView
         let currentCalendarView = infinitePageView.currentView! as! JKCalendarView
         
-        if mode == .week && calendarView.month == currentCalendarView.month{
+        if status == .collapse && calendarView.month == currentCalendarView.month{
             return
         }
         
@@ -383,7 +472,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
         let view = view as! JKCalendarView
         
         var calendarView: JKCalendarView!
-        if mode == .month{
+        if status == .expand{
             calendarView = JKCalendarView(calendar: self, month: view.month.previous)
             calendarView.focusWeek = focusWeek >= calendarView.month.weeksCount ? calendarView.month.weeksCount - 1: focusWeek
         }else if focusWeek - 1 >= 0{
@@ -394,7 +483,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
             calendarView.focusWeek = view.month.previous.weeksCount - 1
         }
         calendarView.backgroundColor = backgroundColor
-        calendarView.foldValue = foldValue
+        calendarView.collapsedValue = collapsedValue
         calendarView.panRecognizer.isEnabled = !isScrollEnabled
         
         return calendarView
@@ -404,18 +493,19 @@ extension JKCalendar: JKInfinitePageViewDataSource{
         let view = view as! JKCalendarView
         
         var calendarView: JKCalendarView!
-        if mode == .month{
+        if status == .expand {
             calendarView = JKCalendarView(calendar: self, month: view.month.next)
             calendarView.focusWeek = focusWeek >= calendarView.month.weeksCount ? calendarView.month.weeksCount - 1: focusWeek
-        }else if focusWeek + 1 < view.month.weeksCount{
+        } else if focusWeek + 1 < view.month.weeksCount{
             calendarView = JKCalendarView(calendar: self, month: view.month)
             calendarView.focusWeek = focusWeek + 1
-        }else{
+        } else {
             calendarView = JKCalendarView(calendar: self, month: view.month.next)
             calendarView.focusWeek = 0
         }
+
         calendarView.backgroundColor = backgroundColor
-        calendarView.foldValue = foldValue
+        calendarView.collapsedValue = collapsedValue
         calendarView.panRecognizer.isEnabled = !isScrollEnabled
         
         return calendarView
@@ -428,7 +518,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     
     @objc optional func calendar(_ calendar: JKCalendar, didPan days: [JKDay])
     
-    @objc optional func calendar(_ calendar: JKCalendar, didChanged mode: JKCalendarViewMode)
+    @objc optional func calendar(_ calendar: JKCalendar, didChanged status: JKCalendarViewStatus)
 }
 
 @objc public protocol JKCalendarDataSource{

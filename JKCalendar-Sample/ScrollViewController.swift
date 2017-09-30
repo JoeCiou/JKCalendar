@@ -34,6 +34,7 @@ class ScrollViewController: UIViewController {
     var continuousMarkStartDay: JKDay = JKDay(year: 2017, month: 10, day: 13)!
     var continuousMarkEndDay: JKDay = JKDay(year: 2017, month: 10, day: 14)!
     
+    @IBOutlet weak var statusButtonItem: UIBarButtonItem!
     @IBOutlet weak var calendarScrollView: JKCalendarScrollView!
     
     @IBOutlet weak var dateLabel: UILabel!
@@ -53,8 +54,12 @@ class ScrollViewController: UIViewController {
         calendarScrollView.calendar.backgroundColor = UIColor.white
 
         calendarScrollView.calendar.focusWeek = JKCalendar.calendar.component(.weekOfMonth, from: selectDay.date) - 1
+        calendarScrollView.calendar.startsCollapsed = true
         
-        
+        setupTextView()
+    }
+    
+    func setupTextView(){
         let formatter = DateFormatter()
         
         formatter.dateStyle = .medium
@@ -74,6 +79,15 @@ class ScrollViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func handleStatusButtonClick(_ sender: Any) {
+        if calendarScrollView.calendar.status == .collapse{
+            calendarScrollView.calendar.expand(animated: true)
+        }else if calendarScrollView.calendar.status == .expand{
+            calendarScrollView.calendar.collapse(animated: true)
+        }
+    }
+    
     @IBAction func handleBackButtonClick(_ sender: Any) {
         let _ = navigationController?.popViewController(animated: true)
     }
@@ -86,6 +100,10 @@ extension ScrollViewController: JKCalendarDelegate{
         selectDay = day
         calendar.focusWeek = day < calendar.month ? 0: day > calendar.month ? calendar.month.weeksCount - 1: day.weekOfMonth - 1
         calendar.reloadData()
+    }
+    
+    func calendar(_ calendar: JKCalendar, didChanged status: JKCalendarViewStatus) {
+        statusButtonItem.image = UIImage(named: status == .collapse ? "ic_down": "ic_up")
     }
 }
 

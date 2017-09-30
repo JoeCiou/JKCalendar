@@ -25,7 +25,6 @@
 import UIKit
 
 class JKCalendarView: UIView{
-    
     let calendar: JKCalendar
     
     var month: JKMonth{
@@ -35,16 +34,16 @@ class JKCalendarView: UIView{
         }
     }
     
-    var foldValue: CGFloat = 0{
+    var collapsedValue: CGFloat = 0{
         didSet{
-            updateFoldValueWeeksInfo()
+            updateCollapsedValueWeeksInfo()
             setNeedsDisplay()
         }
     }
     
     var focusWeek: Int = 0{
         didSet{
-            updateFoldValueWeeksInfo()
+            updateCollapsedValueWeeksInfo()
             setNeedsLayout()
         }
     }
@@ -56,13 +55,13 @@ class JKCalendarView: UIView{
     var tapRecognizer: UITapGestureRecognizer!
     var panRecognizer: UIPanGestureRecognizer!
     
-    init(calendar: JKCalendar, month: JKMonth){
+    init(calendar: JKCalendar, month: JKMonth) {
         self.calendar = calendar
         self.month = month
         super.init(frame: CGRect.zero)
         
-        tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(_:)))
+        tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         gestureRecognizers = [tapRecognizer, panRecognizer]
     }
     
@@ -75,7 +74,7 @@ class JKCalendarView: UIView{
         resetWeeksInfo()
     }
     
-    func resetWeeksInfo(){
+    func resetWeeksInfo() {
         weeksInfo = []
         
         let firstDay = month.firstDay
@@ -90,8 +89,8 @@ class JKCalendarView: UIView{
         for weekIndex in 0 ..< month.weeksCount{
             var daysInfo: [JKDayInfo] = []
             let offsetY = weekIndex <= focusWeek ?
-                foldValue * CGFloat(focusWeek) / CGFloat(month.weeksCount - 1):
-            foldValue
+                collapsedValue * CGFloat(focusWeek) / CGFloat(month.weeksCount - 1):
+            collapsedValue
             for dayIndex in 0 ..< 7{
                 let dayRect = CGRect(x: 10 + CGFloat(dayIndex) * calendarDaySize.width,
                                      y: CGFloat(weekIndex) * calendarDaySize.height - offsetY,
@@ -111,14 +110,14 @@ class JKCalendarView: UIView{
             weeksInfo.append(JKWeekInfo(daysInfo: daysInfo))
         }
         
-        if let continuousMarks = calendar.dataSource?.calendar?(calendar, continuousMarksWith: month){
+        if let continuousMarks = calendar.dataSource?.calendar?(calendar, continuousMarksWith: month) {
             for continuousMark in continuousMarks{
                 
                 for weekIndex in 0 ..< weeksInfo.count{
                     let weekDays = weeksInfo[weekIndex].days
-                    if continuousMark.end < weekDays.first! || continuousMark.start > weekDays.last!{
+                    if continuousMark.end < weekDays.first! || continuousMark.start > weekDays.last! {
                         continue
-                    }else{
+                    } else {
                         let lowerBound = weekDays.contains(continuousMark.start) ? weekDays.index(of: continuousMark.start)!: 0
                         let upperBound = weekDays.contains(continuousMark.end) ? weekDays.index(of: continuousMark.end)!: 6
                         let range = Range<Int>(uncheckedBounds: (lowerBound, upperBound))
@@ -130,13 +129,13 @@ class JKCalendarView: UIView{
         }
     }
     
-    func updateFoldValueWeeksInfo(){
+    func updateCollapsedValueWeeksInfo() {
         let calendarDaySize = CGSize(width: (bounds.width - 20) / 7,
                                      height: bounds.height / CGFloat(month.weeksCount))
         
         for weekIndex in 0 ..< weeksInfo.count{
             let offsetY = weekIndex <= focusWeek ?
-                foldValue * CGFloat(focusWeek) / CGFloat(month.weeksCount - 1): foldValue
+                collapsedValue * CGFloat(focusWeek) / CGFloat(month.weeksCount - 1): collapsedValue
             
             for dayIndex in 0 ..< weeksInfo[weekIndex].daysInfo.count{
                 weeksInfo[weekIndex].daysInfo[dayIndex].location =
@@ -167,29 +166,28 @@ class JKCalendarView: UIView{
                                     y: firstDayInfo.location.origin.y,
                                     width: lastDayInfo.location.origin.x + lastDayInfo.location.width - firstDayInfo.location.origin.x,
                                     height: firstDayInfo.location.height))
-            context?.setFillColor(UIColor.white.cgColor)
+            context?.setFillColor(backgroundColor?.cgColor ?? UIColor.white.cgColor)
             context?.fillPath()
             
             // Draw continuous mark
-            for (mark, range) in weekInfo.continuousMarksInfo{
+            for (mark, range) in weekInfo.continuousMarksInfo {
                 
                 let path = UIBezierPath()
                 let beginLocation = weekInfo.daysInfo[range.lowerBound].location
                 let endLocation = weekInfo.daysInfo[range.upperBound].location
                 
-                switch mark.type{
-                    
+                switch mark.type {
                 case .circle:
                     let height = beginLocation.height * 5 / 6
                     let radius = height / 2
-                    if mark.start == mark.end{
+                    if mark.start == mark.end {
                         let center = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
                                              y: beginLocation.origin.y + beginLocation.height / 2)
                         path.addArc(withCenter: center,
                                     radius: radius,
                                     startAngle: 0,
                                     endAngle: 2 * CGFloat.pi, clockwise: true)
-                    }else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
+                    } else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
                         let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
                                           y: beginLocation.origin.y + (beginLocation.height - height) / 2,
                                           width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x - beginLocation.width / 2,
@@ -212,7 +210,7 @@ class JKCalendarView: UIView{
                                     clockwise: true)
                         path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
                         
-                    }else if mark.start >= firstDayInfo.day{
+                    } else if mark.start >= firstDayInfo.day{
                         let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
                                           y: beginLocation.origin.y + (beginLocation.height - height) / 2,
                                           width: endLocation.origin.x + endLocation.width - beginLocation.origin.x - beginLocation.width / 2,
@@ -229,7 +227,7 @@ class JKCalendarView: UIView{
                                     clockwise: true)
                         path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
                         
-                    }else if mark.end <= lastDayInfo.day{
+                    } else if mark.end <= lastDayInfo.day{
                         let rect = CGRect(x: beginLocation.origin.x,
                                           y: beginLocation.origin.y + (beginLocation.height - height) / 2,
                                           width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x,
@@ -246,7 +244,7 @@ class JKCalendarView: UIView{
                                     clockwise: true)
                         path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
                         
-                    }else{
+                    } else {
                         let rect = CGRect(x: beginLocation.origin.x,
                                           y: beginLocation.origin.y + (beginLocation.height - height) / 2,
                                           width: endLocation.origin.x + endLocation.width - beginLocation.origin.x,
@@ -273,7 +271,7 @@ class JKCalendarView: UIView{
                                     radius: radius,
                                     startAngle: 0,
                                     endAngle: 2 * CGFloat.pi, clockwise: true)
-                    }else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
+                    } else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
                         let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
                                           y: beginLocation.origin.y + (beginLocation.height - height) / 2,
                                           width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x - beginLocation.width / 2,
@@ -296,7 +294,7 @@ class JKCalendarView: UIView{
                                     clockwise: true)
                         path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
                         
-                    }else if mark.start >= firstDayInfo.day{
+                    } else if mark.start >= firstDayInfo.day{
                         let rect = CGRect(x: beginLocation.origin.x + beginLocation.width / 2,
                                           y: beginLocation.origin.y + (beginLocation.height - height) / 2,
                                           width: endLocation.origin.x + endLocation.width - beginLocation.origin.x - beginLocation.width / 2,
@@ -313,7 +311,7 @@ class JKCalendarView: UIView{
                                     clockwise: true)
                         path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y))
                         
-                    }else if mark.end <= lastDayInfo.day{
+                    } else if mark.end <= lastDayInfo.day{
                         let rect = CGRect(x: beginLocation.origin.x,
                                           y: beginLocation.origin.y + (beginLocation.height - height) / 2,
                                           width: endLocation.origin.x + endLocation.width / 2 - beginLocation.origin.x,
@@ -330,7 +328,7 @@ class JKCalendarView: UIView{
                                     clockwise: true)
                         path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
                         
-                    }else{
+                    } else {
                         let rect = CGRect(x: beginLocation.origin.x,
                                           y: beginLocation.origin.y + (beginLocation.height - height) / 2,
                                           width: endLocation.origin.x + endLocation.width - beginLocation.origin.x,
@@ -356,25 +354,25 @@ class JKCalendarView: UIView{
                         path.move(to: CGPoint(x: beginX, y: offsetY))
                         path.addLine(to: CGPoint(x: endX, y: offsetY))
                         
-                    }else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
+                    } else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
                         let beginX = beginLocation.origin.x + (beginLocation.width - lineWidth) / 2
                         let endX = endLocation.origin.x + (endLocation.width - lineWidth) / 2 + lineWidth
                         path.move(to: CGPoint(x: beginX, y: offsetY))
                         path.addLine(to: CGPoint(x: endX, y: offsetY))
                         
-                    }else if mark.start >= firstDayInfo.day{
+                    } else if mark.start >= firstDayInfo.day{
                         let beginX = beginLocation.origin.x + (beginLocation.width - lineWidth) / 2
                         let endX = endLocation.origin.x + endLocation.width
                         path.move(to: CGPoint(x: beginX, y: offsetY))
                         path.addLine(to: CGPoint(x: endX, y: offsetY))
                         
-                    }else if mark.end <= lastDayInfo.day{
+                    } else if mark.end <= lastDayInfo.day{
                         let beginX = beginLocation.origin.x
                         let endX = endLocation.origin.x + (endLocation.width - lineWidth) / 2 + lineWidth
                         path.move(to: CGPoint(x: beginX, y: offsetY))
                         path.addLine(to: CGPoint(x: endX, y: offsetY))
                         
-                    }else{
+                    } else {
                         let beginX = beginLocation.origin.x
                         let endX = endLocation.origin.x + endLocation.width
                         path.move(to: CGPoint(x: beginX, y: offsetY))
@@ -399,7 +397,7 @@ class JKCalendarView: UIView{
                                     endAngle: 3 * CGFloat.pi,
                                     clockwise: true)
                         
-                    }else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
+                    } else if mark.start >= firstDayInfo.day && mark.end <= lastDayInfo.day{
                         let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
                                                  y: offsetY)
                         let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
@@ -417,7 +415,7 @@ class JKCalendarView: UIView{
                                     endAngle: 2 * CGFloat.pi,
                                     clockwise: true)
                         
-                    }else if mark.start >= firstDayInfo.day{
+                    } else if mark.start >= firstDayInfo.day{
                         let leftCenter = CGPoint(x: beginLocation.origin.x + beginLocation.width / 2,
                                                  y: offsetY)
                         
@@ -428,7 +426,7 @@ class JKCalendarView: UIView{
                                     clockwise: true)
                         path.addLine(to: CGPoint(x: endLocation.origin.x + endLocation.width, y: offsetY))
                         
-                    }else if mark.end <= lastDayInfo.day{
+                    } else if mark.end <= lastDayInfo.day{
                         let rightCenter = CGPoint(x: endLocation.origin.x + endLocation.width / 2,
                                                   y: offsetY)
                         
@@ -439,7 +437,7 @@ class JKCalendarView: UIView{
                                     startAngle: 0,
                                     endAngle: 2 * CGFloat.pi,
                                     clockwise: true)
-                    }else{
+                    } else {
                         path.move(to: CGPoint(x: beginLocation.origin.x, y: offsetY))
                         path.addLine(to: CGPoint(x: endLocation.origin.x + endLocation.width, y: offsetY))
                     }
@@ -508,24 +506,24 @@ class JKCalendarView: UIView{
                 
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .center
-                var unitStrAttrs = [NSFontAttributeName: font,
-                                    NSParagraphStyleAttributeName: paragraphStyle]
+                var unitStrAttrs = [NSAttributedStringKey.font: font,
+                                    NSAttributedStringKey.paragraphStyle: paragraphStyle]
                 
                 if let mark = info.mark, mark.type == .circle{
-                    unitStrAttrs[NSForegroundColorAttributeName] = calendar.backgroundColor
-                }else if weekInfo.continuousMarksInfo.keys.filter({ (mark) -> Bool in
+                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.backgroundColor
+                } else if weekInfo.continuousMarksInfo.keys.filter({ (mark) -> Bool in
                     return mark.type == .circle
                 }).contains(where: { (mark) -> Bool in
                     return info.day >= mark.start && info.day <= mark.end
-                }){
-                    unitStrAttrs[NSForegroundColorAttributeName] = calendar.backgroundColor
-                }else if info.day == month{
-                    unitStrAttrs[NSForegroundColorAttributeName] = calendar.textColor
-                }else{
-                    unitStrAttrs[NSForegroundColorAttributeName] = calendar.textColor.withAlphaComponent(0.3)
+                }) {
+                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.backgroundColor
+                } else if info.day == month{
+                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.textColor
+                } else {
+                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.textColor.withAlphaComponent(0.3)
                 }
                 
-                let textSize = dayString.size(attributes: [NSFontAttributeName: font])
+                let textSize = dayString.size(withAttributes: [NSAttributedStringKey.font: font])
                 let dy = (info.location.height - textSize.height) / 2
                 
                 let textRect = CGRect(x: info.location.origin.x,
@@ -537,7 +535,7 @@ class JKCalendarView: UIView{
         }
     }
     
-    fileprivate func dayInfo(tapPosition: CGPoint) -> JKDayInfo?{
+    fileprivate func dayInfo(tapPosition: CGPoint) -> JKDayInfo? {
         for weekInfo in weeksInfo{
             for info in weekInfo.daysInfo{
                 if tapPosition.x > info.location.origin.x &&
@@ -551,31 +549,36 @@ class JKCalendarView: UIView{
         
         return nil
     }
-    
-    func handleTap(_ recognizer: UITapGestureRecognizer){
+
+    @objc
+    func handleTap(_ recognizer: UITapGestureRecognizer) {
         let position = recognizer.location(in: self)
-        if let info = dayInfo(tapPosition: position){
+        if let info = dayInfo(tapPosition: position) {
             calendar.delegate?.calendar?(calendar, didTouch: info.day)
         }
     }
-    
-    func handlePan(_ recognizer: UIPanGestureRecognizer){
+
+    @objc
+    func handlePan(_ recognizer: UIPanGestureRecognizer) {
         let position = recognizer.location(in: self)
-        if let info = dayInfo(tapPosition: position){
+        if let info = dayInfo(tapPosition: position) {
             switch recognizer.state {
             case .began:
                 calendar.delegate?.calendar?(calendar, didPan: [info.day])
                 panBeganDay = info.day
                 panChangedDay = info.day
+
             case .changed:
-                if let changedDay = panChangedDay, changedDay == info.day{
-                }else if let beganDay = panBeganDay{
+                if let changedDay = panChangedDay, changedDay == info.day {
+                } else if let beganDay = panBeganDay {
                     calendar.delegate?.calendar?(calendar, didPan: beganDay.days(until: info.day))
                 }
                 panChangedDay = info.day
+
             case .ended:
                 panBeganDay = nil
                 panChangedDay = nil
+
             default:
                 break
             }
@@ -591,7 +594,7 @@ class JKCalendarView: UIView{
         var daysInfo: [JKDayInfo]
         var continuousMarksInfo: [JKCalendarContinuousMark: Range<Int>] = [:]
         
-        init(daysInfo: [JKDayInfo]){
+        init(daysInfo: [JKDayInfo]) {
             self.daysInfo = daysInfo
         }
     }
@@ -602,7 +605,7 @@ class JKCalendarView: UIView{
         
         var mark: JKCalendarMark?
         
-        init(day: JKDay, location: CGRect){
+        init(day: JKDay, location: CGRect) {
             self.day = day
             self.location = location
         }
