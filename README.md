@@ -11,6 +11,12 @@ To install add the following line to your `Podfile`:
 pod 'JKCalendar'
 ```
 
+#### Carthage
+To install add the following line to your `Cartfile`:
+```ruby
+github "joe22499/JKCalendar"
+```
+
 ## Usage
 
 Firstley, import `JKCalendar`
