@@ -25,6 +25,7 @@
 import UIKit
 
 public class JKCalendarScrollView: UIScrollView {
+    
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
     
     override public var delegate: UIScrollViewDelegate? {
@@ -68,11 +69,15 @@ public class JKCalendarScrollView: UIScrollView {
     func layoutSubviewsHandler() {
         if first || rotating{
             var calendarSize: CGSize!
+            let footerHeight = calendar.delegate?.heightOfFooterView?(in: calendar) ?? 0
             if frame.width > frame.height {
+                let height = (calendar.isTopViewDisplayed ? calendar.topView.frame.height: 0) + calendar.weekView.frame.height + frame.width * 0.35 + footerHeight
                 calendarSize = CGSize(width: frame.width,
-                                      height: (frame.width / 2).rounded())
+                                      height: height)
             } else {
-                calendarSize = CGSize(width: frame.width, height: (frame.width / 1.2).rounded())
+                let height = (calendar.isTopViewDisplayed ? calendar.topView.frame.height: 0) + calendar.weekView.frame.height + frame.width * 0.65 + footerHeight
+                calendarSize = CGSize(width: frame.width,
+                                      height: height)
             }
             
             calendar.frame = CGRect(x: 0,
@@ -84,6 +89,11 @@ public class JKCalendarScrollView: UIScrollView {
                                         left: 0,
                                         bottom: 0,
                                         right: 0)
+            
+            scrollIndicatorInsets = UIEdgeInsets(top: calendarSize.height,
+                                                 left: 0,
+                                                 bottom: 0,
+                                                 right: 0)
 
             contentOffset = CGPoint(x: 0, y: -calendarSize.height)
             rotating = false

@@ -58,7 +58,7 @@ class SelectorViewController: UIViewController {
         calendar.textColor = UIColor(white: 0.25, alpha: 1)
         calendar.backgroundColor = UIColor.white
         
-        calendar.showNearbyMonthName = false
+        calendar.isNearbyMonthNameDisplayed = false
         calendar.isScrollEnabled = false
     }
 

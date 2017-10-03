@@ -54,7 +54,7 @@ class ScrollViewController: UIViewController {
         calendarScrollView.calendar.backgroundColor = UIColor.white
 
         calendarScrollView.calendar.focusWeek = JKCalendar.calendar.component(.weekOfMonth, from: selectDay.date) - 1
-        calendarScrollView.calendar.startsCollapsed = true
+        calendarScrollView.calendar.isInitializationCollapsed = true
         
         setupTextView()
     }
@@ -105,31 +105,43 @@ extension ScrollViewController: JKCalendarDelegate{
     func calendar(_ calendar: JKCalendar, didChanged status: JKCalendarViewStatus) {
         statusButtonItem.image = UIImage(named: status == .collapse ? "ic_down": "ic_up")
     }
+    
+    func heightOfFooterView(in claendar: JKCalendar) -> CGFloat{
+        return 10
+    }
+    
+    func viewOfFooter(in calendar: JKCalendar) -> UIView?{
+        let view = UIView()
+        let line = UIView(frame: CGRect(x: 8, y: 9, width: calendar.frame.width - 16, height: 1))
+        line.backgroundColor = UIColor.lightGray
+        view.addSubview(line)
+        return view
+    }
 }
 
 extension ScrollViewController: JKCalendarDataSource{
     
     func calendar(_ calendar: JKCalendar, marksWith month: JKMonth) -> [JKCalendarMark]? {
         
-        let markMonth = JKMonth(year: 2017, month: 9)!
-        
-        guard month == markMonth else{
-            return nil
-        }
-        
         let firstMarkDay: JKDay = JKDay(year: month.year, month: month.month, day: 8)!
         let secondMarkDay: JKDay = JKDay(year: month.year, month: month.month, day: 19)!
         
         var marks: [JKCalendarMark] = []
-        marks.append(JKCalendarMark(type: .circle,
-                                    day: selectDay,
-                                    color: markColor))
-        marks.append(JKCalendarMark(type: .underline,
-                                    day: firstMarkDay,
-                                    color: markColor))
-        marks.append(JKCalendarMark(type: .dot,
-                                    day: secondMarkDay,
-                                    color: markColor))
+        if selectDay == month{
+            marks.append(JKCalendarMark(type: .circle,
+                                        day: selectDay,
+                                        color: markColor))
+        }
+        if firstMarkDay == month{
+            marks.append(JKCalendarMark(type: .underline,
+                                        day: firstMarkDay,
+                                        color: markColor))
+        }
+        if secondMarkDay == month{
+            marks.append(JKCalendarMark(type: .dot,
+                                        day: secondMarkDay,
+                                        color: markColor))
+        }
         return marks
     }
     

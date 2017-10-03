@@ -81,7 +81,7 @@ class JKCalendarView: UIView{
         let weekday = firstDay.weekday - 1
         var offset = firstDay.previous(weekday)
         
-        let calendarDaySize = CGSize(width: (bounds.width - 20) / 7,
+        let calendarDaySize = CGSize(width: (bounds.width - 16) / 7,
                                      height: bounds.height / CGFloat(month.weeksCount))
         
         let marks = calendar.dataSource?.calendar?(calendar, marksWith: month)
@@ -92,7 +92,7 @@ class JKCalendarView: UIView{
                 collapsedValue * CGFloat(focusWeek) / CGFloat(month.weeksCount - 1):
             collapsedValue
             for dayIndex in 0 ..< 7{
-                let dayRect = CGRect(x: 10 + CGFloat(dayIndex) * calendarDaySize.width,
+                let dayRect = CGRect(x: 8 + CGFloat(dayIndex) * calendarDaySize.width,
                                      y: CGFloat(weekIndex) * calendarDaySize.height - offsetY,
                                      width: calendarDaySize.width,
                                      height: calendarDaySize.height)
@@ -130,7 +130,7 @@ class JKCalendarView: UIView{
     }
     
     func updateCollapsedValueWeeksInfo() {
-        let calendarDaySize = CGSize(width: (bounds.width - 20) / 7,
+        let calendarDaySize = CGSize(width: (bounds.width - 16) / 7,
                                      height: bounds.height / CGFloat(month.weeksCount))
         
         for weekIndex in 0 ..< weeksInfo.count{
@@ -139,7 +139,7 @@ class JKCalendarView: UIView{
             
             for dayIndex in 0 ..< weeksInfo[weekIndex].daysInfo.count{
                 weeksInfo[weekIndex].daysInfo[dayIndex].location =
-                    CGRect(x: 10 + CGFloat(dayIndex) * calendarDaySize.width,
+                    CGRect(x: 8 + CGFloat(dayIndex) * calendarDaySize.width,
                            y: CGFloat(weekIndex) * calendarDaySize.height - offsetY,
                            width: calendarDaySize.width,
                            height: calendarDaySize.height)

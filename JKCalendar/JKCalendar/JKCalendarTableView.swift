@@ -52,22 +52,30 @@ open class JKCalendarTableView: UITableView {
     func layoutSubviewsHandler(){
         if first || rotating{
             var calendarSize: CGSize!
-            if frame.width > frame.height{
+            let footerHeight = calendar.delegate?.heightOfFooterView?(in: calendar) ?? 0
+            if frame.width > frame.height {
                 calendarSize = CGSize(width: frame.width,
-                                      height: (frame.width / 2).rounded())
-            }else{
+                                      height: (frame.width / 2).rounded() + footerHeight)
+            } else {
                 calendarSize = CGSize(width: frame.width,
-                                      height: (frame.width / 1.2).rounded())
+                                      height: (frame.width / 1.2).rounded() + footerHeight)
             }
             
             calendar.frame = CGRect(x: 0,
                                     y: frame.origin.y,
                                     width: calendarSize.width,
                                     height: calendarSize.height)
+            
             contentInset = UIEdgeInsets(top: calendarSize.height,
                                         left: 0,
                                         bottom: 0,
                                         right: 0)
+            
+            scrollIndicatorInsets = UIEdgeInsets(top: calendarSize.height,
+                                                 left: 0,
+                                                 bottom: 0,
+                                                 right: 0)
+            
             contentOffset = CGPoint(x: 0, y: -calendarSize.height)
             rotating = false
             

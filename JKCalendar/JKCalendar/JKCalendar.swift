@@ -27,23 +27,36 @@ import UIKit
 @IBDesignable public class JKCalendar: UIView {
     
     /**
-        A gregorian calendar
+         A gregorian calendar
      */
     static public let calendar = Calendar(identifier: .gregorian)
     
     /**
-     The object that acts as the delegate of the calendar view.
+         The object that acts as the delegate of the calendar view.
      
-     The delegate must adopt the JKCalendarDelegate protocol. The calendar view maintains a weak reference to the delegate object.
+         The delegate must adopt the JKCalendarDelegate protocol. The calendar view maintains a weak reference to the delegate object.
      */
     public weak var delegate: JKCalendarDelegate?
     
     /**
-     The object that provides the marks data for the calendar view.
+         The object that provides the marks data for the calendar view.
      
-     The data source must adopt the JKCalendarDataSource protocol. The calendar view maintains a weak reference to the data source object.
+         The data source must adopt the JKCalendarDataSource protocol. The calendar view maintains a weak reference to the data source object.
      */
     public weak var dataSource: JKCalendarDataSource?
+    
+    /**
+         The status of the calendar view.
+     */
+    public var status: JKCalendarViewStatus {
+        if collapsedValue == collapsedMaximum {
+            return .collapse
+        } else if collapsedValue == 0 {
+            return .expand
+        } else {
+            return .between
+        }
+    }
 
     /**
         The color of the day text. Default value for this property is a black color.
@@ -67,36 +80,35 @@ import UIKit
     }
     
     /**
-        The status of the calendar view.
+         This Boolean determines whether the calendar status is collapsed at initialization. The default is false.
      */
-    public var status: JKCalendarViewStatus {
-        if collapsedValue == collapsedMaximum {
-            return .collapse
-        } else if collapsedValue == 0 {
-            return .expand
-        } else {
-            return .between
+    public var isInitializationCollapsed: Bool = false
+    
+    /**
+         This Boolean determines whether the top view is displayed. The default is true.
+     */
+    public var isTopViewDisplayed: Bool = true {
+        didSet{
+            topView.isHidden = !isTopViewDisplayed
+            weekViewTopConstraint.constant = isTopViewDisplayed ? 44: 0
         }
     }
     
     /**
-         A Boolean value that determines whether status is collapsed when initial. The default is false.
-     */
-    public var startsCollapsed: Bool = false
-    
-    /**
          A Boolean value that determines whether nearby month name is displayed. The default is true.
      */
-    public var showNearbyMonthName: Bool = true
+    public var isNearbyMonthNameDisplayed: Bool = true
     
     /**
         The calendar view is background color. The default value is nil, which results in a transparent background color.
      */
     public override var backgroundColor: UIColor? {
         set {
-            topBackGroundView?.backgroundColor = newValue
+            topView?.backgroundColor = newValue
+            weekView?.backgroundColor = newValue
             calendarPageView?.backgroundColor = newValue
             calendarPageView?.currentView?.backgroundColor = newValue
+            footerView?.backgroundColor = newValue
         }
 
         get {
@@ -149,38 +161,48 @@ import UIKit
     var collapsedValue: CGFloat = 0 {
         didSet{
             if let calendarView = calendarPageView.currentView as? JKCalendarView,
-                calendarView.collapsedValue != collapsedValue{
+                calendarView.collapsedValue != collapsedValue {
                 calendarView.collapsedValue = collapsedValue
                 contentViewBottomConstraint.constant = collapsedValue
                 
                 previousButton.setTitleColor(previousButton.titleColor(for: .normal)!.withAlphaComponent(1 - collapsedValue / collapsedMaximum), for: .normal)
                 nextButton.setTitleColor(nextButton.titleColor(for: .normal)!.withAlphaComponent(1 - collapsedValue / collapsedMaximum), for: .normal)
                 
-                if collapsedValue == 0 && oldValue != collapsedValue{
+                if collapsedValue == 0 && oldValue != collapsedValue {
                     delegate?.calendar?(self, didChanged: .expand)
-                }else if collapsedValue == collapsedMaximum && oldValue != collapsedValue{
+                    calendarPageView.isScrollEnabled = true
+                } else if collapsedValue == collapsedMaximum && oldValue != collapsedValue {
                     delegate?.calendar?(self, didChanged: .collapse)
-                }else if (collapsedValue != 0 && oldValue == 0) || (collapsedValue != collapsedMaximum && oldValue == collapsedMaximum){
+                    calendarPageView.isScrollEnabled = true
+                } else if (collapsedValue != 0 && oldValue == 0) || (collapsedValue != collapsedMaximum && oldValue == collapsedMaximum) {
                     delegate?.calendar?(self, didChanged: .between)
+                    calendarPageView.isScrollEnabled = false
                 }
             }
         }
     }
+    
     var collapsedMaximum: CGFloat = 0
     
     fileprivate var contentViewBottomConstraint: NSLayoutConstraint!
+    
     private var first = true
     
     weak var interactionObject: UIScrollView?
     
     @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var topBackGroundView: UIView!
+    @IBOutlet weak var weekView: UIView!
     @IBOutlet weak var calendarPageView: JKInfinitePageView!
+    @IBOutlet weak var footerView: UIView!
+    
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    
     @IBOutlet weak var pageViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var weekViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var footerViewHeightConstraint: NSLayoutConstraint!
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -197,27 +219,41 @@ import UIKit
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        let pageViewHeight = frame.height - calendarPageView.frame.origin.y - 5
+        let footerHeight = delegate?.heightOfFooterView?(in: self) ?? 0
+        footerViewHeightConstraint.constant = footerHeight
+        
+        if let view = delegate?.viewOfFooter?(in: self),
+            footerView.subviews.count == 0 {
+            footerView.addSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            
+            let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: .directionLeadingToTrailing, metrics: nil, views: ["view": view])
+            let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: .directionLeadingToTrailing, metrics: nil, views: ["view": view])
+            addConstraints(horizontalConstraints)
+            addConstraints(verticalConstraints)
+        }
+        
+        let pageViewHeight = frame.height - weekViewTopConstraint.constant - weekView.frame.height - footerHeight
         pageViewHeightConstraint.constant = pageViewHeight > 0 ? pageViewHeight: 0
         
         let weekCount = month.weeksCount
         let maximum = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
         if first {
             collapsedMaximum = maximum
-            if startsCollapsed{
-                if let object = interactionObject{
+            if isInitializationCollapsed {
+                if let object = interactionObject {
                     object.setContentOffset(CGPoint(x: 0, y: collapsedMaximum - bounds.height), animated: false)
-                }else{
+                } else {
                     collapsedValue = maximum
                 }
             }
             first = false
         }else{
             // handle changed of collapsed maximum
-            if maximum != collapsedMaximum && collapsedValue == collapsedMaximum{
+            if maximum != collapsedMaximum && collapsedValue == collapsedMaximum {
                 if let object = interactionObject{
                     object.setContentOffset(CGPoint(x: 0, y: collapsedMaximum - bounds.height), animated: false)
-                }else{
+                } else {
                     collapsedValue = maximum
                 }
             }
@@ -264,8 +300,8 @@ import UIKit
         monthLabel.text = month.name
         yearLabel.text = "\(month.year)"
 
-        previousButton.setTitle(showNearbyMonthName ? month.previous.name : nil, for: .normal)
-        nextButton.setTitle(showNearbyMonthName ? month.next.name : nil, for: .normal)
+        previousButton.setTitle(isNearbyMonthNameDisplayed ? month.previous.name : nil, for: .normal)
+        nextButton.setTitle(isNearbyMonthNameDisplayed ? month.next.name : nil, for: .normal)
     }
     
     /**
@@ -472,13 +508,13 @@ extension JKCalendar: JKInfinitePageViewDataSource{
         let view = view as! JKCalendarView
         
         var calendarView: JKCalendarView!
-        if status == .expand{
+        if status == .expand {
             calendarView = JKCalendarView(calendar: self, month: view.month.previous)
             calendarView.focusWeek = focusWeek >= calendarView.month.weeksCount ? calendarView.month.weeksCount - 1: focusWeek
-        }else if focusWeek - 1 >= 0{
+        } else if focusWeek - 1 >= 0 {
             calendarView = JKCalendarView(calendar: self, month: view.month)
             calendarView.focusWeek = focusWeek - 1
-        }else{
+        } else {
             calendarView = JKCalendarView(calendar: self, month: view.month.previous)
             calendarView.focusWeek = view.month.previous.weeksCount - 1
         }
@@ -496,7 +532,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
         if status == .expand {
             calendarView = JKCalendarView(calendar: self, month: view.month.next)
             calendarView.focusWeek = focusWeek >= calendarView.month.weeksCount ? calendarView.month.weeksCount - 1: focusWeek
-        } else if focusWeek + 1 < view.month.weeksCount{
+        } else if focusWeek + 1 < view.month.weeksCount {
             calendarView = JKCalendarView(calendar: self, month: view.month)
             calendarView.focusWeek = focusWeek + 1
         } else {
@@ -519,6 +555,10 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     @objc optional func calendar(_ calendar: JKCalendar, didPan days: [JKDay])
     
     @objc optional func calendar(_ calendar: JKCalendar, didChanged status: JKCalendarViewStatus)
+    
+    @objc optional func heightOfFooterView(in calendar: JKCalendar) -> CGFloat
+    
+    @objc optional func viewOfFooter(in calendar: JKCalendar) -> UIView?
 }
 
 @objc public protocol JKCalendarDataSource{
