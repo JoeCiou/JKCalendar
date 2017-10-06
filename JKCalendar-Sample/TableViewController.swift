@@ -36,6 +36,7 @@ class TableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        calendarTableView.calendar.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,6 +48,21 @@ class TableViewController: UIViewController {
         let _ = navigationController?.popViewController(animated: true)
     }
 
+}
+
+extension TableViewController: JKCalendarDelegate{
+    
+    func heightOfFooterView(in claendar: JKCalendar) -> CGFloat{
+        return 10
+    }
+    
+    func viewOfFooter(in calendar: JKCalendar) -> UIView?{
+        let view = UIView()
+        let line = UIView(frame: CGRect(x: 8, y: 9, width: calendar.frame.width - 16, height: 1))
+        line.backgroundColor = UIColor.lightGray
+        view.addSubview(line)
+        return view
+    }
 }
 
 extension TableViewController: UITableViewDelegate, UITableViewDataSource{
