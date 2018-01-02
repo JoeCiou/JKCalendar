@@ -3,5 +3,5 @@
 
 target 'JKCalendar' do
 	use_frameworks!
-	pod 'JKInfinitePageView', '~>0.1.1'
+	pod 'JKInfinitePageView', '~>1.0.0'
 end

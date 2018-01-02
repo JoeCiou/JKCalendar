@@ -1,12 +1,12 @@
 PODS:
-  - JKInfinitePageView (0.1.1)
+  - JKInfinitePageView (1.0.0)
 
 DEPENDENCIES:
-  - JKInfinitePageView (~> 0.1.1)
+  - JKInfinitePageView (~> 1.0.0)
 
 SPEC CHECKSUMS:
-  JKInfinitePageView: 7824f990371992bd0f950d45d0152540a8bb550a
+  JKInfinitePageView: 142911dea618d3452d09855088df345c87d96a49
 
-PODFILE CHECKSUM: 84f92e15a47656a81f371aa1a143e98d6d427b62
+PODFILE CHECKSUM: c9b420449151fd9ff0573ba040bba95c9333cbad
 
 COCOAPODS: 1.4.0.rc.1
