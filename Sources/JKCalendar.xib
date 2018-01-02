@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,10 +15,12 @@
                 <outlet property="calendarPageView" destination="iph-JC-1Jp" id="0mX-Mz-OFi"/>
                 <outlet property="footerView" destination="igC-zE-cFB" id="GF2-VL-m1p"/>
                 <outlet property="footerViewHeightConstraint" destination="RkT-sT-QDf" id="69D-Hm-2AG"/>
+                <outlet property="leftContentView" destination="kJe-sZ-LIT" id="iED-eB-Cuw"/>
                 <outlet property="monthLabel" destination="NQc-qj-Z1J" id="n1m-gJ-ZvV"/>
                 <outlet property="nextButton" destination="pkJ-0e-uWA" id="fmN-h6-v41"/>
                 <outlet property="pageViewHeightConstraint" destination="hRC-Ss-Kfu" id="tjU-6U-ZdA"/>
                 <outlet property="previousButton" destination="baS-W8-Fmd" id="ie2-fN-kyD"/>
+                <outlet property="rightContentView" destination="mL9-1T-08w" id="S9K-rt-tsy"/>
                 <outlet property="topView" destination="jAf-DF-B0v" id="gpz-6u-xMX"/>
                 <outlet property="weekView" destination="Mrr-8T-giU" id="TPS-3q-PVo"/>
                 <outlet property="weekViewTopConstraint" destination="mgA-HI-zVe" id="GaY-de-MYA"/>
@@ -117,23 +120,22 @@
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pkJ-0e-uWA">
-                            <rect key="frame" x="220" y="7" width="100" height="30"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kJe-sZ-LIT">
+                            <rect key="frame" x="8" y="0.0" width="44" height="44"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="30" id="8YX-Ph-HrK"/>
-                                <constraint firstAttribute="width" constant="100" id="xb8-VV-uZB"/>
+                                <constraint firstAttribute="height" constant="44" id="BY4-dK-BOj"/>
+                                <constraint firstAttribute="width" secondItem="kJe-sZ-LIT" secondAttribute="height" multiplier="1:1" id="Zyj-FL-vqh"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
-                            <color key="tintColor" red="0.58823529411764708" green="0.58823529411764708" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
-                            <inset key="titleEdgeInsets" minX="-100" minY="0.0" maxX="30" maxY="0.0"/>
-                            <inset key="imageEdgeInsets" minX="75" minY="10" maxX="20" maxY="10"/>
-                            <state key="normal" title="July" image="ic_arrow_right">
-                                <color key="titleColor" red="0.58823529411764708" green="0.58823529411764708" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="handleNextButtonClick:" destination="-1" eventType="touchUpInside" id="SYe-t3-7Sf"/>
-                            </connections>
-                        </button>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mL9-1T-08w">
+                            <rect key="frame" x="268" y="0.0" width="44" height="44"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="mL9-1T-08w" secondAttribute="height" multiplier="1:1" id="B45-29-cA6"/>
+                                <constraint firstAttribute="height" constant="44" id="F4Q-SI-eAS"/>
+                            </constraints>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="baS-W8-Fmd">
                             <rect key="frame" x="0.0" y="7" width="100" height="30"/>
                             <constraints>
@@ -151,6 +153,23 @@
                                 <action selector="handlePreviousButtonClick:" destination="-1" eventType="touchUpInside" id="Cfv-ey-vYz"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pkJ-0e-uWA">
+                            <rect key="frame" x="220" y="7" width="100" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="8YX-Ph-HrK"/>
+                                <constraint firstAttribute="width" constant="100" id="xb8-VV-uZB"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
+                            <color key="tintColor" red="0.58823529411764708" green="0.58823529411764708" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
+                            <inset key="titleEdgeInsets" minX="-100" minY="0.0" maxX="30" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="75" minY="10" maxX="20" maxY="10"/>
+                            <state key="normal" title="July" image="ic_arrow_right">
+                                <color key="titleColor" red="0.58823529411764708" green="0.58823529411764708" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="handleNextButtonClick:" destination="-1" eventType="touchUpInside" id="SYe-t3-7Sf"/>
+                            </connections>
+                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NV5-qJ-yie">
                             <rect key="frame" x="150.5" y="28" width="19.5" height="10"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="8"/>
@@ -160,18 +179,22 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="kJe-sZ-LIT" firstAttribute="centerY" secondItem="baS-W8-Fmd" secondAttribute="centerY" id="7p0-Rb-dox"/>
                         <constraint firstAttribute="height" constant="44" id="8WU-ez-EgZ"/>
                         <constraint firstItem="baS-W8-Fmd" firstAttribute="leading" secondItem="jAf-DF-B0v" secondAttribute="leading" id="90H-Ak-TUQ"/>
                         <constraint firstAttribute="trailing" secondItem="pkJ-0e-uWA" secondAttribute="trailing" id="DA8-tc-Rgv"/>
+                        <constraint firstItem="kJe-sZ-LIT" firstAttribute="leading" secondItem="jAf-DF-B0v" secondAttribute="leading" constant="8" id="M0a-pT-DaH"/>
                         <constraint firstItem="NV5-qJ-yie" firstAttribute="centerX" secondItem="NQc-qj-Z1J" secondAttribute="centerX" id="M5I-H6-Mv1"/>
+                        <constraint firstAttribute="trailing" secondItem="mL9-1T-08w" secondAttribute="trailing" constant="8" id="exr-3f-c22"/>
                         <constraint firstItem="NQc-qj-Z1J" firstAttribute="top" secondItem="jAf-DF-B0v" secondAttribute="top" constant="12" id="f57-DV-Jg6"/>
                         <constraint firstItem="NV5-qJ-yie" firstAttribute="top" secondItem="NQc-qj-Z1J" secondAttribute="bottom" id="i4t-VB-erj"/>
                         <constraint firstItem="baS-W8-Fmd" firstAttribute="centerY" secondItem="NQc-qj-Z1J" secondAttribute="centerY" constant="2" id="kif-BQ-pB9"/>
                         <constraint firstAttribute="centerX" secondItem="NQc-qj-Z1J" secondAttribute="centerX" id="oas-to-bdV"/>
                         <constraint firstItem="pkJ-0e-uWA" firstAttribute="centerY" secondItem="NQc-qj-Z1J" secondAttribute="centerY" constant="2" id="uNU-Hj-OH6"/>
+                        <constraint firstItem="mL9-1T-08w" firstAttribute="centerY" secondItem="pkJ-0e-uWA" secondAttribute="centerY" id="vaU-2K-WrS"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iph-JC-1Jp" customClass="JKInfinitePageView" customModule="JKCalendar" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iph-JC-1Jp" customClass="JKInfinitePageView" customModule="JKInfinitePageView">
                     <rect key="frame" x="0.0" y="60" width="320" height="230"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>

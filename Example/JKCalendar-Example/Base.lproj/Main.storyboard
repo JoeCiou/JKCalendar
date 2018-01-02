@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Zl-bB-iXa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Zl-bB-iXa">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <!--Selector-->
         <scene sceneID="aAE-ts-a9A">
             <objects>
-                <viewController id="MRD-X6-1Th" customClass="SelectorViewController" customModule="JKCalendar_Sample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="MRD-X6-1Th" customClass="SelectorViewController" customModule="JKCalendar_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DzG-sE-ngH"/>
                         <viewControllerLayoutGuide type="bottom" id="5rL-mS-eYL"/>
@@ -144,7 +144,7 @@
         <!--ScrollView-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="ScrollViewController" customModule="JKCalendar_Sample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="ScrollViewController" customModule="JKCalendar_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -278,7 +278,7 @@
         <!--TableView-->
         <scene sceneID="ApU-kl-x3B">
             <objects>
-                <viewController id="SfT-tj-0jy" customClass="TableViewController" customModule="JKCalendar_Sample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="SfT-tj-0jy" customClass="TableViewController" customModule="JKCalendar_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k6b-TJ-CfF"/>
                         <viewControllerLayoutGuide type="bottom" id="QLE-YT-8Wm"/>
@@ -292,7 +292,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="50" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TableViewCell" id="U9i-Q7-gr5" customClass="TableViewCell" customModule="JKCalendar_Sample" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TableViewCell" id="U9i-Q7-gr5" customClass="TableViewCell" customModule="JKCalendar_Example" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U9i-Q7-gr5" id="9bH-5J-tUk">

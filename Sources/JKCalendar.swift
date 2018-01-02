@@ -23,6 +23,7 @@
 //
 
 import UIKit
+import JKInfinitePageView
 
 @IBDesignable public class JKCalendar: UIView {
     
@@ -91,6 +92,16 @@ import UIKit
         didSet{
             topView.isHidden = !isTopViewDisplayed
             weekViewTopConstraint.constant = isTopViewDisplayed ? 44: 0
+        }
+    }
+    
+    /**
+         This Boolean determines whether nearby month button is displayed. The default is true.
+     */
+    public var isNearbyMonthButtonDisplayed: Bool = true{
+        didSet{
+            previousButton.isHidden = !isNearbyMonthButtonDisplayed
+            nextButton.isHidden = !isNearbyMonthButtonDisplayed
         }
     }
     
@@ -199,6 +210,8 @@ import UIKit
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var leftContentView: UIView!
+    @IBOutlet weak var rightContentView: UIView!
     
     @IBOutlet weak var pageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var weekViewTopConstraint: NSLayoutConstraint!
@@ -302,6 +315,42 @@ import UIKit
 
         previousButton.setTitle(isNearbyMonthNameDisplayed ? month.previous.name : nil, for: .normal)
         nextButton.setTitle(isNearbyMonthNameDisplayed ? month.next.name : nil, for: .normal)
+    }
+    
+    public func setLeftCustomView(_ view: UIView) {
+        isNearbyMonthButtonDisplayed = false
+        
+        leftContentView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        addConstraint(view.centerXAnchor.constraint(equalTo: leftContentView.centerXAnchor))
+        addConstraint(view.centerYAnchor.constraint(equalTo: leftContentView.centerYAnchor))
+        
+        let widthConstraint = view.widthAnchor.constraint(equalTo: leftContentView.widthAnchor)
+        widthConstraint.priority = UILayoutPriority.defaultHigh
+        addConstraint(widthConstraint)
+        
+        let heightConstraint = view.heightAnchor.constraint(equalTo: leftContentView.heightAnchor)
+        heightConstraint.priority = UILayoutPriority.defaultHigh
+        addConstraint(heightConstraint)
+    }
+    
+    public func setRightCustomView(_ view: UIView) {
+        isNearbyMonthButtonDisplayed = false
+        
+        rightContentView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        addConstraint(view.centerXAnchor.constraint(equalTo: rightContentView.centerXAnchor))
+        addConstraint(view.centerYAnchor.constraint(equalTo: rightContentView.centerYAnchor))
+        
+        let widthConstraint = view.widthAnchor.constraint(equalTo: rightContentView.widthAnchor)
+        widthConstraint.priority = UILayoutPriority.defaultHigh
+        addConstraint(widthConstraint)
+        
+        let heightConstraint = view.heightAnchor.constraint(equalTo: rightContentView.heightAnchor)
+        heightConstraint.priority = UILayoutPriority.defaultHigh
+        addConstraint(heightConstraint)
     }
     
     /**
@@ -411,7 +460,7 @@ import UIKit
 }
 
 extension JKCalendar: JKInfinitePageViewDelegate {
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, afterWith view: UIView, progress: Double) {
+    public func infinitePageView(_ infinitePageView: JKInfinitePageView, afterWith view: UIView, progress: Double) {
         let calendarView = view as! JKCalendarView
         let currentCalendarView = infinitePageView.currentView! as! JKCalendarView
         
@@ -456,7 +505,7 @@ extension JKCalendar: JKInfinitePageViewDelegate {
         }
     }
     
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, beforeWith view: UIView, progress: Double) {
+    public func infinitePageView(_ infinitePageView: JKInfinitePageView, beforeWith view: UIView, progress: Double) {
         let calendarView = view as! JKCalendarView
         let currentCalendarView = infinitePageView.currentView! as! JKCalendarView
         
@@ -504,7 +553,7 @@ extension JKCalendar: JKInfinitePageViewDelegate {
 
 extension JKCalendar: JKInfinitePageViewDataSource{
     
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, viewBefore view: UIView) -> UIView {
+    public func infinitePageView(_ infinitePageView: JKInfinitePageView, viewBefore view: UIView) -> UIView {
         let view = view as! JKCalendarView
         
         var calendarView: JKCalendarView!
@@ -525,7 +574,7 @@ extension JKCalendar: JKInfinitePageViewDataSource{
         return calendarView
     }
     
-    func infinitePageView(_ infinitePageView: JKInfinitePageView, viewAfter view: UIView) -> UIView {
+    public func infinitePageView(_ infinitePageView: JKInfinitePageView, viewAfter view: UIView) -> UIView {
         let view = view as! JKCalendarView
         
         var calendarView: JKCalendarView!

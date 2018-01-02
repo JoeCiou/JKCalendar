@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:JKCalendar-Sample.xcodeproj">
+      location = "group:../../JKCalendar.xcworkspace">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>
