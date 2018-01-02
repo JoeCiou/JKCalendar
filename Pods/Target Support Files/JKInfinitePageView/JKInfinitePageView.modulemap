@@ -1,0 +1,6 @@
+framework module JKInfinitePageView {
+  umbrella header "JKInfinitePageView-umbrella.h"
+
+  export *
+  module * { export * }
+}
