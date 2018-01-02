@@ -20,7 +20,7 @@ pod 'JKCalendar'
 #### Carthage
 To install add the following line to your `Cartfile`:
 ```ruby
-github "joe22499/JKCalendar"
+github "JoeCiou/JKCalendar"
 ```
 
 ## Usage
