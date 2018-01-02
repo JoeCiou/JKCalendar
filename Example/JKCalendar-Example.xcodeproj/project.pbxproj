@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		33D80F739FD7E112806C1CDC /* Pods_JKCalendar_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9E8C3D88793B5C32735E20 /* Pods_JKCalendar_Example.framework */; };
 		7C72FF231E72930100D12F76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C72FF221E72930100D12F76 /* AppDelegate.swift */; };
 		7C72FF251E72930100D12F76 /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C72FF241E72930100D12F76 /* ScrollViewController.swift */; };
 		7C72FF281E72930100D12F76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C72FF261E72930100D12F76 /* Main.storyboard */; };
@@ -14,7 +15,6 @@
 		7C72FF2D1E72930100D12F76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C72FF2B1E72930100D12F76 /* LaunchScreen.storyboard */; };
 		7C7300761F4C0803002D9861 /* SelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7300751F4C0803002D9861 /* SelectorViewController.swift */; };
 		7CA7DDDD1F6102030061011A /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA7DDDC1F6102030061011A /* TableViewController.swift */; };
-		B21D3F8B2E6D203854DE095B /* Pods_JKCalendar_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E58C1EB9F9E9E21C1E2927 /* Pods_JKCalendar_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,8 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1454D42BC6CEDA205A8EA93B /* Pods-JKCalendar-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JKCalendar-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example.debug.xcconfig"; sourceTree = "<group>"; };
-		37E58C1EB9F9E9E21C1E2927 /* Pods_JKCalendar_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JKCalendar_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0CA334E73633F881BC35625F /* Pods-JKCalendar-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JKCalendar-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example.release.xcconfig"; sourceTree = "<group>"; };
 		7C72FF1F1E72930100D12F76 /* JKCalendar-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JKCalendar-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C72FF221E72930100D12F76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7C72FF241E72930100D12F76 /* ScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewController.swift; sourceTree = "<group>"; };
@@ -42,7 +41,8 @@
 		7C72FF2E1E72930200D12F76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C7300751F4C0803002D9861 /* SelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectorViewController.swift; sourceTree = "<group>"; };
 		7CA7DDDC1F6102030061011A /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		AD2DA74E101155A6F29D1EF8 /* Pods-JKCalendar-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JKCalendar-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example.release.xcconfig"; sourceTree = "<group>"; };
+		9D9E8C3D88793B5C32735E20 /* Pods_JKCalendar_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JKCalendar_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BECF1D1B92618B3845822815 /* Pods-JKCalendar-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JKCalendar-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,20 +50,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B21D3F8B2E6D203854DE095B /* Pods_JKCalendar_Example.framework in Frameworks */,
+				33D80F739FD7E112806C1CDC /* Pods_JKCalendar_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		148131F7EF335ADB9DC3D0B0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BECF1D1B92618B3845822815 /* Pods-JKCalendar-Example.debug.xcconfig */,
+				0CA334E73633F881BC35625F /* Pods-JKCalendar-Example.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		4A503DDE98A16FD3C7F503EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9D9E8C3D88793B5C32735E20 /* Pods_JKCalendar_Example.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7C72FF161E72930100D12F76 = {
 			isa = PBXGroup;
 			children = (
 				7C72FF211E72930100D12F76 /* JKCalendar-Example */,
 				7C72FF201E72930100D12F76 /* Products */,
-				C7A2D0A3439F9F9278B69B3B /* Pods */,
-				80EB4500C5AED0220BFC6993 /* Frameworks */,
+				148131F7EF335ADB9DC3D0B0 /* Pods */,
+				4A503DDE98A16FD3C7F503EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,23 +107,6 @@
 			path = "JKCalendar-Example";
 			sourceTree = "<group>";
 		};
-		80EB4500C5AED0220BFC6993 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				37E58C1EB9F9E9E21C1E2927 /* Pods_JKCalendar_Example.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		C7A2D0A3439F9F9278B69B3B /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1454D42BC6CEDA205A8EA93B /* Pods-JKCalendar-Example.debug.xcconfig */,
-				AD2DA74E101155A6F29D1EF8 /* Pods-JKCalendar-Example.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -114,13 +114,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7C72FF311E72930200D12F76 /* Build configuration list for PBXNativeTarget "JKCalendar-Example" */;
 			buildPhases = (
-				13DA71C2ECE0695421CA84F1 /* [CP] Check Pods Manifest.lock */,
+				1E0A8CED4966B0FBB318D7FB /* [CP] Check Pods Manifest.lock */,
 				7C72FF1B1E72930100D12F76 /* Sources */,
 				7C72FF1C1E72930100D12F76 /* Frameworks */,
 				7C72FF1D1E72930100D12F76 /* Resources */,
 				7C5141481F3424EC00263E8A /* Embed Frameworks */,
-				B180262892D04C5F7BD67025 /* [CP] Embed Pods Frameworks */,
-				635A5C390303993257F1BF79 /* [CP] Copy Pods Resources */,
+				BCB2167AD8BE3A2DF93A8F94 /* [CP] Embed Pods Frameworks */,
+				04D27B355C72F89124245266 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -180,7 +180,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		13DA71C2ECE0695421CA84F1 /* [CP] Check Pods Manifest.lock */ = {
+		04D27B355C72F89124245266 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1E0A8CED4966B0FBB318D7FB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -198,22 +213,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		635A5C390303993257F1BF79 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B180262892D04C5F7BD67025 /* [CP] Embed Pods Frameworks */ = {
+		BCB2167AD8BE3A2DF93A8F94 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -374,7 +374,7 @@
 		};
 		7C72FF321E72930200D12F76 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1454D42BC6CEDA205A8EA93B /* Pods-JKCalendar-Example.debug.xcconfig */;
+			baseConfigurationReference = BECF1D1B92618B3845822815 /* Pods-JKCalendar-Example.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -394,7 +394,7 @@
 		};
 		7C72FF331E72930200D12F76 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AD2DA74E101155A6F29D1EF8 /* Pods-JKCalendar-Example.release.xcconfig */;
+			baseConfigurationReference = 0CA334E73633F881BC35625F /* Pods-JKCalendar-Example.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
