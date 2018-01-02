@@ -1,0 +1,28 @@
+language: swift
+osx_image: xcode9.2
+xcode_project: JKCalendar.xcodeproj
+xcode_scheme: JKCalendar
+xcode_sdk: iphonesimulator11.2
+env:
+  global:
+  - FRAMEWORK_NAME=JKCalendar
+before_install:
+- brew update
+- brew outdated carthage || brew upgrade carthage
+before_deploy:
+- carthage build --no-skip-current
+- carthage archive $FRAMEWORK_NAME
+deploy:
+  provider: releases
+  api_key:
+    secure: tRJxyexjrTpSdnsxPqtUrq+gQDwQwsCrj5F6uFw/XgKlWu+ETj0RI4iBrOSDnrOq8eEIb6hJaA2vmzfMvPy1PWr3ABIP8z8I8jFGzMC2WUU0a1E+lkC+/nzPcYvFYvru6J/dg/xruGzPI08fRv6qDbBUV6YHf/uXee3Hs9NDyzykVE+VR+HX0uXlto06QtaJMBNTLdJzf7NgMQhDhTltySo35gc3AE2cPTNbLTbNCP8bYIUOUfSk2+GPKMB3xd/wvdAUKs7SRdIizQI/tNFGMuLFIrNBxHKZ1R5AOVKLOvnoVRTJsqrDlFNXjEPc8GlGlFKEAmIyrYEOXQ/enSK5mPmjF+8/bJ8wRf0er+tUc4TS9ntQrLn98L/V0KJANah3ayZDVFrhwyopkipaOIM6SbqsmmYIt9pZU2Uj3MBci9h1PSwmWb333vjO60wGZOlx1K8y6LMjvlEzB73Vi9iGrohpvw1drqOrFdts1Y5HnrqTAthVRPHuAxYfn5lfHP/QkcUhRvGOWSYDMBXTG24sKErTf4cJPyF5YE0kCu/iBbKAPSAT33ao3nngasrpW3Le0YOhK/SmO8iqaqhqkE6LnvXbOta63n7wKyDfhdW1BLgn60wqv7Zk9Mlhhx2lPXAwNIlTEiTMsxO3AqoWDrFpyiXFSupZDaeTN48WDrSjKeg=
+  file: JKCalendar.framework.zip
+  on:
+    repo: JoeCiou/JKCalendar
+
+
+deploy:
+  skip_cleanup: true
+  on:
+    repo: repo/repo
+    tags: true
