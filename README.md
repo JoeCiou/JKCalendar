@@ -1,4 +1,5 @@
-<p align="center"><img src="https://cdn.rawgit.com/ex780306/JKCalendar/afdd9047/Resources/JKCalendar.png" width="300">
+# JKCalendar
+<p align="center"><img src="https://cdn.rawgit.com/JoeCiou/JKCalendar/513e2d53/Resources/banner.png" width="">
 
 ![](https://travis-ci.org/JoeCiou/JKCalendar.svg?branch=master)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
@@ -6,6 +7,9 @@
 [![Platform](https://img.shields.io/cocoapods/p/JKCalendar.svg)](http://cocoadocs.org/docsets/JKCalendar)
 [![Swift 3.x](https://img.shields.io/badge/Swift-3.x-orange.svg?style=flat)](https://swift.org/)
 [![Swift 4.0](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat)](https://swift.org/)
+## Screenshot
+<img src="https://cdn.rawgit.com/JoeCiou/JKCalendar/513e2d53/Resources/scroll_video.gif" width="300">   <img src="https://cdn.rawgit.com/JoeCiou/JKCalendar/513e2d53/Resources/page_video.gif" width="300">
+
 ## Requirements
 - iOS 9.0+
 - Xcode 8+
