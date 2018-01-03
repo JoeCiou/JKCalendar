@@ -27,12 +27,8 @@ import JKCalendar
 
 class ScrollViewController: UIViewController {
 
+    let markColor = UIColor(red: 40/255, green: 178/255, blue: 253/255, alpha: 1)
     var selectDay: JKDay = JKDay(date: Date())
-    
-    var markColor = UIColor(red: 40/255, green: 178/255, blue: 253/255, alpha: 1)
-    
-    var continuousMarkStartDay: JKDay = JKDay(year: 2017, month: 10, day: 13)!
-    var continuousMarkEndDay: JKDay = JKDay(year: 2017, month: 10, day: 14)!
     
     @IBOutlet weak var statusButtonItem: UIBarButtonItem!
     @IBOutlet weak var calendarScrollView: JKCalendarScrollView!
@@ -123,8 +119,8 @@ extension ScrollViewController: JKCalendarDataSource{
     
     func calendar(_ calendar: JKCalendar, marksWith month: JKMonth) -> [JKCalendarMark]? {
         
-        let firstMarkDay: JKDay = JKDay(year: month.year, month: month.month, day: 8)!
-        let secondMarkDay: JKDay = JKDay(year: month.year, month: month.month, day: 19)!
+        let firstMarkDay: JKDay = JKDay(year: 2018, month: 1, day: 9)!
+        let secondMarkDay: JKDay = JKDay(year: 2018, month: 1, day: 20)!
         
         var marks: [JKCalendarMark] = []
         if selectDay == month{
@@ -138,7 +134,7 @@ extension ScrollViewController: JKCalendarDataSource{
                                         color: markColor))
         }
         if secondMarkDay == month{
-            marks.append(JKCalendarMark(type: .dot,
+            marks.append(JKCalendarMark(type: .hollowCircle,
                                         day: secondMarkDay,
                                         color: markColor))
         }
@@ -146,9 +142,12 @@ extension ScrollViewController: JKCalendarDataSource{
     }
     
     func calendar(_ calendar: JKCalendar, continuousMarksWith month: JKMonth) -> [JKCalendarContinuousMark]?{
+        let startDay: JKDay = JKDay(year: 2018, month: 1, day: 17)!
+        let endDay: JKDay = JKDay(year: 2018, month: 1, day: 18)!
+        
         return [JKCalendarContinuousMark(type: .dot,
-                                         start: continuousMarkStartDay,
-                                         end: continuousMarkEndDay,
+                                         start: startDay,
+                                         end: endDay,
                                          color: markColor)]
     }
     

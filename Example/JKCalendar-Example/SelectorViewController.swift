@@ -27,6 +27,7 @@ import JKCalendar
 
 class SelectorViewController: UIViewController {
 
+    let markColor = UIColor(red: 40/255, green: 178/255, blue: 253/255, alpha: 1)
     var selectDays: [JKDay]?{
         didSet{
             if let days = selectDays,
@@ -43,8 +44,6 @@ class SelectorViewController: UIViewController {
             }
         }
     }
-    
-    var markColor = UIColor(red: 40/255, green: 178/255, blue: 253/255, alpha: 1)
     
     @IBOutlet weak var calendar: JKCalendar!
     @IBOutlet weak var dateLabel: UILabel!

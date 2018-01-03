@@ -31,12 +31,17 @@ class TableViewCell: UITableViewCell{
 
 class TableViewController: UIViewController {
 
+    let markColor = UIColor(red: 40/255, green: 178/255, blue: 253/255, alpha: 1)
+    var selectDay: JKDay = JKDay(date: Date())
+    
     @IBOutlet weak var calendarTableView: JKCalendarTableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         calendarTableView.calendar.delegate = self
+        calendarTableView.calendar.dataSource = self
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,6 +57,12 @@ class TableViewController: UIViewController {
 
 extension TableViewController: JKCalendarDelegate{
     
+    func calendar(_ calendar: JKCalendar, didTouch day: JKDay){
+        selectDay = day
+        calendar.focusWeek = day < calendar.month ? 0: day > calendar.month ? calendar.month.weeksCount - 1: day.weekOfMonth - 1
+        calendar.reloadData()
+    }
+    
     func heightOfFooterView(in claendar: JKCalendar) -> CGFloat{
         return 10
     }
@@ -63,6 +74,44 @@ extension TableViewController: JKCalendarDelegate{
         view.addSubview(line)
         return view
     }
+}
+
+extension TableViewController: JKCalendarDataSource{
+    
+    func calendar(_ calendar: JKCalendar, marksWith month: JKMonth) -> [JKCalendarMark]? {
+        
+        let firstMarkDay: JKDay = JKDay(year: 2018, month: 1, day: 9)!
+        let secondMarkDay: JKDay = JKDay(year: 2018, month: 1, day: 20)!
+        
+        var marks: [JKCalendarMark] = []
+        if selectDay == month{
+            marks.append(JKCalendarMark(type: .circle,
+                                        day: selectDay,
+                                        color: markColor))
+        }
+        if firstMarkDay == month{
+            marks.append(JKCalendarMark(type: .underline,
+                                        day: firstMarkDay,
+                                        color: markColor))
+        }
+        if secondMarkDay == month{
+            marks.append(JKCalendarMark(type: .hollowCircle,
+                                        day: secondMarkDay,
+                                        color: markColor))
+        }
+        return marks
+    }
+    
+    func calendar(_ calendar: JKCalendar, continuousMarksWith month: JKMonth) -> [JKCalendarContinuousMark]?{
+        let startDay: JKDay = JKDay(year: 2018, month: 1, day: 17)!
+        let endDay: JKDay = JKDay(year: 2018, month: 1, day: 18)!
+        
+        return [JKCalendarContinuousMark(type: .dot,
+                                         start: startDay,
+                                         end: endDay,
+                                         color: markColor)]
+    }
+    
 }
 
 extension TableViewController: UITableViewDelegate, UITableViewDataSource{
@@ -89,4 +138,5 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
 }
+
 
