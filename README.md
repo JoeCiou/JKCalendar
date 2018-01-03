@@ -1,6 +1,6 @@
-# JKCalendar
 <p align="center"><img src="https://cdn.rawgit.com/JoeCiou/JKCalendar/513e2d53/Resources/banner.png" width="">
 
+# JKCalendar
 ![](https://travis-ci.org/JoeCiou/JKCalendar.svg?branch=master)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/JKCalendar.svg)](http://cocoadocs.org/docsets/JKCalendar)
