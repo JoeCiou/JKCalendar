@@ -431,16 +431,16 @@ import JKInfinitePageView
     }
     
     /**
-        Move the calendar view month to the next month
+        Move the calendar view to the next month or week
      */
-    public func nextMonth() {
+    public func next() {
         calendarPageView.nextPage()
     }
     
     /**
-        Move the calendar view month to the previous month
+        Move the calendar view to the previous month or week
      */
-    public func previousMonth() {
+    public func previous() {
         calendarPageView.previousPage()
     }
     
@@ -451,11 +451,11 @@ import JKInfinitePageView
     }
     
     @IBAction func handleNextButtonClick(_ sender: Any) {
-        nextMonth()
+        next()
     }
     
     @IBAction func handlePreviousButtonClick(_ sender: Any) {
-        previousMonth()
+        previous()
     }
 }
 
