@@ -25,7 +25,7 @@
 import UIKit
 import JKInfinitePageView
 
-@IBDesignable public class JKCalendar: UIView {
+public class JKCalendar: UIView {
     
     /**
          A gregorian calendar
@@ -228,6 +228,16 @@ import JKInfinitePageView
         setupContentViewUI()
         setupCalendarView()
     }
+    
+//    public override func prepareForInterfaceBuilder() {
+//        super.prepareForInterfaceBuilder()
+////        setupContentViewUI()
+//        setupIBDesignableTest()
+//    }
+//
+//    func setupIBDesignableTest(){
+//        self.layer.cornerRadius = 20
+//    }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
