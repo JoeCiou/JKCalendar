@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Zl-bB-iXa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Zl-bB-iXa">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,11 +26,14 @@
                                 <rect key="frame" x="0.0" y="354.5" width="375" height="312.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="hLd-AF-a2P" secondAttribute="height" multiplier="1.2:1" id="tII-Ue-ROk"/>
+                                    <constraint firstAttribute="width" secondItem="hLd-AF-a2P" secondAttribute="height" multiplier="1.2:1" priority="750" id="tII-Ue-ROk"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="選擇日期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCm-B2-F5F">
-                                <rect key="frame" x="152.5" y="233.5" width="69.5" height="21"/>
+                                <rect key="frame" x="152.5" y="229.5" width="69.5" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="dlt-Hj-Du9"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -38,11 +41,14 @@
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="hLd-AF-a2P" firstAttribute="top" secondItem="VCm-B2-F5F" secondAttribute="bottom" constant="100" id="8ey-He-sTs"/>
+                            <constraint firstItem="VCm-B2-F5F" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DzG-sE-ngH" secondAttribute="bottom" constant="20" id="5vS-80-PVD"/>
+                            <constraint firstItem="hLd-AF-a2P" firstAttribute="top" secondItem="VCm-B2-F5F" secondAttribute="bottom" priority="750" constant="100" id="8ey-He-sTs"/>
                             <constraint firstItem="hLd-AF-a2P" firstAttribute="leading" secondItem="Prt-Ye-ufA" secondAttribute="leading" id="9iL-Wb-DNT"/>
                             <constraint firstItem="VCm-B2-F5F" firstAttribute="centerX" secondItem="Prt-Ye-ufA" secondAttribute="centerX" id="LKf-06-hJr"/>
                             <constraint firstAttribute="trailing" secondItem="hLd-AF-a2P" secondAttribute="trailing" id="WkY-kj-zFw"/>
+                            <constraint firstItem="hLd-AF-a2P" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VCm-B2-F5F" secondAttribute="bottom" constant="20" id="Wnn-cj-XQf"/>
                             <constraint firstItem="5rL-mS-eYL" firstAttribute="top" secondItem="hLd-AF-a2P" secondAttribute="bottom" id="wP3-ws-p4V"/>
+                            <constraint firstItem="hLd-AF-a2P" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DzG-sE-ngH" secondAttribute="bottom" constant="70" id="zRc-GT-j0j"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Selector" id="gBP-wt-M5c">
@@ -122,17 +128,20 @@
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="UDe-ZE-vWg" firstAttribute="top" secondItem="JY9-QU-yYZ" secondAttribute="bottom" constant="60" id="1vR-tt-sVX"/>
+                            <constraint firstItem="UDe-ZE-vWg" firstAttribute="top" secondItem="JY9-QU-yYZ" secondAttribute="bottom" priority="750" constant="60" id="1vR-tt-sVX"/>
+                            <constraint firstItem="m2y-Lt-Vx5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="jVg-8k-xYY" secondAttribute="bottom" constant="20" id="2Lk-qg-WYo"/>
+                            <constraint firstItem="5dG-Hl-l28" firstAttribute="top" relation="greaterThanOrEqual" secondItem="m2y-Lt-Vx5" secondAttribute="bottom" constant="20" id="4Tb-RN-JuN"/>
                             <constraint firstAttribute="trailing" secondItem="JY9-QU-yYZ" secondAttribute="trailing" constant="32" id="FxL-4l-IKB"/>
                             <constraint firstItem="7vJ-ti-jEV" firstAttribute="top" secondItem="5dG-Hl-l28" secondAttribute="bottom" constant="16" id="Grx-m2-n6c"/>
                             <constraint firstAttribute="trailing" secondItem="5dG-Hl-l28" secondAttribute="trailing" constant="32" id="Hgd-VR-7PL"/>
                             <constraint firstItem="5dG-Hl-l28" firstAttribute="leading" secondItem="Bvx-Tr-IEM" secondAttribute="leading" constant="32" id="Ocj-hr-oNj"/>
+                            <constraint firstItem="UDe-ZE-vWg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JY9-QU-yYZ" secondAttribute="bottom" constant="20" id="bf3-eq-UFu"/>
                             <constraint firstItem="7vJ-ti-jEV" firstAttribute="leading" secondItem="Bvx-Tr-IEM" secondAttribute="leading" constant="32" id="g7X-Ou-KOG"/>
                             <constraint firstItem="JY9-QU-yYZ" firstAttribute="leading" secondItem="Bvx-Tr-IEM" secondAttribute="leading" constant="32" id="gSj-My-6Qz"/>
                             <constraint firstItem="JY9-QU-yYZ" firstAttribute="top" secondItem="7vJ-ti-jEV" secondAttribute="bottom" constant="16" id="mnq-Re-cFO"/>
                             <constraint firstAttribute="trailing" secondItem="7vJ-ti-jEV" secondAttribute="trailing" constant="32" id="pRC-Dn-Vir"/>
                             <constraint firstItem="m2y-Lt-Vx5" firstAttribute="centerX" secondItem="Bvx-Tr-IEM" secondAttribute="centerX" id="uCG-bk-ZUg"/>
-                            <constraint firstItem="m2y-Lt-Vx5" firstAttribute="centerY" secondItem="Bvx-Tr-IEM" secondAttribute="centerY" constant="-70" id="vWt-nA-Lik"/>
+                            <constraint firstItem="m2y-Lt-Vx5" firstAttribute="centerY" secondItem="Bvx-Tr-IEM" secondAttribute="centerY" priority="750" constant="-70" id="vWt-nA-Lik"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="JKCalendar" id="DgF-Xh-5Mt"/>
