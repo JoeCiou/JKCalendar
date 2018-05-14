@@ -98,8 +98,8 @@ public class JKCalendar: UIView {
     /**
          This Boolean determines whether nearby month button is displayed. The default is true.
      */
-    public var isNearbyMonthButtonDisplayed: Bool = true{
-        didSet{
+    public var isNearbyMonthButtonDisplayed: Bool = true {
+        didSet {
             previousButton.isHidden = !isNearbyMonthButtonDisplayed
             nextButton.isHidden = !isNearbyMonthButtonDisplayed
         }
@@ -108,7 +108,12 @@ public class JKCalendar: UIView {
     /**
          A Boolean value that determines whether nearby month name is displayed. The default is true.
      */
-    public var isNearbyMonthNameDisplayed: Bool = true
+    public var isNearbyMonthNameDisplayed: Bool = true {
+        didSet {
+            previousButton.setTitle(isNearbyMonthNameDisplayed ? month.previous.name : nil, for: .normal)
+            nextButton.setTitle(isNearbyMonthNameDisplayed ? month.next.name : nil, for: .normal)
+        }
+    }
     
     /**
         The calendar view is background color. The default value is nil, which results in a transparent background color.
