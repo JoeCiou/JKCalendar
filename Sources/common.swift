@@ -24,7 +24,7 @@
 
 import UIKit
 
-public class JKYear: NSObject {
+public class JKYear: NSObject, Comparable {
     public let year: Int
     
     public init?(year: Int) {
@@ -41,30 +41,30 @@ public class JKYear: NSObject {
             return false
         }
     }
-}
-
-public func == (lhs: JKYear, rhs: JKYear) -> Bool {
-    return lhs.year == rhs.year
-}
-
-public func != (lhs: JKYear, rhs: JKYear) -> Bool {
-    return lhs.year != rhs.year
-}
-
-public func < (lhs: JKYear, rhs: JKYear) -> Bool {
-    return lhs.year < rhs.year
-}
-
-public func <= (lhs: JKYear, rhs: JKYear) -> Bool {
-    return lhs.year <= rhs.year
-}
-
-public func > (lhs: JKYear, rhs: JKYear) -> Bool {
-    return lhs.year > rhs.year
-}
-
-public func >= (lhs: JKYear, rhs: JKYear) -> Bool {
-    return lhs.year >= rhs.year
+    
+    public static func == (lhs: JKYear, rhs: JKYear) -> Bool {
+        return lhs.year == rhs.year
+    }
+    
+    public static func != (lhs: JKYear, rhs: JKYear) -> Bool {
+        return lhs.year != rhs.year
+    }
+    
+    public static func < (lhs: JKYear, rhs: JKYear) -> Bool {
+        return lhs.year < rhs.year
+    }
+    
+    public static func <= (lhs: JKYear, rhs: JKYear) -> Bool {
+        return lhs.year <= rhs.year
+    }
+    
+    public static func > (lhs: JKYear, rhs: JKYear) -> Bool {
+        return lhs.year > rhs.year
+    }
+    
+    public static func >= (lhs: JKYear, rhs: JKYear) -> Bool {
+        return lhs.year >= rhs.year
+    }
 }
 
 public class JKMonth: JKYear {
@@ -142,32 +142,31 @@ public class JKMonth: JKYear {
             return false
         }
     }
+    
+    public static func == (lhs: JKMonth, rhs: JKMonth) -> Bool {
+        return lhs.year == rhs.year && lhs.month == rhs.month
+    }
+    
+    public static func != (lhs: JKMonth, rhs: JKMonth) -> Bool {
+        return lhs.year != rhs.year || lhs.month != rhs.month
+    }
+    
+    public static func < (lhs: JKMonth, rhs: JKMonth) -> Bool {
+        return lhs.year < rhs.year || (lhs.year == rhs.year && lhs.month < rhs.month)
+    }
+    
+    public static func <= (lhs: JKMonth, rhs: JKMonth) -> Bool {
+        return lhs.year < rhs.year || (lhs.year == rhs.year && lhs.month <= rhs.month)
+    }
+    
+    public static func > (lhs: JKMonth, rhs: JKMonth) -> Bool {
+        return lhs.year > rhs.year || (lhs.year == rhs.year && lhs.month > rhs.month)
+    }
+    
+    public static func >= (lhs: JKMonth, rhs: JKMonth) -> Bool {
+        return lhs.year > rhs.year || (lhs.year == rhs.year && lhs.month >= rhs.month)
+    }
 }
-
-public func == (lhs: JKMonth, rhs: JKMonth) -> Bool {
-    return lhs.year == rhs.year && lhs.month == rhs.month
-}
-
-public func != (lhs: JKMonth, rhs: JKMonth) -> Bool {
-    return lhs.year != rhs.year || lhs.month != rhs.month
-}
-
-public func < (lhs: JKMonth, rhs: JKMonth) -> Bool {
-    return lhs.year < rhs.year || (lhs.year == rhs.year && lhs.month < rhs.month)
-}
-
-public func <= (lhs: JKMonth, rhs: JKMonth) -> Bool {
-    return lhs.year < rhs.year || (lhs.year == rhs.year && lhs.month <= rhs.month)
-}
-
-public func > (lhs: JKMonth, rhs: JKMonth) -> Bool {
-    return lhs.year > rhs.year || (lhs.year == rhs.year && lhs.month > rhs.month)
-}
-
-public func >= (lhs: JKMonth, rhs: JKMonth) -> Bool {
-    return lhs.year > rhs.year || (lhs.year == rhs.year && lhs.month >= rhs.month)
-}
-
 
 public class JKDay: JKMonth {
     public let day: Int
@@ -243,34 +242,34 @@ public class JKDay: JKMonth {
             return false
         }
     }
-}
-
-public func == (lhs: JKDay, rhs: JKDay) -> Bool {
-    return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day
-}
-
-public func != (lhs: JKDay, rhs: JKDay) -> Bool {
-    return lhs.year != rhs.year || lhs.month != rhs.month || lhs.day != rhs.day
-}
-
-public func < (lhs: JKDay, rhs: JKDay) -> Bool {
-    return lhs.year < rhs.year ||
-        (lhs.year == rhs.year && (lhs.month < rhs.month || (lhs.month == rhs.month && lhs.day < rhs.day)))
-}
-
-public func <= (lhs: JKDay, rhs: JKDay) -> Bool {
-    return lhs.year < rhs.year ||
-        (lhs.year == rhs.year && (lhs.month < rhs.month || (lhs.month == rhs.month && lhs.day <= rhs.day)))
-}
-
-public func > (lhs: JKDay, rhs: JKDay) -> Bool {
-    return lhs.year > rhs.year ||
-        (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day > rhs.day)))
-}
-
-public func >= (lhs: JKDay, rhs: JKDay) -> Bool {
-    return lhs.year > rhs.year ||
-        (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day >= rhs.day)))
+    
+    public static func == (lhs: JKDay, rhs: JKDay) -> Bool {
+        return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day
+    }
+    
+    public static func != (lhs: JKDay, rhs: JKDay) -> Bool {
+        return lhs.year != rhs.year || lhs.month != rhs.month || lhs.day != rhs.day
+    }
+    
+    public static func < (lhs: JKDay, rhs: JKDay) -> Bool {
+        return lhs.year < rhs.year ||
+            (lhs.year == rhs.year && (lhs.month < rhs.month || (lhs.month == rhs.month && lhs.day < rhs.day)))
+    }
+    
+    public static func <= (lhs: JKDay, rhs: JKDay) -> Bool {
+        return lhs.year < rhs.year ||
+            (lhs.year == rhs.year && (lhs.month < rhs.month || (lhs.month == rhs.month && lhs.day <= rhs.day)))
+    }
+    
+    public static func > (lhs: JKDay, rhs: JKDay) -> Bool {
+        return lhs.year > rhs.year ||
+            (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day > rhs.day)))
+    }
+    
+    public static func >= (lhs: JKDay, rhs: JKDay) -> Bool {
+        return lhs.year > rhs.year ||
+            (lhs.year == rhs.year && (lhs.month > rhs.month || (lhs.month == rhs.month && lhs.day >= rhs.day)))
+    }
 }
 
 public class JKWeek{

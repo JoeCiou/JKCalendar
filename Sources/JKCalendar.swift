@@ -234,16 +234,6 @@ public class JKCalendar: UIView {
         setupCalendarView()
     }
     
-//    public override func prepareForInterfaceBuilder() {
-//        super.prepareForInterfaceBuilder()
-////        setupContentViewUI()
-//        setupIBDesignableTest()
-//    }
-//
-//    func setupIBDesignableTest(){
-//        self.layer.cornerRadius = 20
-//    }
-    
     public override func layoutSubviews() {
         super.layoutSubviews()
         
