@@ -189,11 +189,11 @@ public class JKDay: JKMonth {
         self.init(year: year, month: month, day: day)!
     }
     
-    public var date: Date {
+    var date: Date {
         return JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
-                                                  year: year,
-                                                  month: month,
-                                                  day: day))!
+                                                             year: year,
+                                                             month: month,
+                                                             day: day))!
     }
     
     public var weekday: Int {
