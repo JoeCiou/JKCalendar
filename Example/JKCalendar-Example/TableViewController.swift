@@ -41,7 +41,8 @@ class TableViewController: UIViewController {
         
         calendarTableView.calendar.delegate = self
         calendarTableView.calendar.dataSource = self
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        calendarTableView.calendar.focusWeek = selectDay.weekOfMonth - 1
     }
 
     override func didReceiveMemoryWarning() {

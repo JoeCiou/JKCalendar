@@ -36,10 +36,18 @@ class SelectorViewController: UIViewController {
                 formatter.dateStyle = .medium
                 formatter.timeStyle = .none
                 
+                let firstDay = days.first!
+                let firstDate = JKCalendar.calendar.date(from: DateComponents(year: firstDay.year,
+                                                                         month: firstDay.month,
+                                                                         day: firstDay.day))!
                 if days.count == 1{
-                    dateLabel.text = formatter.string(from: days.first!.date)
+                    dateLabel.text = formatter.string(from: firstDate)
                 }else{
-                    dateLabel.text = formatter.string(from: days.first!.date) + "-" + formatter.string(from: days.last!.date)
+                    let lastDay = days.last!
+                    let lastDate = JKCalendar.calendar.date(from: DateComponents(year: lastDay.year,
+                                                                                 month: lastDay.month,
+                                                                                 day: lastDay.day))!
+                    dateLabel.text = formatter.string(from: firstDate) + "-" + formatter.string(from: lastDate)
                 }
             }
         }

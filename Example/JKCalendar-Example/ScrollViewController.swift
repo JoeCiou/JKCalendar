@@ -49,22 +49,25 @@ class ScrollViewController: UIViewController {
                                                         alpha: 1)
         calendarScrollView.calendar.backgroundColor = UIColor.white
 
-        calendarScrollView.calendar.focusWeek = JKCalendar.calendar.component(.weekOfMonth, from: selectDay.date) - 1
+        calendarScrollView.calendar.focusWeek = selectDay.weekOfMonth - 1
         calendarScrollView.calendar.isInitializationCollapsed = true
         
         setupTextView()
     }
     
     func setupTextView(){
+        let selectDate = JKCalendar.calendar.date(from: DateComponents(year: selectDay.year,
+                                                                       month: selectDay.month,
+                                                                       day: selectDay.day))!
         let formatter = DateFormatter()
         
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
-        dateLabel.text = formatter.string(from: selectDay.date)
+        dateLabel.text = formatter.string(from: selectDate)
         
         formatter.dateStyle = .none
         formatter.timeStyle = .medium
-        timeLabel.text = formatter.string(from: selectDay.date)
+        timeLabel.text = formatter.string(from: selectDate)
         
         textview.textContainerInset = UIEdgeInsets.zero
         textview.textContainer.lineFragmentPadding = 0
