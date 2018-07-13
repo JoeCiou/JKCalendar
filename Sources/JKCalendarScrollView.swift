@@ -71,11 +71,11 @@ public class JKCalendarScrollView: UIScrollView {
             var calendarSize: CGSize!
             let footerHeight = calendar.delegate?.heightOfFooterView?(in: calendar) ?? 0
             if frame.width > frame.height {
-                let height = (calendar.isTopViewDisplayed ? calendar.topView.frame.height: 0) + calendar.weekView.frame.height + frame.width * 0.35 + footerHeight
+                let height = ((calendar.isTopViewDisplayed ? calendar.topView.frame.height: 0) + calendar.weekView.frame.height + frame.width * 0.35 + footerHeight).rounded()
                 calendarSize = CGSize(width: frame.width,
                                       height: height)
             } else {
-                let height = (calendar.isTopViewDisplayed ? calendar.topView.frame.height: 0) + calendar.weekView.frame.height + frame.width * 0.65 + footerHeight
+                let height = ((calendar.isTopViewDisplayed ? calendar.topView.frame.height: 0) + calendar.weekView.frame.height + frame.width * 0.65 + footerHeight).rounded()
                 calendarSize = CGSize(width: frame.width,
                                       height: height)
             }
