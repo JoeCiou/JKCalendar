@@ -125,7 +125,7 @@ public class JKMonth: JKYear {
     }
     
     public var name: String {
-        guard let date = JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0), year: year, month: month, day: 1)) else {
+        guard let date = JKCalendar.calendar.date(from: DateComponents(year: year, month: month)) else {
             return ""
         }
         
@@ -172,10 +172,9 @@ public class JKDay: JKMonth {
     public let day: Int
     
     public init?(year: Int, month: Int, day: Int) {
-        guard let _ = JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
-                                                         year: year,
-                                                         month: month,
-                                                         day: day)) else {
+        guard let _ = JKCalendar.calendar.date(from: DateComponents(year: year,
+                                                                    month: month,
+                                                                    day: day)) else {
             return nil
         }
         self.day = day
@@ -189,9 +188,8 @@ public class JKDay: JKMonth {
         self.init(year: year, month: month, day: day)!
     }
     
-    var date: Date {
-        return JKCalendar.calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0),
-                                                             year: year,
+    public var date: Date {
+        return JKCalendar.calendar.date(from: DateComponents(year: year,
                                                              month: month,
                                                              day: day))!
     }
