@@ -99,6 +99,9 @@ extension ScrollViewController: JKCalendarDelegate{
         selectDay = day
         calendar.focusWeek = day < calendar.month ? 0: day > calendar.month ? calendar.month.weeksCount - 1: day.weekOfMonth - 1
         calendar.reloadData()
+        
+        let testDay = JKDay(date: Date())
+        print(min(day, testDay).day)
     }
     
     func calendar(_ calendar: JKCalendar, didChanged status: JKCalendarViewStatus) {

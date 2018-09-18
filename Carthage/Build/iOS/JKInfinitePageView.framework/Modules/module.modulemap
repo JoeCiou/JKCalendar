@@ -1,4 +1,4 @@
 framework module JKInfinitePageView {
-    header "JKInfinitePageView-Swift.h"
-    requires objc
+  header "JKInfinitePageView-Swift.h"
+  requires objc
 }
