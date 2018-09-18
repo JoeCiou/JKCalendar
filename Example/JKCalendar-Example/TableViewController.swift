@@ -138,6 +138,10 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource{
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.row)
+    }
+    
 }
 
 

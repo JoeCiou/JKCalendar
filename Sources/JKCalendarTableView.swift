@@ -26,7 +26,7 @@ open class JKCalendarTableView: UITableView {
     private var first = true
     private var rotating = false
     
-    override public init(frame: CGRect, style: UITableViewStyle) {
+    override public init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         setup()
     }
@@ -41,7 +41,7 @@ open class JKCalendarTableView: UITableView {
         calendar.backgroundColor = UIColor.white
         calendar.interactionObject = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     override open func layoutSubviews() {
@@ -260,7 +260,7 @@ extension JKCalendarTableView: UITableViewDelegate{
         _delegate?.tableView?(tableView, didDeselectRowAt: indexPath)
     }
     
-    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle{
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle{
         return _delegate?.tableView?(tableView, editingStyleForRowAt: indexPath) ?? (tableView.isEditing ? .delete: .none)
     }
     

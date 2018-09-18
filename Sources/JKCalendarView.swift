@@ -506,24 +506,24 @@ class JKCalendarView: UIView{
                 
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .center
-                var unitStrAttrs = [NSAttributedStringKey.font: font,
-                                    NSAttributedStringKey.paragraphStyle: paragraphStyle]
+                var unitStrAttrs = [NSAttributedString.Key.font: font,
+                                    NSAttributedString.Key.paragraphStyle: paragraphStyle]
                 
                 if let mark = info.mark, mark.type == .circle{
-                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.backgroundColor
+                    unitStrAttrs[NSAttributedString.Key.foregroundColor] = calendar.backgroundColor
                 } else if weekInfo.continuousMarksInfo.keys.filter({ (mark) -> Bool in
                     return mark.type == .circle
                 }).contains(where: { (mark) -> Bool in
                     return info.day >= mark.start && info.day <= mark.end
                 }) {
-                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.backgroundColor
+                    unitStrAttrs[NSAttributedString.Key.foregroundColor] = calendar.backgroundColor
                 } else if info.day == month{
-                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.textColor
+                    unitStrAttrs[NSAttributedString.Key.foregroundColor] = calendar.textColor
                 } else {
-                    unitStrAttrs[NSAttributedStringKey.foregroundColor] = calendar.textColor.withAlphaComponent(0.3)
+                    unitStrAttrs[NSAttributedString.Key.foregroundColor] = calendar.textColor.withAlphaComponent(0.3)
                 }
                 
-                let textSize = dayString.size(withAttributes: [NSAttributedStringKey.font: font])
+                let textSize = dayString.size(withAttributes: [NSAttributedString.Key.font: font])
                 let dy = (info.location.height - textSize.height) / 2
                 
                 let textRect = CGRect(x: info.location.origin.x,

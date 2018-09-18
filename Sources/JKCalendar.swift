@@ -413,7 +413,7 @@ public class JKCalendar: UIView {
                                      "duration": duration,
                                      "startDate": Date()],
                           repeats: true)
-        RunLoop.current.add(timer, forMode: .commonModes)
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.common)
     }
     
     @objc
