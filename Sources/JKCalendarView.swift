@@ -517,6 +517,8 @@ class JKCalendarView: UIView{
                     return info.day >= mark.start && info.day <= mark.end
                 }) {
                     unitStrAttrs[NSAttributedString.Key.foregroundColor] = calendar.backgroundColor
+                } else if info.day.date < Date() {
+                    unitStrAttrs[NSAttributedString.Key.foregroundColor] = calendar.pastDayColor
                 } else if info.day == month{
                     unitStrAttrs[NSAttributedString.Key.foregroundColor] = calendar.textColor
                 } else {

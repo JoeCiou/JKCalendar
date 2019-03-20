@@ -67,7 +67,16 @@ public class JKCalendar: UIView {
             reloadData()
         }
     }
-    
+
+    /**
+     The color of the past day text. Default value for this property is a black color.
+     */
+    public var pastDayColor: UIColor = UIColor.black {
+        didSet {
+            reloadData()
+        }
+    }
+
     /**
         A Boolean value that determines whether scrolling is enabled. The default is true.
      */
