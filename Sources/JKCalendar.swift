@@ -67,9 +67,11 @@ public class JKCalendar: UIView {
             reloadData()
         }
     }
+    
+    public var shouldApplyPastDayColor = false
 
     /**
-     The color of the past day text. Default value for this property is a black color.
+     The color of the past day text. Default value for this property is a black color. Only Used if shouldApplyPastDayColor is true
      */
     public var pastDayColor: UIColor = UIColor.black {
         didSet {
