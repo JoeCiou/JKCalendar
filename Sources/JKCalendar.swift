@@ -171,6 +171,7 @@ public class JKCalendar: UIView {
             let weekCount = month.weeksCount
             collapsedMaximum = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
             setupLabels()
+            delegate?.calendar?(self, didChanged: _month)
         }
     }
     
@@ -609,6 +610,8 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     @objc optional func calendar(_ calendar: JKCalendar, didPan days: [JKDay])
     
     @objc optional func calendar(_ calendar: JKCalendar, didChanged status: JKCalendarViewStatus)
+    
+    @objc optional func calendar(_ calendar: JKCalendar, didChanged month: JKMonth)
     
     @objc optional func heightOfFooterView(in calendar: JKCalendar) -> CGFloat
     
