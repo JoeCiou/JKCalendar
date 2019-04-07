@@ -322,27 +322,27 @@ public func != (lhs: JKWeek, rhs: JKWeek) -> Bool {
 }
 
 public extension Date {
-    public var day: Int {
+    var day: Int {
         return JKCalendar.calendar.component(.day, from: self)
     }
     
-    public var week: Int {
+    var week: Int {
         return JKCalendar.calendar.component(.weekday, from: self)
     }
     
-    public var month: Int {
+    var month: Int {
         return JKCalendar.calendar.component(.month, from: self)
     }
     
-    public var year: Int {
+    var year: Int {
         return JKCalendar.calendar.component(.year, from: self)
     }
     
-    public var weekOfMonth: Int {
+    var weekOfMonth: Int {
         return JKCalendar.calendar.component(.weekOfMonth, from: self)
     }
     
-    public var weekOfYear: Int {
+    var weekOfYear: Int {
         return JKCalendar.calendar.component(.weekOfYear, from: self)
     }
 }

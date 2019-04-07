@@ -171,7 +171,7 @@ public class JKCalendar: UIView {
             let weekCount = month.weeksCount
             collapsedMaximum = pageViewHeightConstraint.constant * CGFloat(weekCount - 1) / CGFloat(weekCount)
             setupLabels()
-            delegate?.calendar?(self, didChanged: _month)
+            delegate?.calendar?(self, didChangedMonth: _month)
         }
     }
     
@@ -186,13 +186,13 @@ public class JKCalendar: UIView {
                 nextButton.setTitleColor(nextButton.titleColor(for: .normal)!.withAlphaComponent(1 - collapsedValue / collapsedMaximum), for: .normal)
                 
                 if collapsedValue == 0 && oldValue != collapsedValue {
-                    delegate?.calendar?(self, didChanged: .expand)
+                    delegate?.calendar?(self, didChangedStatus: .expand)
                     calendarPageView.isScrollEnabled = true
                 } else if collapsedValue == collapsedMaximum && oldValue != collapsedValue {
-                    delegate?.calendar?(self, didChanged: .collapse)
+                    delegate?.calendar?(self, didChangedStatus: .collapse)
                     calendarPageView.isScrollEnabled = true
                 } else if (collapsedValue != 0 && oldValue == 0) || (collapsedValue != collapsedMaximum && oldValue == collapsedMaximum) {
-                    delegate?.calendar?(self, didChanged: .between)
+                    delegate?.calendar?(self, didChangedStatus: .between)
                     calendarPageView.isScrollEnabled = false
                 }
             }
@@ -609,9 +609,9 @@ extension JKCalendar: JKInfinitePageViewDataSource{
     
     @objc optional func calendar(_ calendar: JKCalendar, didPan days: [JKDay])
     
-    @objc optional func calendar(_ calendar: JKCalendar, didChanged status: JKCalendarViewStatus)
+    @objc optional func calendar(_ calendar: JKCalendar, didChangedStatus status: JKCalendarViewStatus)
     
-    @objc optional func calendar(_ calendar: JKCalendar, didChanged month: JKMonth)
+    @objc optional func calendar(_ calendar: JKCalendar, didChangedMonth month: JKMonth)
     
     @objc optional func heightOfFooterView(in calendar: JKCalendar) -> CGFloat
     
