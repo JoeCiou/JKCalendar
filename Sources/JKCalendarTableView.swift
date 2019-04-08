@@ -11,7 +11,7 @@ import UIKit
 open class JKCalendarTableView: UITableView {
     
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
-    weak var nativeDelegate: UITableViewDelegate?
+    public weak var nativeDelegate: UITableViewDelegate?
     
     private var first = true
     private var rotating = false

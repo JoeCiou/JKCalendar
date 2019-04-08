@@ -186,7 +186,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/JKCalendar/JKCalendar.framework",
 				"${BUILT_PRODUCTS_DIR}/JKInfinitePageView/JKInfinitePageView.framework",
 			);
@@ -197,7 +197,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JKCalendar-Example/Pods-JKCalendar-Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		19D9E6AA37C40B1A00D6F001 /* [CP] Check Pods Manifest.lock */ = {

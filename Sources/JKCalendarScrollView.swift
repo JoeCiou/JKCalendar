@@ -27,7 +27,7 @@ import UIKit
 public class JKCalendarScrollView: UIScrollView {
     
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
-    weak var nativeDelegate: UIScrollViewDelegate?
+    public weak var nativeDelegate: UIScrollViewDelegate?
     
     public var startsCollapsed: Bool = false
     private var first = true
