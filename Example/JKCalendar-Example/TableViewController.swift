@@ -39,6 +39,7 @@ class TableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        calendarTableView.nativeDelegate = self
         calendarTableView.calendar.delegate = self
         calendarTableView.calendar.dataSource = self
         

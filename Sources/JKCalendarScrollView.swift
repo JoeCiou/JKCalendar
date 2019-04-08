@@ -27,18 +27,7 @@ import UIKit
 public class JKCalendarScrollView: UIScrollView {
     
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
-    
-    override public var delegate: UIScrollViewDelegate? {
-        set {
-            _delegate = newValue
-        }
-
-        get {
-            return _delegate
-        }
-    }
-    
-    var _delegate: UIScrollViewDelegate?
+    weak var nativeDelegate: UIScrollViewDelegate?
     
     public var startsCollapsed: Bool = false
     private var first = true
@@ -126,15 +115,15 @@ extension JKCalendarScrollView: UIScrollViewDelegate {
 
         calendar.collapsedValue = value
         
-        _delegate?.scrollViewDidScroll?(scrollView)
+        nativeDelegate?.scrollViewDidScroll?(scrollView)
     }
     
     public func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewDidZoom?(scrollView)
+        nativeDelegate?.scrollViewDidZoom?(scrollView)
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewWillBeginDragging?(scrollView)
+        nativeDelegate?.scrollViewWillBeginDragging?(scrollView)
     }
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -145,42 +134,42 @@ extension JKCalendarScrollView: UIScrollViewDelegate {
             targetContentOffset.pointee.y = (value > 0.5 ? calendar.collapsedMaximum : 0) - calendar.bounds.height
         }
         
-        _delegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+        nativeDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
     }
     
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        _delegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+        nativeDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
     }
     
     public func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewWillBeginDecelerating?(scrollView)
+        nativeDelegate?.scrollViewWillBeginDecelerating?(scrollView)
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewDidEndDecelerating?(scrollView)
+        nativeDelegate?.scrollViewDidEndDecelerating?(scrollView)
     }
     
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewDidEndScrollingAnimation?(scrollView)
+        nativeDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
     }
     
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return _delegate?.viewForZooming?(in: scrollView)
+        return nativeDelegate?.viewForZooming?(in: scrollView)
     }
     
     public func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        _delegate?.scrollViewWillBeginZooming?(scrollView, with: view)
+        nativeDelegate?.scrollViewWillBeginZooming?(scrollView, with: view)
     }
     
     public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        _delegate?.scrollViewDidEndZooming?(scrollView, with: view, atScale: scale)
+        nativeDelegate?.scrollViewDidEndZooming?(scrollView, with: view, atScale: scale)
     }
     
     public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        return _delegate?.scrollViewShouldScrollToTop?(scrollView) != nil ? _delegate!.scrollViewShouldScrollToTop!(scrollView): true
+        return nativeDelegate?.scrollViewShouldScrollToTop?(scrollView) != nil ? nativeDelegate!.scrollViewShouldScrollToTop!(scrollView): true
     }
     
     public func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewDidScrollToTop?(scrollView)
+        nativeDelegate?.scrollViewDidScrollToTop?(scrollView)
     }
 }

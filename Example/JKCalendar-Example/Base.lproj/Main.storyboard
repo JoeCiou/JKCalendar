@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Zl-bB-iXa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0Zl-bB-iXa">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -30,7 +29,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="選擇日期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCm-B2-F5F">
-                                <rect key="frame" x="152.5" y="229.5" width="69.5" height="25"/>
+                                <rect key="frame" x="153" y="229.5" width="69.5" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="dlt-Hj-Du9"/>
                                 </constraints>
@@ -123,7 +122,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="m2y-Lt-Vx5">
-                                <rect key="frame" x="159" y="239.5" width="56" height="48"/>
+                                <rect key="frame" x="159.5" y="239.5" width="56" height="48"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -331,7 +330,6 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="SfT-tj-0jy" id="wWL-2Y-csQ"/>
-                                    <outlet property="delegate" destination="SfT-tj-0jy" id="qfI-X8-miZ"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -382,8 +380,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_back" width="37" height="34"/>
-        <image name="ic_down" width="34" height="37"/>
-        <image name="logo" width="56" height="48"/>
+        <image name="ic_back" width="37.5" height="34"/>
+        <image name="ic_down" width="34" height="37.5"/>
+        <image name="logo" width="56" height="48.5"/>
     </resources>
 </document>

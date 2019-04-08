@@ -11,17 +11,7 @@ import UIKit
 open class JKCalendarTableView: UITableView {
     
     public let calendar: JKCalendar = JKCalendar(frame: CGRect.zero)
-    
-    override open var delegate: UITableViewDelegate?{
-        set{
-            _delegate = newValue
-        }
-        get{
-            return _delegate
-        }
-    }
-    
-    var _delegate: UITableViewDelegate?
+    weak var nativeDelegate: UITableViewDelegate?
     
     private var first = true
     private var rotating = false
@@ -111,15 +101,15 @@ extension JKCalendarTableView: UITableViewDelegate{
         
         calendar.collapsedValue = value
         
-        _delegate?.scrollViewDidScroll?(scrollView)
+        nativeDelegate?.scrollViewDidScroll?(scrollView)
     }
     
     public func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewDidZoom?(scrollView)
+        nativeDelegate?.scrollViewDidZoom?(scrollView)
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewWillBeginDragging?(scrollView)
+        nativeDelegate?.scrollViewWillBeginDragging?(scrollView)
     }
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -130,193 +120,193 @@ extension JKCalendarTableView: UITableViewDelegate{
             targetContentOffset.pointee.y = (value > 0.5 ? calendar.collapsedMaximum: 0) - calendar.bounds.height
         }
         
-        _delegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+        nativeDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
     }
     
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        _delegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+        nativeDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
     }
     
     public func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewWillBeginDecelerating?(scrollView)
+        nativeDelegate?.scrollViewWillBeginDecelerating?(scrollView)
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewDidEndDecelerating?(scrollView)
+        nativeDelegate?.scrollViewDidEndDecelerating?(scrollView)
     }
     
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewDidEndScrollingAnimation?(scrollView)
+        nativeDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
     }
     
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return _delegate?.viewForZooming?(in: scrollView)
+        return nativeDelegate?.viewForZooming?(in: scrollView)
     }
     
     public func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        _delegate?.scrollViewWillBeginZooming?(scrollView, with: view)
+        nativeDelegate?.scrollViewWillBeginZooming?(scrollView, with: view)
     }
     
     public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        _delegate?.scrollViewDidEndZooming?(scrollView, with: view, atScale: scale)
+        nativeDelegate?.scrollViewDidEndZooming?(scrollView, with: view, atScale: scale)
     }
     
     public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        return _delegate?.scrollViewShouldScrollToTop?(scrollView) != nil ? _delegate!.scrollViewShouldScrollToTop!(scrollView): true
+        return nativeDelegate?.scrollViewShouldScrollToTop?(scrollView) != nil ? nativeDelegate!.scrollViewShouldScrollToTop!(scrollView): true
     }
     
     public func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        _delegate?.scrollViewDidScrollToTop?(scrollView)
+        nativeDelegate?.scrollViewDidScrollToTop?(scrollView)
     }
     
     // MARK: Table View Delegate
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath){
-        _delegate?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
+        nativeDelegate?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
-        _delegate?.tableView?(tableView, willDisplayHeaderView: view, forSection: section)
+        nativeDelegate?.tableView?(tableView, willDisplayHeaderView: view, forSection: section)
     }
     
     
     public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int){
-        _delegate?.tableView?(tableView, willDisplayFooterView: view, forSection: section)
+        nativeDelegate?.tableView?(tableView, willDisplayFooterView: view, forSection: section)
     }
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath){
-        _delegate?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
+        nativeDelegate?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int){
-        _delegate?.tableView?(tableView, didEndDisplayingHeaderView: view, forSection: section)
+        nativeDelegate?.tableView?(tableView, didEndDisplayingHeaderView: view, forSection: section)
     }
     
     public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int){
-        _delegate?.tableView?(tableView, didEndDisplayingFooterView: view, forSection: section)
+        nativeDelegate?.tableView?(tableView, didEndDisplayingFooterView: view, forSection: section)
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return _delegate?.tableView?(tableView, heightForRowAt: indexPath) ?? tableView.rowHeight
+        return nativeDelegate?.tableView?(tableView, heightForRowAt: indexPath) ?? tableView.rowHeight
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{
-        return _delegate?.tableView?(tableView, heightForHeaderInSection: section) ?? tableView.sectionHeaderHeight
+        return nativeDelegate?.tableView?(tableView, heightForHeaderInSection: section) ?? tableView.sectionHeaderHeight
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat{
-        return _delegate?.tableView?(tableView, heightForFooterInSection: section) ?? tableView.sectionFooterHeight
+        return nativeDelegate?.tableView?(tableView, heightForFooterInSection: section) ?? tableView.sectionFooterHeight
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat{
-        return _delegate?.tableView?(tableView, estimatedHeightForRowAt: indexPath) ?? tableView.estimatedRowHeight
+        return nativeDelegate?.tableView?(tableView, estimatedHeightForRowAt: indexPath) ?? tableView.estimatedRowHeight
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat{
-        return _delegate?.tableView?(tableView, estimatedHeightForHeaderInSection: section) ?? tableView.estimatedSectionHeaderHeight
+        return nativeDelegate?.tableView?(tableView, estimatedHeightForHeaderInSection: section) ?? tableView.estimatedSectionHeaderHeight
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat{
-        return _delegate?.tableView?(tableView, estimatedHeightForFooterInSection: section) ?? tableView.estimatedSectionFooterHeight
+        return nativeDelegate?.tableView?(tableView, estimatedHeightForFooterInSection: section) ?? tableView.estimatedSectionFooterHeight
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?{
-        return _delegate?.tableView?(tableView, viewForHeaderInSection: section) ?? tableView.tableHeaderView
+        return nativeDelegate?.tableView?(tableView, viewForHeaderInSection: section) ?? tableView.tableHeaderView
     }
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?{
-        return _delegate?.tableView?(tableView, viewForFooterInSection: section) ?? tableView.tableFooterView
+        return nativeDelegate?.tableView?(tableView, viewForFooterInSection: section) ?? tableView.tableFooterView
     }
     
     public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath){
-        _delegate?.tableView?(tableView, accessoryButtonTappedForRowWith: indexPath)
+        nativeDelegate?.tableView?(tableView, accessoryButtonTappedForRowWith: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool{
-        return _delegate?.tableView?(tableView, shouldHighlightRowAt: indexPath) ?? true
+        return nativeDelegate?.tableView?(tableView, shouldHighlightRowAt: indexPath) ?? true
     }
     
     public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath){
-        _delegate?.tableView?(tableView, didHighlightRowAt: indexPath)
+        nativeDelegate?.tableView?(tableView, didHighlightRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath){
-        _delegate?.tableView?(tableView, didUnhighlightRowAt: indexPath)
+        nativeDelegate?.tableView?(tableView, didUnhighlightRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath?{
-        return _delegate?.tableView?(tableView, willSelectRowAt: indexPath) ?? nil
+        return nativeDelegate?.tableView?(tableView, willSelectRowAt: indexPath) ?? indexPath
     }
     
     public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath?{
-        return _delegate?.tableView?(tableView, willDeselectRowAt: indexPath) ?? nil
+        return nativeDelegate?.tableView?(tableView, willDeselectRowAt: indexPath) ?? indexPath
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        _delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+        nativeDelegate?.tableView?(tableView, didSelectRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath){
-        _delegate?.tableView?(tableView, didDeselectRowAt: indexPath)
+        nativeDelegate?.tableView?(tableView, didDeselectRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle{
-        return _delegate?.tableView?(tableView, editingStyleForRowAt: indexPath) ?? (tableView.isEditing ? .delete: .none)
+        return nativeDelegate?.tableView?(tableView, editingStyleForRowAt: indexPath) ?? (tableView.isEditing ? .delete: .none)
     }
     
     public func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String?{
-        return _delegate?.tableView?(tableView, titleForDeleteConfirmationButtonForRowAt: indexPath) ?? nil
+        return nativeDelegate?.tableView?(tableView, titleForDeleteConfirmationButtonForRowAt: indexPath) ?? nil
     }
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
-        return _delegate?.tableView?(tableView, editActionsForRowAt: indexPath) ?? nil
+        return nativeDelegate?.tableView?(tableView, editActionsForRowAt: indexPath) ?? nil
     }
     
     public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool{
-        return _delegate?.tableView?(tableView, shouldIndentWhileEditingRowAt: indexPath) ?? true
+        return nativeDelegate?.tableView?(tableView, shouldIndentWhileEditingRowAt: indexPath) ?? true
     }
     
     public func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath){
-        _delegate?.tableView?(tableView, willBeginEditingRowAt: indexPath)
+        nativeDelegate?.tableView?(tableView, willBeginEditingRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?){
-        _delegate?.tableView?(tableView, didEndEditingRowAt: indexPath)
+        nativeDelegate?.tableView?(tableView, didEndEditingRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath{
-        return _delegate?.tableView?(tableView, targetIndexPathForMoveFromRowAt: sourceIndexPath, toProposedIndexPath: proposedDestinationIndexPath) ?? proposedDestinationIndexPath
+        return nativeDelegate?.tableView?(tableView, targetIndexPathForMoveFromRowAt: sourceIndexPath, toProposedIndexPath: proposedDestinationIndexPath) ?? proposedDestinationIndexPath
     }
     
     public func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int{
-        return _delegate?.tableView?(tableView, indentationLevelForRowAt: indexPath) ?? 0
+        return nativeDelegate?.tableView?(tableView, indentationLevelForRowAt: indexPath) ?? 0
     }
     
     public func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool{
-        return _delegate?.tableView?(tableView, shouldShowMenuForRowAt: indexPath) ?? false
+        return nativeDelegate?.tableView?(tableView, shouldShowMenuForRowAt: indexPath) ?? false
     }
     
     public func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool{
-        return _delegate?.tableView?(tableView, canPerformAction: action, forRowAt: indexPath, withSender: sender) ?? false
+        return nativeDelegate?.tableView?(tableView, canPerformAction: action, forRowAt: indexPath, withSender: sender) ?? false
     }
     
     public func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?){
-        _delegate?.tableView?(tableView, performAction: action, forRowAt: indexPath, withSender: sender)
+        nativeDelegate?.tableView?(tableView, performAction: action, forRowAt: indexPath, withSender: sender)
     }
     
     public func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool{
-        return _delegate?.tableView?(tableView, canFocusRowAt: indexPath) ?? false
+        return nativeDelegate?.tableView?(tableView, canFocusRowAt: indexPath) ?? false
     }
     
     public func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool{
-        return _delegate?.tableView?(tableView, shouldUpdateFocusIn: context) ?? false
+        return nativeDelegate?.tableView?(tableView, shouldUpdateFocusIn: context) ?? false
     }
     
     public func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator){
-        _delegate?.tableView?(tableView, didUpdateFocusIn: context, with: coordinator)
+        nativeDelegate?.tableView?(tableView, didUpdateFocusIn: context, with: coordinator)
     }
     
     public func indexPathForPreferredFocusedView(in tableView: UITableView) -> IndexPath?{
-        return _delegate?.indexPathForPreferredFocusedView?(in: tableView) ?? nil
+        return nativeDelegate?.indexPathForPreferredFocusedView?(in: tableView) ?? nil
     }
 }
