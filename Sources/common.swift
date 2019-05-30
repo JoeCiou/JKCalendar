@@ -130,7 +130,8 @@ public class JKMonth: JKYear {
         }
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM"
+        dateFormatter.dateFormat = "LLLL"
+        dateFormatter.locale = Locale(identifier: "ru_RU_POSIX")
 
         return dateFormatter.string(from: date)
     }

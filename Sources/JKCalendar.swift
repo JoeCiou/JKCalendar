@@ -316,7 +316,7 @@ public class JKCalendar: UIView {
     }
 
     func setupLabels() {
-        monthLabel.text = month.name
+        monthLabel.text = month.name.prefix(1).capitalized + month.name.dropFirst()
         yearLabel.text = "\(month.year)"
 
         previousButton.setTitle(isNearbyMonthNameDisplayed ? month.previous.name : nil, for: .normal)
