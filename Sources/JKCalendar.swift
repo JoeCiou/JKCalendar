@@ -30,7 +30,7 @@ public class JKCalendar: UIView {
     /**
          A gregorian calendar
      */
-    static public let calendar = Calendar(identifier: .gregorian)
+    static public var calendar = Calendar(identifier: .gregorian)
     
     /**
          The object that acts as the delegate of the calendar view.
@@ -316,7 +316,7 @@ public class JKCalendar: UIView {
     }
 
     func setupLabels() {
-        monthLabel.text = month.name
+        monthLabel.text = month.name.prefix(1).capitalized + month.name.dropFirst()
         yearLabel.text = "\(month.year)"
 
         previousButton.setTitle(isNearbyMonthNameDisplayed ? month.previous.name : nil, for: .normal)
